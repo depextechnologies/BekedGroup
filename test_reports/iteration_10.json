@@ -1,0 +1,40 @@
+{
+  "summary": "Verified ecosystem section restoration after DB reseed. All 6 ecosystem cards (express, food, mart, shop, auto, immo) render in correct order with wordmark logos, descriptions, illustrations, and colored circular arrows. Regression checks all green: header uses /logos/baked-header.png, hero loads, footer has 2 baked-header.png logos, MobileShowcase carousel still has exactly 4 dots (phone-dot-0..3, no phone-dot-4), language switcher toggles FR↔EN correctly on the ecosystem heading (FR: 'L'ÉCOSYSTÈME / UNE SEULE APP, DE NOMBREUX SERVICES' <-> EN: 'THE ECOSYSTEM / ONE APP, MANY SERVICES'), and admin login (admin@baked.group / BakedAdmin2025!) succeeds and shows the dashboard with 6 Applications stat.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Ecosystem.tsx + page.tsx server fetch correctly returns 6 enabled apps ordered by order field; DOM order on the rendered page matched the expected order exactly.",
+    "Each card renders the wordmark <img> from /logos/{slug}.jpeg, an unsplash illustration, FR/EN description text, and an inline SVG arrow at the bottom.",
+    "No regression observed: header logo /logos/baked-header.png present, footer giant logo present, MobileShowcase has 4 screens only, language switcher functions, admin authentication works."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A (frontend-only run)", "frontend": "100%"},
+  "test_credentials": "admin@baked.group / BakedAdmin2025! (from /app/frontend/.env)",
+  "seed_data_creation": "None this iteration. The user already ran `yarn db:seed` to repopulate the Application table after a container reset. Verified via psql that all 6 rows are present.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "test_results_detail": {
+    "ecosystem_section_present": true,
+    "ecosystem_card_count": 6,
+    "ecosystem_dom_order": ["ecosystem-card-express", "ecosystem-card-food", "ecosystem-card-mart", "ecosystem-card-shop", "ecosystem-card-auto", "ecosystem-card-immo"],
+    "ecosystem_order_matches_expected": true,
+    "each_card_has_wordmark_illustration_text_arrow": true,
+    "header_logo_srcs": ["/logos/baked-header.png"],
+    "footer_logo_srcs": ["/logos/baked-header.png", "/logos/baked-header.png"],
+    "hero_present": true,
+    "phone_dots_0_to_3_present": [true, true, true, true],
+    "phone_dot_4_absent": true,
+    "fr_ecosystem_heading": "L'ÉCOSYSTÈME / UNE SEULE APP, DE NOMBREUX SERVICES",
+    "en_ecosystem_heading": "THE ECOSYSTEM / ONE APP, MANY SERVICES",
+    "admin_login_success": true,
+    "admin_dashboard_applications_stat": 6,
+    "db_application_rows_via_psql": ["express", "food", "mart", "shop", "auto", "immo"]
+  },
+  "context_for_next_testing_agent": "Postgres + Next.js are already up; DB has 6 Application rows. If the ecosystem section ever goes empty again, first check `sudo -u postgres psql -d baked_growth -c 'SELECT slug FROM \"Application\" ORDER BY \"order\";'` - if it returns 0 rows the container was reset; re-run `yarn db:seed` from /app/frontend. Public site testids confirmed: ecosystem-section, ecosystem-card-{express|food|mart|shop|auto|immo}, lang-button, lang-option-{en|fr}, phone-frame, phone-dot-0..3."
+}

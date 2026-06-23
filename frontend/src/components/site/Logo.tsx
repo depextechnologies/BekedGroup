@@ -41,7 +41,7 @@ export function Logo({ size = 'md', prefix, prefixColor, className, white = true
           e
           <span
             aria-hidden
-            className="absolute left-0 right-0 -top-[0.15em] mx-auto block h-[0.08em] w-[0.7em] rounded-full"
+            className="absolute left-1/2 -translate-x-1/2 top-[0.18em] block h-[0.12em] w-[0.62em] rounded-[2px]"
             style={{ backgroundColor: white ? '#ffffff' : '#050505' }}
           />
         </span>d

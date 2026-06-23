@@ -10,7 +10,7 @@ const floatingItems = [
   { Icon: UtensilsCrossed, color: '#32CD32', top: '18%', right: '8%', delay: 0.3, size: 60 },
   { Icon: ShoppingCart, color: '#32CD32', top: '62%', left: '4%', delay: 0.6, size: 54 },
   { Icon: ShoppingBag, color: '#F7A500', bottom: '14%', right: '12%', delay: 0.9, size: 58 },
-  { Icon: Car, color: '#3498FF', top: '48%', right: '4%', delay: 1.2, size: 60 },
+  { Icon: Car, color: '#E5484D', top: '48%', right: '4%', delay: 1.2, size: 60 },
   { Icon: Home, color: '#7A3CFF', bottom: '22%', left: '14%', delay: 1.5, size: 56 },
 ];
 

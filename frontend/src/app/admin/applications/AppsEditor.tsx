@@ -17,6 +17,7 @@ interface App {
   descFr: string;
   descEn: string;
   illustration: string;
+  logoImage: string;
   icon: string;
   enabled: boolean;
   order: number;

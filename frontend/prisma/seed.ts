@@ -55,6 +55,7 @@ async function main() {
       descFr: 'Livraison express pour les entreprises et les particuliers.',
       descEn: 'Express delivery for businesses and individuals.',
       illustration: 'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=800',
+      logoImage: '/logos/express.jpeg',
     },
     {
       slug: 'food',
@@ -66,6 +67,7 @@ async function main() {
       descFr: 'Commandez vos repas auprès des meilleurs restaurants locaux.',
       descEn: 'Order meals from your favorite local restaurants.',
       illustration: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800',
+      logoImage: '',
     },
     {
       slug: 'mart',
@@ -77,6 +79,7 @@ async function main() {
       descFr: 'Vos courses livrées à votre porte en quelques minutes.',
       descEn: 'Groceries and essentials delivered to your door in minutes.',
       illustration: 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=800',
+      logoImage: '',
     },
     {
       slug: 'shop',
@@ -88,17 +91,19 @@ async function main() {
       descFr: 'La plateforme de shopping moderne pour tous vos achats.',
       descEn: 'The modern marketplace for all your shopping needs.',
       illustration: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800',
+      logoImage: '/logos/shop.jpeg',
     },
     {
       slug: 'auto',
       prefix: 'AUTO',
-      color: '#3498FF',
-      colorKey: 'blue',
+      color: '#E5484D',
+      colorKey: 'red',
       icon: 'Car',
       order: 5,
       descFr: 'Le marché automobile le plus populaire pour les voitures neuves et d\'occasion.',
       descEn: 'The leading marketplace to buy and sell new and used vehicles.',
       illustration: 'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=800',
+      logoImage: '/logos/auto.jpeg',
     },
     {
       slug: 'immo',
@@ -110,13 +115,14 @@ async function main() {
       descFr: 'Nous contribuons à façonner le marché de l\'immobilier nouvelle génération.',
       descEn: 'Buy, rent, sell properties and connect with verified agents.',
       illustration: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800',
+      logoImage: '/logos/immo.jpeg',
     },
   ];
 
   for (const app of apps) {
     await prisma.application.upsert({
       where: { slug: app.slug },
-      update: {},
+      update: { color: app.color, colorKey: app.colorKey, logoImage: app.logoImage },
       create: app,
     });
   }

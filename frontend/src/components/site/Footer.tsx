@@ -39,7 +39,7 @@ export function Footer({ settings }: FooterProps) {
     >
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <div className="mb-12 max-w-md">
-          <Logo size="lg" />
+          <img src="/logos/baked.jpeg" alt="bakēd" className="h-12 w-auto object-contain rounded-md" />
           <p className="mt-5 text-sm text-white/60 leading-relaxed">{tagline}</p>
         </div>
 
@@ -110,7 +110,7 @@ export function Footer({ settings }: FooterProps) {
         </div>
 
         {/* Giant logo */}
-        <div className="mt-20 -mb-6 text-center select-none overflow-hidden">
+        <div className="mt-20 -mb-6 text-center select-none">
           <Logo size="2xl" />
         </div>
       </div>

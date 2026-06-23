@@ -36,7 +36,7 @@ export function AdminShell({ user, children }: { user: { email: string }; childr
         open ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
       )}>
         <div className="p-6 border-b border-white/10 flex items-center justify-between">
-          <Link href="/admin"><Logo size="md" /></Link>
+          <Link href="/admin"><img src="/logos/baked.jpeg" alt="bakēd" className="h-8 w-auto object-contain rounded-md" /></Link>
           <button onClick={() => setOpen(false)} className="lg:hidden text-white/60"><X className="h-5 w-5" /></button>
         </div>
 
@@ -80,7 +80,7 @@ export function AdminShell({ user, children }: { user: { email: string }; childr
       <div className="flex-1 min-w-0">
         <header className="sticky top-0 z-30 bg-bg-primary/80 backdrop-blur-xl border-b border-white/10 px-6 py-4 flex items-center justify-between lg:hidden">
           <button onClick={() => setOpen(true)} className="text-white"><Menu className="h-6 w-6" /></button>
-          <Logo size="sm" />
+          <img src="/logos/baked.jpeg" alt="bakēd" className="h-7 w-auto object-contain rounded-md" />
         </header>
         <main className="p-6 md:p-10">{children}</main>
       </div>

@@ -8,7 +8,7 @@ import { Logo } from './Logo';
 const phones = [
   { color: '#F7A500', Icon: Truck, prefix: 'EXPRESS', rotate: -18, y: 40, x: -180, depth: 0.7, label: 'Delivery' },
   { color: '#32CD32', Icon: UtensilsCrossed, prefix: 'FOOD', rotate: -8, y: -20, x: -90, depth: 0.85, label: 'Restaurants' },
-  { color: '#3498FF', Icon: Car, prefix: 'AUTO', rotate: 0, y: 0, x: 0, depth: 1, label: 'Vehicles' },
+  { color: '#E5484D', Icon: Car, prefix: 'AUTO', rotate: 0, y: 0, x: 0, depth: 1, label: 'Vehicles' },
   { color: '#7A3CFF', Icon: Home, prefix: 'IMMO', rotate: 8, y: -20, x: 90, depth: 0.85, label: 'Real Estate' },
   { color: '#F7A500', Icon: ShoppingBag, prefix: 'SHOP', rotate: 18, y: 40, x: 180, depth: 0.7, label: 'Marketplace' },
 ];

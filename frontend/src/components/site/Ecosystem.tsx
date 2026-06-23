@@ -18,6 +18,7 @@ export interface AppItem {
   descFr: string;
   descEn: string;
   illustration: string;
+  logoImage?: string;
   icon: string;
   enabled: boolean;
   order: number;
@@ -85,8 +86,17 @@ export function Ecosystem({ apps }: { apps: AppItem[] }) {
                 </div>
 
                 {/* Title */}
-                <h3 className="mb-3">
-                  <Logo size="lg" prefix={app.prefix} prefixColor={app.color} white={false} />
+                <h3 className="mb-3 min-h-[42px] flex items-center">
+                  {app.logoImage ? (
+                    <img
+                      src={app.logoImage}
+                      alt={`${app.prefix}bakēd logo`}
+                      className="h-10 md:h-11 w-auto object-contain"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <Logo size="lg" prefix={app.prefix} prefixColor={app.color} white={false} />
+                  )}
                 </h3>
 
                 {/* Desc */}

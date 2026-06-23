@@ -34,7 +34,7 @@ model SiteSettings {
   footerTextFr    String   @default("Simplifier la vie des gens et les connecter ensemble.")
   footerTextEn    String   @default("Simplifying people's lives and connecting them together.")
   copyrightText   String   @default("© 2025 Baked Growth. Tous droits réservés.")
-  logoUrl         String   @default("")
+  logoUrl         String   @default("/logos/baked.jpeg")
   faviconUrl      String   @default("")
   appStoreUrl     String   @default("")
   playStoreUrl    String   @default("")
@@ -77,6 +77,7 @@ model Application {
   descFr        String
   descEn        String
   illustration  String   // image url
+  logoImage     String   @default("") // optional brand wordmark image
   icon          String   @default("Package") // lucide icon name
   enabled       Boolean  @default(true)
   order         Int      @default(0)

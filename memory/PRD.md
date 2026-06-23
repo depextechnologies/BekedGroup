@@ -15,16 +15,23 @@ Build a premium, modern, multilingual corporate website for Baked Growth (domain
 
 ## Implemented (Phase 1) — 2025-12-23
 ### Public site
-- ✅ Sticky glassmorphic Header with logo, nav, FR/EN dropdown, Download CTA, mobile hamburger
-- ✅ Full-viewport Hero with parallax dark city BG, foreground image, 6 floating glowing service icons, gold-highlighted CONNECTER/CONNECTING
+- ✅ Sticky glassmorphic Header with **uploaded baked.jpeg brand logo**, nav, FR/EN dropdown, Download CTA, mobile hamburger
+- ✅ Full-viewport Hero with parallax dark city BG, foreground image, 6 floating glowing service icons (AUTO icon updated to red #E5484D), gold-highlighted CONNECTER/CONNECTING
 - ✅ About section (white) with 4 icon cards (Mission, Vision, Innovation, Community)
-- ✅ Ecosystem grid: 6 white cards with brand-colored prefix (EXPRESSbakēd, FOODbakēd, MARTbakēd, SHOPbakēd, AUTObakēd, IMMObakēd), illustrations, hover lift, circular arrow buttons matching brand color
+- ✅ Ecosystem grid: 6 white cards with brand-colored prefix — **uploaded brand wordmark images for EXPRESSbakēd, SHOPbakēd, AUTObakēd (red), IMMObakēd; SVG fallback with macron for FOODbakēd and MARTbakēd** (pending user-provided assets)
 - ✅ Why Baked dark section: 4 benefit cards + 3 animated counters (6+, 1, 100%)
-- ✅ Mobile App Showcase: 5 floating phone mockups with per-color neon glow (orange/green/blue/purple), Apple/Play "Coming Soon" buttons
+- ✅ Mobile App Showcase: 5 floating phone mockups with per-color neon glow (orange/green/red/purple), Apple/Play "Coming Soon" buttons
 - ✅ Careers split section with team photo, gold-pluses decoration, gold outlined CTA → /careers page
 - ✅ Contact section: form (name/email/phone/company/message) with validation, info cards, map placeholder, social icons
-- ✅ Premium footer: 4 columns (Download, Discover, Help, Social), bottom language selector, giant centered baked wordmark
+- ✅ Premium footer: **uploaded baked.jpeg at top + giant SVG wordmark with macron at bottom**, 4 columns, bottom language selector
 - ✅ `/careers` page with job list + apply modal (saves JobApplication)
+
+### Brand assets
+- Five user-provided logo images stored locally in `/app/frontend/public/logos/`:
+  - `baked.jpeg` (main wordmark, white on black) — used in Header, Footer top, Admin login + sidebar
+  - `express.jpeg`, `shop.jpeg`, `auto.jpeg`, `immo.jpeg` (each on white BG) — used in Ecosystem cards
+  - FOODbakēd & MARTbakēd: SVG text fallback until user provides those assets
+- Application model gained `logoImage` String field; AppsEditor in admin can edit each app's logo URL
 
 ### CMS (/admin)
 - ✅ Login (`/admin/login`) — JWT cookie, bcrypt

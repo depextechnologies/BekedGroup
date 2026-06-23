@@ -1,0 +1,28 @@
+{
+  "summary": "Focused retest of brand-rename bug from iteration_6 - all 4 assertions PASS plus carousel regression PASS.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "assertions_verified": [
+    {"assertion": "'Baked Growth' NOT in homepage / (default FR locale)", "status": "PASS", "count": 0},
+    {"assertion": "'Baked Growth' NOT in /careers", "status": "PASS", "count": 0},
+    {"assertion": "'Baked Growth' NOT in /admin/login", "status": "PASS", "count": 0},
+    {"assertion": "'Baked Growth' NOT in homepage with baked_locale=en", "status": "PASS", "count": 0},
+    {"assertion": "'Baked Group' appears on homepage", "status": "PASS", "count": 21},
+    {"assertion": "MobileShowcase carousel: 5 dots present, phone-next changes 1/5 -> 2/5, phone-prev restores to 1/5", "status": "PASS"}
+  ],
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A (frontend-only retest)", "frontend": "100%"},
+  "test_credentials": "N/A - no auth flows tested",
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Brand-rename bug fully resolved. 'Baked Growth' is gone from homepage (0 occurrences), /careers, /admin/login, and EN-locale homepage. 'Baked Group' confirmed present 21 times on homepage. MobileShowcase carousel regression also passes (5 dots, prev/next change active screen via counter 1/5 <-> 2/5). seed.ts self-healing logic working as expected.",
+  "rca of the issue": "Previously, the DB-backed SiteSettings.copyrightText and HomepageContent.aboutBodyFr/En still contained 'Baked Growth' text. Main agent ran SQL UPDATEs to fix existing rows and added self-healing logic to seed.ts so re-seeding always normalizes those fields. Verified clean."
+}

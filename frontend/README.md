@@ -1,6 +1,6 @@
-# Baked Growth — Corporate Website
+# Baked Group — Corporate Website
 
-Premium, multilingual (FR/EN), CMS-enabled corporate website for Baked Growth — parent company of the Baked super-app ecosystem (EXPRESSbakēd, FOODbakēd, MARTbakēd, SHOPbakēd, AUTObakēd, IMMObakēd).
+Premium, multilingual (FR/EN), CMS-enabled corporate website for Baked Group — parent company of the Baked super-app ecosystem (EXPRESSbakēd, FOODbakēd, MARTbakēd, SHOPbakēd, AUTObakēd, IMMObakēd).
 
 **Stack**: Next.js 15 · TypeScript · Tailwind CSS · Framer Motion · PostgreSQL · Prisma ORM · JWT auth
 
@@ -176,4 +176,4 @@ The seed script is idempotent and upserts the admin user.
 
 ## 11. License
 
-Proprietary © Baked Growth. All rights reserved.
+Proprietary © Baked Group. All rights reserved.

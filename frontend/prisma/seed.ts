@@ -18,7 +18,12 @@ async function main() {
   // 2. Site Settings
   await prisma.siteSettings.upsert({
     where: { id: 1 },
-    update: {},
+    update: {
+      companyName: 'Baked Group',
+      copyrightText: '© 2025 Baked Group. Tous droits réservés.',
+      footerTextFr: 'Simplifier la vie des gens et les connecter ensemble.',
+      footerTextEn: "Simplifying people's lives and connecting them together.",
+    },
     create: {
       id: 1,
       companyName: 'Baked Group',
@@ -26,21 +31,25 @@ async function main() {
       contactPhone: '+33 1 23 45 67 89',
       contactAddress: 'Paris, France',
       googleMapsUrl: 'https://maps.google.com/?q=Paris,France',
-      facebookUrl: 'https://facebook.com/bakedgrowth',
-      linkedinUrl: 'https://linkedin.com/company/bakedgrowth',
-      instagramUrl: 'https://instagram.com/bakedgrowth',
-      tiktokUrl: 'https://tiktok.com/@bakedgrowth',
-      youtubeUrl: 'https://youtube.com/@bakedgrowth',
+      facebookUrl: 'https://facebook.com/bakedgroup',
+      linkedinUrl: 'https://linkedin.com/company/bakedgroup',
+      instagramUrl: 'https://instagram.com/bakedgroup',
+      tiktokUrl: 'https://tiktok.com/@bakedgroup',
+      youtubeUrl: 'https://youtube.com/@bakedgroup',
+      copyrightText: '© 2025 Baked Group. Tous droits réservés.',
     },
   });
   console.log('✓ Site settings');
 
-  // 3. Homepage content
+  // 3. Homepage content (idempotent — patch any 'Baked Growth' -> 'Baked Group')
   await prisma.homepageContent.upsert({
     where: { id: 1 },
     update: {},
     create: { id: 1 },
   });
+  await prisma.$executeRawUnsafe(
+    `UPDATE "HomepageContent" SET "aboutBodyFr" = REPLACE("aboutBodyFr", 'Baked Growth', 'Baked Group'), "aboutBodyEn" = REPLACE("aboutBodyEn", 'Baked Growth', 'Baked Group') WHERE id = 1`
+  );
   console.log('✓ Homepage content');
 
   // 4. Applications (the 6 baked apps)

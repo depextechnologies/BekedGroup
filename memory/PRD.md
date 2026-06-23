@@ -1,7 +1,7 @@
-# Baked Growth — PRD
+# Baked Group — PRD
 
 ## Original Problem Statement (verbatim summary)
-Build a premium, modern, multilingual corporate website for Baked Growth (domain: baked.group, email: contact@baked.group), parent company of the Baked super-app ecosystem (EXPRESSbakēd, FOODbakēd, MARTbakēd, SHOPbakēd, AUTObakēd, IMMObakēd). Must look like Uber/Bolt/Grab/Careem/Glovo/Airbnb. Multi-language FR (default) + EN with instant switch and localStorage persistence. **Must include a secure Admin Panel (CMS) at /admin** with PostgreSQL database, no MongoDB, no Emergent vendor lock-in. Stack: **Next.js 15 + TypeScript + Tailwind CSS + Framer Motion + Prisma + PostgreSQL + JWT auth**. Deployable to Hostinger VPS, Vercel, AWS, Docker.
+Build a premium, modern, multilingual corporate website for Baked Group (domain: baked.group, email: contact@baked.group), parent company of the Baked super-app ecosystem (EXPRESSbakēd, FOODbakēd, MARTbakēd, SHOPbakēd, AUTObakēd, IMMObakēd). Must look like Uber/Bolt/Grab/Careem/Glovo/Airbnb. Multi-language FR (default) + EN with instant switch and localStorage persistence. **Must include a secure Admin Panel (CMS) at /admin** with PostgreSQL database, no MongoDB, no Emergent vendor lock-in. Stack: **Next.js 15 + TypeScript + Tailwind CSS + Framer Motion + Prisma + PostgreSQL + JWT auth**. Deployable to Hostinger VPS, Vercel, AWS, Docker.
 
 ## Architecture
 - **Next.js 15 + App Router** in `/app/frontend` (port 3000)

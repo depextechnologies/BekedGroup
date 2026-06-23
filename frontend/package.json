@@ -2,7 +2,7 @@
   "name": "baked-growth",
   "version": "1.0.0",
   "private": true,
-  "description": "Baked Growth — Premium corporate website for the Baked super-app ecosystem",
+  "description": "Baked Group — Premium corporate website for the Baked super-app ecosystem",
   "scripts": {
     "dev": "next dev -p 3000 -H 0.0.0.0",
     "start": "next dev -p 3000 -H 0.0.0.0",

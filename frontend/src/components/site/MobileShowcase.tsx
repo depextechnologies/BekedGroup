@@ -9,7 +9,6 @@ const screens = [
   { src: '/screens/home.png', color: '#F7A500', labelKey: 'phones.home' },
   { src: '/screens/splash.png', color: '#7A3CFF', labelKey: 'phones.splash' },
   { src: '/screens/express-app.png', color: '#F7A500', labelKey: 'phones.delivery' },
-  { src: '/screens/mart-app.png', color: '#32CD32', labelKey: 'phones.mart' },
   { src: '/screens/shop-app.png', color: '#F7A500', labelKey: 'phones.shop' },
 ];
 

@@ -1,0 +1,40 @@
+{
+  "summary": "Frontend regression for the restored iPhone-frame carousel in MobileShowcase with exactly 4 screens. All 24 assertions passed: testids (phone-frame, phone-prev, phone-next) exist; dots 0-3 exist and dot-4 absent; cycling order home->splash->express-app->shop-app->home is correct with no mart-app frame; counter reads '1 / 4'; /screens/mart-app.png returns 404; other screen assets return 200; 'Baked Growth' and 'mart-app' strings absent from HTML; 8 sections render in correct order; FR<->EN language switch toggles MobileShowcase title between 'TELECHARGEZ NOTRE APPLICATION' and 'DOWNLOAD OUR APPLICATION'.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "MobileShowcase.tsx screens array correctly has 4 entries (home, splash, express-app, shop-app) - matches user request.",
+    "Cycle order verified: initial home -> next click splash -> express-app -> shop-app -> wraps to home. AUTO_ROTATE_MS=4500 with paused-on-hover; tests paused via continuous hover so manual click cadence is deterministic.",
+    "Asset /app/frontend/public/screens/mart-app.png confirmed deleted; only home.png, splash.png, express-app.png, shop-app.png remain.",
+    "All other site sections (hero, about, ecosystem with 6 cards, why-baked, mobile-showcase, careers, contact, footer) render in correct order; FR/EN i18n toggle works correctly."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A (frontend only)", "frontend": "100%"},
+  "seed_data_creation": "Installed PostgreSQL 15 and ran 'npx prisma db push' against an empty schema so the Next.js HomePage server component (which calls prisma upserts) could render. This was an environmental requirement only - no application data was seeded.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "test_results_detail": {
+    "phone_frame_present": true,
+    "phone_prev_present": true,
+    "phone_next_present": true,
+    "phone_dots_present": ["phone-dot-0", "phone-dot-1", "phone-dot-2", "phone-dot-3"],
+    "phone_dot_4_absent": true,
+    "initial_image": "/screens/home.png",
+    "cycle_sequence_after_4_clicks": ["/screens/splash.png", "/screens/express-app.png", "/screens/shop-app.png", "/screens/home.png"],
+    "counter_text": "1 / 4",
+    "mart_app_png_http_status": 404,
+    "other_screens_http_status": {"home.png": 200, "splash.png": 200, "express-app.png": 200, "shop-app.png": 200},
+    "baked_growth_string_present": false,
+    "mart_app_string_in_html": false,
+    "section_order_correct": true,
+    "lang_en_title": "DOWNLOAD OUR APPLICATION",
+    "lang_fr_title": "TELECHARGEZ NOTRE APPLICATION"
+  },
+  "context_for_next_testing_agent": "PostgreSQL was NOT running in this preview environment - I had to apt-install postgresql-15, start it manually (sudo not available, used 'su postgres -c ...'), create the baked user/db, and run 'npx prisma db push'. There is no supervisor service in this preview container (no /var/run/supervisor.sock), so the frontend was started via 'yarn start' as a background process. If a future test sees HTTP 500 on http://localhost:3000/, replicate this DB bootstrap. MobileShowcase carousel testids: phone-frame, phone-prev, phone-next, phone-dot-{0..3}. Language switcher: [data-testid=lang-button] -> [data-testid=lang-option-en|fr]."
+}

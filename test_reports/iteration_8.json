@@ -1,0 +1,43 @@
+{
+  "summary": "Frontend-only regression test for MobileShowcase carousel removal. Verified: (1) phone carousel testids are completely gone, (2) MobileShowcase section still renders with kicker + title + subtitle + App Store + Play Store CTAs, (3) FR/EN language switching works correctly on the new title, (4) all other sections still present in correct order with their internal element counts intact.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "MobileShowcase.tsx is a clean, minimal text-only CTA block (~70 lines) with no carousel logic, no useState, no PhoneFrame import. Implementation matches the user's request exactly.",
+    "Both App Store and Play Store buttons are intentionally disabled with 'cursor-not-allowed' and a 'Coming Soon / Bientôt disponible' label — correct for pre-launch state."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A (not tested)", "frontend": "100%"},
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "test_results_detail": {
+    "phone_frame_count": 0,
+    "phone_dot_count": 0,
+    "phone_prev_count": 0,
+    "phone_next_count": 0,
+    "mobile_showcase_section_present": true,
+    "kicker_application_mobile_visible": true,
+    "title_fr": "TÉLÉCHARGEZ NOTRE APPLICATION",
+    "title_en": "DOWNLOAD OUR APPLICATION",
+    "subtitle_fr": "Disponible bientôt sur iOS et Android.",
+    "subtitle_en": "Coming soon on iOS and Android.",
+    "appstore_button_present": true,
+    "playstore_button_present": true,
+    "section_order_correct": true,
+    "sections_present": ["hero-section", "about-section", "ecosystem-section", "why-baked-section", "mobile-showcase-section", "careers-section", "contact-section", "site-footer"],
+    "ecosystem_card_count": 6,
+    "why_benefit_count": 4,
+    "why_counter_count": 3,
+    "ecosystem_wordmark_heights_px": "76 (matches expected)",
+    "footer_giant_logo_src": "/logos/baked-header.png",
+    "baked_growth_string_present": false
+  },
+  "context_for_next_testing_agent": "MobileShowcase carousel removal verified successfully. Language switcher selectors: [data-testid=lang-button] opens menu, then [data-testid=lang-option-fr] / [data-testid=lang-option-en]. WhyBaked uses [data-testid^=why-benefit-] (NOT why-baked-benefit) and [data-testid^=why-counter-] (NOT why-baked-counter)."
+}

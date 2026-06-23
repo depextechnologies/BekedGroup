@@ -1,0 +1,158 @@
+{
+  "theme": "dark/light hybrid",
+  "archetype": "5 (Luxury / Premium Tech)",
+  "typography": {
+    "headings": "Chivo",
+    "body": "Manrope",
+    "weights": {
+      "light": 300,
+      "regular": 400,
+      "medium": 500,
+      "bold": 700,
+      "black": 900
+    },
+    "hierarchy": {
+      "h1": "text-5xl md:text-6xl lg:text-7xl tracking-tighter font-black",
+      "h2": "text-4xl md:text-5xl tracking-tight font-bold",
+      "h3": "text-2xl md:text-3xl font-bold",
+      "h4": "text-xl md:text-2xl font-bold",
+      "body": "text-base md:text-lg leading-relaxed",
+      "small": "text-sm tracking-widest uppercase font-bold"
+    }
+  },
+  "colors": {
+    "primary_bg": "#050505",
+    "secondary_bg": "#111111",
+    "text_light": "#FFFFFF",
+    "text_dark": "#050505",
+    "card_bg_light": "#FFFFFF",
+    "card_bg_dark": "#1A1A1A",
+    "accents": {
+      "gold": "#F7A500",
+      "green": "#32CD32",
+      "purple": "#7A3CFF",
+      "blue": "#3498FF"
+    }
+  },
+  "spacing_and_layout": {
+    "border_radius": "20px",
+    "section_padding": "py-24 md:py-32",
+    "container": "max-w-7xl mx-auto px-6 md:px-12",
+    "glassmorphism": {
+      "header": "bg-[#050505]/70 backdrop-blur-xl border-b border-white/10 rounded-b-[20px]",
+      "cards": "bg-[#111111]/80 backdrop-blur-lg border border-white/5"
+    }
+  },
+  "motion_and_interactions": {
+    "library": "framer-motion",
+    "hover_states": {
+      "button_gold_outline": "hover:bg-[#F7A500] hover:text-[#050505] transition-colors duration-300",
+      "card_lift": "hover:-translate-y-2 hover:shadow-2xl transition-all duration-400 ease-out",
+      "floating_icons": "animate-float with continuous up/down translation"
+    },
+    "scroll_reveals": "fade-up with 0.6s duration, 0.2s stagger for grid items",
+    "neon_glows": {
+      "gold": "shadow-[0_0_40px_rgba(247,165,0,0.4)]",
+      "green": "shadow-[0_0_40px_rgba(50,205,50,0.4)]",
+      "purple": "shadow-[0_0_40px_rgba(122,60,255,0.4)]",
+      "blue": "shadow-[0_0_40px_rgba(52,152,255,0.4)]"
+    }
+  },
+  "sections": [
+    {
+      "name": "Header",
+      "layout": "Sticky top, flex justify-between items-center. Left: Logo, Center: Nav links, Right: Language Switcher (FR/EN flags) + Download CTA.",
+      "styles": "Glassmorphism header specs, z-50, rounded-b-[20px]. Instant content change with no reload."
+    },
+    {
+      "name": "Hero",
+      "layout": "min-h-[90vh] relative overflow-hidden flex items-center justify-center",
+      "content": "Dark luxury city bg with parallax. Central foreground photo of diverse young professionals using a phone. 6 floating icons orbiting them.",
+      "styles": "bg-black/60 overlay on bg image. CONNECTER highlighted in text-[#F7A500]."
+    },
+    {
+      "name": "About Baked",
+      "layout": "Grid 2x2 for cards. White background section.",
+      "content": "Mission, Vision, Innovation, Community cards",
+      "styles": "bg-[#FFFFFF] text-[#050505]. Cards have subtle shadow-lg, border border-gray-100, and rounded-[20px]."
+    },
+    {
+      "name": "Super App Ecosystem",
+      "layout": "Grid 1 col mobile, 2 cols tablet, 3 cols desktop. gap-8.",
+      "content": "6 large white cards: EXPRESSbakēd, FOODbakēd, MARTbakēd, SHOPbakēd, AUTObakēd, IMMObakēd.",
+      "styles": "Cards are bg-[#FFFFFF]. 20px radius. Colored title, description, colored circular arrow button bottom-left. Illustration right."
+    },
+    {
+      "name": "Why Baked",
+      "layout": "Flex or Grid split. 4 benefit cards, 3 large counters.",
+      "content": "6+ Applications, 1 Super App, 100% Connected",
+      "styles": "bg-[#111111] text-[#FFFFFF]. counters use count-up animation."
+    },
+    {
+      "name": "Mobile App Showcase",
+      "layout": "Relative container, 5 smartphones rotated and floating at different depths.",
+      "styles": "bg-[#050505] futuristic dark scene. Each phone has a specific neon glow shadow matching the app colors. iOS/Android coming-soon buttons."
+    },
+    {
+      "name": "Careers",
+      "layout": "Split layout. Left: Team Photo, Right: Content + CTA.",
+      "styles": "bg-[#FFFFFF] card on dark section or split bg. '+++' gold pattern on right. Gold outlined pill button for CTA."
+    },
+    {
+      "name": "Contact",
+      "layout": "Split 50/50. Left: Form (Name, Email, Phone, Company, Message), Right: Map Placeholder + Contact Info.",
+      "styles": "bg-[#111111]. Inputs: bg-transparent border-b border-white/20 focus:border-[#F7A500] text-white."
+    },
+    {
+      "name": "Footer",
+      "layout": "4 columns. Télécharger, Découvrir Baked, Réseaux Sociaux, Besoin d'aide. Giant centered BAKED logo at bottom.",
+      "styles": "bg-[#050505] pt-24 pb-12. text-white/70."
+    }
+  ],
+  "media": {
+    "images": [
+      {
+        "category": "hero_background",
+        "url": "https://images.pexels.com/photos/1787044/pexels-photo-1787044.jpeg",
+        "description": "Dark and moody cityscape image showcasing skyscrapers under a cloudy sky."
+      },
+      {
+        "category": "hero_foreground",
+        "url": "https://images.pexels.com/photos/4963439/pexels-photo-4963439.jpeg",
+        "description": "Two business professionals engaging in a serious conversation outside a building."
+      },
+      {
+        "category": "careers_team",
+        "url": "https://images.pexels.com/photos/7109013/pexels-photo-7109013.jpeg",
+        "description": "Multicultural group of professionals discussing ideas in a bright, modern office setting."
+      }
+    ],
+    "icons": {
+      "library": "@phosphor-icons/react",
+      "usage": "Use Phosphor icons (Duotone or Fill) for the 6 app cards as illustration alternatives. Van, Hamburger, Basket, ShoppingBag, Car, House. Colors must match the brand specific color for each app."
+    }
+  },
+  "brand_identity": {
+    "logo_text": "bakēd",
+    "naming_convention": "FIRSTWORD + bakēd (lowercase with macron ē). FIRSTWORD is uppercase and colored. bakēd is white (or dark on light backgrounds).",
+    "apps": {
+      "EXPRESS": { "color": "#F7A500", "type": "Delivery" },
+      "FOOD": { "color": "#32CD32", "type": "Restaurant" },
+      "MART": { "color": "#32CD32", "type": "Grocery" },
+      "SHOP": { "color": "#F7A500", "type": "Shopping" },
+      "AUTO": { "color": "#3498FF", "type": "Vehicle" },
+      "IMMO": { "color": "#7A3CFF", "type": "Real Estate" }
+    }
+  },
+  "instructions_to_main_agent": [
+    "Ensure the JSON data is correctly parsed for multi-language (i18n) setup. Implement an instant language switcher using React Context or similar, defaulting to FR, saving preference to localStorage.",
+    "Strictly follow the color mappings for the apps. Implement them using inline styles or extended Tailwind config variables.",
+    "For the hero floating icons, map over an array of the 6 apps and use Framer Motion for floating animations.",
+    "Ensure 'bakēd' always renders with the macron 'ē'.",
+    "Implement the 'Why Baked' counters using an intersection observer to count up when in view.",
+    "In the Mobile App Showcase, use CSS transforms (rotate, translateY) alongside Framer Motion to create a depth effect with the 5 phones. Wrap them in a perspective container.",
+    "Do not use generic placeholder text; use the exact copy provided or contextually appropriate copy in FR/EN.",
+    "All interactive elements MUST have a data-testid attribute.",
+    "Install and use Chivo and Manrope from next/font/google."
+  ]
+}

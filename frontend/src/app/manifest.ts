@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'Baked Growth',
+    name: 'Baked Group',
     short_name: 'Baked',
     description: 'Simplifier la vie des gens et les connecter ensemble.',
     start_url: '/',

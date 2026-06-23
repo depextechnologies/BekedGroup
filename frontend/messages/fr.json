@@ -52,8 +52,12 @@
     "comingsoon": "Bientôt disponible"
   },
   "phones": {
+    "home": "Accueil",
+    "splash": "Bienvenue",
     "delivery": "Livraison",
     "restaurants": "Restaurants",
+    "mart": "Courses",
+    "shop": "Shopping",
     "vehicles": "Véhicules",
     "realestate": "Immobilier",
     "marketplace": "Marketplace"

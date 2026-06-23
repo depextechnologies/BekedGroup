@@ -21,7 +21,7 @@ async function main() {
     update: {},
     create: {
       id: 1,
-      companyName: 'Baked Growth',
+      companyName: 'Baked Group',
       contactEmail: 'contact@baked.group',
       contactPhone: '+33 1 23 45 67 89',
       contactAddress: 'Paris, France',

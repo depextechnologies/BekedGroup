@@ -52,8 +52,12 @@
     "comingsoon": "Coming Soon"
   },
   "phones": {
+    "home": "Home",
+    "splash": "Welcome",
     "delivery": "Delivery",
     "restaurants": "Restaurants",
+    "mart": "Groceries",
+    "shop": "Shopping",
     "vehicles": "Vehicles",
     "realestate": "Real Estate",
     "marketplace": "Marketplace"

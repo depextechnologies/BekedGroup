@@ -109,7 +109,7 @@ export function Hero({ titleFr, titleEn, highlightFr, highlightEn, bgImage, fore
         >
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm mb-6">
             <span className="h-2 w-2 rounded-full bg-brand-gold animate-pulse" />
-            <span className="text-xs uppercase tracking-[0.25em] text-white/70 font-semibold">Baked Growth</span>
+            <span className="text-xs uppercase tracking-[0.25em] text-white/70 font-semibold">Baked Group</span>
           </div>
           <h1
             data-testid="hero-title"

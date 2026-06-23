@@ -31,7 +31,7 @@ export function Dashboard({ stats, recentMessages }: { stats: Stats; recentMessa
     <div className="space-y-10" data-testid="admin-dashboard">
       <div>
         <h1 className="font-heading text-3xl md:text-4xl font-black tracking-tight">Dashboard</h1>
-        <p className="text-white/60 mt-2">Overview of your Baked Growth website</p>
+        <p className="text-white/60 mt-2">Overview of your Baked Group website</p>
       </div>
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">

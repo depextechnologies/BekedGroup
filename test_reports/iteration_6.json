@@ -1,0 +1,35 @@
+{
+  "summary": "Frontend-only validation of 3 changes: (1) Jost font swap, (2) global 'Baked Growth' -> 'Baked Group' rename, (3) iPhone-frame carousel for MobileShowcase. Font swap PASS, carousel PASS in full (all 8 carousel sub-checks). Brand rename PARTIALLY FAILS: source code is clean but database-backed settings + about-section still contain 'Baked Growth' and render server-side in the public DOM (footer copyright + about section body in both FR and EN). Regression sanity checks all pass.",
+  "backend_issues": { "critical": [], "minor": [] },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "Footer / About section (DB-seeded content)",
+        "issue": "The page still renders the literal string 'Baked Growth' twice: (a) footer copyright '© 2025 Baked Growth. Tous droits réservés.' on every page, (b) the About section body text 'Baked Growth développe un écosystème unifié...' (and its English translation 'Baked Growth builds a unified ecosystem...'). The user requirement explicitly stated this string MUST NOT appear anywhere. Root cause: the sed rename only touched source files; the values are stored in PostgreSQL (settings.companyName, settings.copyrightText, aboutSection.bodyFr, aboutSection.bodyEn) which were seeded before the rename. seed.ts was updated but the DB was not re-seeded / migrated.",
+        "selector": "footer, [data-testid='about-section']",
+        "priority": "HIGH"
+      }
+    ],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [],
+  "action_items": [
+    "Update database content to replace remaining 'Baked Growth' -> 'Baked Group' in: settings.companyName, settings.copyrightText, aboutSection.bodyFr, aboutSection.bodyEn. Either (a) run a one-off SQL UPDATE, (b) re-run seed with reset, or (c) write a Prisma migration / startup patch that idempotently replaces the string.",
+    "Update /app/frontend/package.json description field 'Baked Growth — Premium corporate website...' to 'Baked Group — ...' for consistency (cosmetic, does not affect rendered DOM)."
+  ],
+  "critical_code_review_comments": [
+    "MobileShowcase.tsx is excellent: AnimatePresence with mode='wait' + custom direction handles slide-in/out perfectly. Pause-on-hover, dot navigation, arrow controls, and 4500ms auto-rotate all verified working. No issues.",
+    "layout.tsx Jost import re-uses CSS variable --font-chivo to avoid touching every consumer — clean low-risk swap, resolved font-family on hero-title and ecosystem-title is 'Jost, Jost Fallback, system-ui, sans-serif'.",
+    "Source-code rename of 'Baked Growth' was complete (0 occurrences in /app/frontend/src or /app/frontend/prisma). The miss is purely a data-layer issue. Recommend adding a small idempotent post-seed script that runs `UPDATE` to replace any lingering literal in TEXT columns so future deployments are self-healing.",
+    "package.json description still says 'Baked Growth' (not user-facing, but inconsistent)."
+  ],
+  "updated_files": [],
+  "success_rate": { "backend": "n/a (frontend only)", "frontend": "~92% (10/11 assertion groups pass; 1 brand-rename assertion fails for DB content)" },
+  "test_credentials": "admin@baked.group / BakedAdmin2025! (not needed this round — public site only)",
+  "seed_data_creation": "none",
+  "retest_needed": true,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Detailed verification results for iteration_6: (Font) getComputedStyle on [data-testid='hero-title'] -> 'Jost, \"Jost Fallback\", system-ui, sans-serif', same for [data-testid='ecosystem-title']. Both contain 'Jost' (case-insensitive). PASS. (Hero kicker) Hero section text shows '● BAKED GROUP' (uppercase, no Growth). PASS. (Title tag) 'Baked Group — Simplifier la vie des gens et les connecter ensemble'. PASS. (Carousel structure) [data-testid='phone-frame'] exists once, 5 dots phone-dot-0..4 present, initial active dot is phone-dot-0 with width=28px, others width=8px. Initial src=/screens/home.png, counter='1 / 5'. PASS. (Navigation) Next x3: splash.png 2/5 -> express-app.png 3/5 -> mart-app.png 4/5. Prev x1: express-app.png 3/5. Dot-3 click: mart-app.png 4/5. PASS. (Auto-rotate) mart-app -> shop-app after 5.5s while unhovered. PASS. (Pause on hover) shop-app stays shop-app for 5.5s while hovered. PASS. (Side previews) 3 imgs in section (prev=mart, active=home/etc, next=shop), confirming side previews render on desktop. (Regression) Lang switch FR->EN updates hero to 'SIMPLIFYING PEOPLE'S LIVES AND CONNECTING THEM TOGETHER'. All 6 ecosystem wordmarks at exactly 76px. Header logo = /logos/baked-header.png (3 refs). FAIL: 2 visible 'Baked Growth' occurrences from DB — footer copyright '© 2025 Baked Growth. Tous droits réservés.' and About section body 'Baked Growth développe...' (also present in EN translation). When DB is fixed, run a single Playwright assertion: `expect(await page.content()).not.toContain('Baked Growth')` on /, /careers, /admin/login.",
+  "rca of the issue": "The brand-rename in this iteration was implemented as a sed replacement on source files only (Hero kicker, layout metadata, Dashboard, MessagesList, contact API, manifest, seed.ts, schema.prisma defaults). However, the running PostgreSQL database had already been seeded in a previous iteration with rows containing 'Baked Growth' in settings.companyName, settings.copyrightText, aboutSection.bodyFr and aboutSection.bodyEn. Prisma schema/seed file changes do not retroactively update existing rows, so the rendered HTML still ships 'Baked Growth' from the DB. Reproduction: `curl -s http://localhost:3000/ | grep -c 'Baked Growth'` returns 6 (server-rendered DOM). Mitigation options (any one works): (1) `npx prisma db seed --reset` if seed is idempotent, (2) one-off SQL `UPDATE \"Settings\" SET \"companyName\"='Baked Group', \"copyrightText\"=REPLACE(\"copyrightText\",'Baked Growth','Baked Group'); UPDATE \"AboutSection\" SET \"bodyFr\"=REPLACE(\"bodyFr\",'Baked Growth','Baked Group'), \"bodyEn\"=REPLACE(\"bodyEn\",'Baked Growth','Baked Group');`, (3) add a Prisma migration that performs the same UPDATE so production deployments self-heal."
+}

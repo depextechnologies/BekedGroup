@@ -112,7 +112,7 @@ export function MessagesList({ initialMessages }: { initialMessages: Msg[] }) {
 
                 <div className="mt-8 pt-6 border-t border-white/10">
                   <a
-                    href={`mailto:${selected.email}?subject=Re: votre message Baked Growth`}
+                    href={`mailto:${selected.email}?subject=Re: votre message Baked Group`}
                     className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-brand-gold text-bg-primary text-xs uppercase tracking-wider font-bold hover:bg-yellow-400 transition-colors"
                   >
                     <Mail className="h-4 w-4" /> Reply by email

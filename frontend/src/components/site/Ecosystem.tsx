@@ -86,12 +86,12 @@ export function Ecosystem({ apps }: { apps: AppItem[] }) {
                 </div>
 
                 {/* Title */}
-                <h3 className="mb-3 min-h-[42px] flex items-center">
+                <h3 className="mb-3 min-h-[76px] flex items-center">
                   {app.logoImage ? (
                     <img
                       src={app.logoImage}
                       alt={`${app.prefix}bakēd logo`}
-                      className="h-10 md:h-11 w-auto object-contain"
+                      className="h-[4.75rem] w-auto object-contain"
                       loading="lazy"
                     />
                   ) : (

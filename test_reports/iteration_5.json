@@ -1,0 +1,22 @@
+{
+  "summary": "Frontend-only retest: verified the 6 ecosystem-card brand wordmarks render via <img> at uniform 76px (4.75rem) height. All 6 logos load (no 404), all src paths match the expected /logos/{slug}.jpeg, heights are exactly 76px, and vertical positions (rel_y) are perfectly uniform at 105px (spread 0px). Translation regression also passes — images persist after switching to EN and descriptions translate.",
+  "backend_issues": { "critical": [], "minor": [] },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Ecosystem.tsx wordmark <img> has loading=\"lazy\" inside the homepage hero-adjacent section; this is fine because the section is below the fold, but could be set to eager for the first 3 cards on mobile if LCP becomes a concern (minor).",
+    "h3 wrapper uses min-h-[76px] flex items-center which perfectly aligns the 4.75rem (76px) image; no shift risk."
+  ],
+  "updated_files": [],
+  "success_rate": { "backend": "n/a (frontend only)", "frontend": "100%" },
+  "seed_data_creation": "none",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Iteration_5 validated the ecosystem wordmark uniformity fix. Measurements (FR, 1920x4000 viewport): express/food/mart/shop/auto/immo all bounding box height=76.00px, rel_y inside card=105.00px (spread 0). All src attributes match /logos/{slug}.jpeg with no 404s. After switching to EN via lang-button -> lang-option-en, the 6 wordmark <img> tags persist with identical 76px height and the descriptions translate (sample: food = 'Order meals from your favorite local restaurants.'). Sanity: each card still has the arrow button, illustration, and icon chip. No layout shift, no broken images, no SVG fallback used.",
+  "rca of the issue": "Original issue: FOOD and MART cards lacked custom wordmark JPEGs so they fell back to the SVG Logo component, and the existing wordmark imgs were rendered at a smaller height than the user wanted, breaking visual uniformity. Fix applied by main agent (verified here): (1) added /app/frontend/public/logos/food.jpeg and mart.jpeg, (2) updated seed.ts apps[1]/apps[2] with logoImage paths and included logoImage in the upsert update block so reseeds propagate, (3) bumped Ecosystem.tsx wordmark img className to h-[4.75rem] (76px) and wrapped the h3 with min-h-[76px] flex items-center for vertical alignment. Result: all 6 wordmarks now render as <img>, all at exactly 76px height, perfectly aligned within their cards."
+}

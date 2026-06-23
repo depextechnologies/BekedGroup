@@ -67,7 +67,7 @@ async function main() {
       descFr: 'Commandez vos repas auprès des meilleurs restaurants locaux.',
       descEn: 'Order meals from your favorite local restaurants.',
       illustration: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800',
-      logoImage: '',
+      logoImage: '/logos/food.jpeg',
     },
     {
       slug: 'mart',
@@ -79,7 +79,7 @@ async function main() {
       descFr: 'Vos courses livrées à votre porte en quelques minutes.',
       descEn: 'Groceries and essentials delivered to your door in minutes.',
       illustration: 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=800',
-      logoImage: '',
+      logoImage: '/logos/mart.jpeg',
     },
     {
       slug: 'shop',

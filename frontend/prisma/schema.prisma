@@ -1,0 +1,165 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---------- Admin users ----------
+model AdminUser {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String   @default("Admin")
+  role      String   @default("admin")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ---------- Site settings (singleton row id=1) ----------
+model SiteSettings {
+  id              Int      @id @default(1)
+  companyName     String   @default("Baked Growth")
+  contactEmail    String   @default("contact@baked.group")
+  contactPhone    String   @default("")
+  contactAddress  String   @default("")
+  googleMapsUrl   String   @default("")
+  facebookUrl     String   @default("")
+  linkedinUrl     String   @default("")
+  instagramUrl    String   @default("")
+  tiktokUrl       String   @default("")
+  youtubeUrl      String   @default("")
+  footerTextFr    String   @default("Simplifier la vie des gens et les connecter ensemble.")
+  footerTextEn    String   @default("Simplifying people's lives and connecting them together.")
+  copyrightText   String   @default("© 2025 Baked Growth. Tous droits réservés.")
+  logoUrl         String   @default("")
+  faviconUrl      String   @default("")
+  appStoreUrl     String   @default("")
+  playStoreUrl    String   @default("")
+  updatedAt       DateTime @updatedAt
+}
+
+// ---------- Homepage content (singleton row id=1) ----------
+model HomepageContent {
+  id              Int      @id @default(1)
+  heroTitleFr     String   @default("SIMPLIFIER LA VIE DES GENS ET LES CONNECTER ENSEMBLE")
+  heroTitleEn     String   @default("SIMPLIFYING PEOPLE'S LIVES AND CONNECTING THEM TOGETHER")
+  heroHighlightFr String   @default("CONNECTER")
+  heroHighlightEn String   @default("CONNECTING")
+  heroSubFr       String   @default("Une seule application. Plusieurs services. Une expérience connectée.")
+  heroSubEn       String   @default("One application. Multiple services. One connected experience.")
+  heroCta1Fr      String   @default("Découvrir les Services")
+  heroCta1En      String   @default("Discover Services")
+  heroCta2Fr      String   @default("Nous Rejoindre")
+  heroCta2En      String   @default("Join Us")
+  heroBgImage     String   @default("https://images.pexels.com/photos/1787044/pexels-photo-1787044.jpeg")
+  heroForegroundImage String @default("https://images.pexels.com/photos/4963439/pexels-photo-4963439.jpeg")
+  aboutTitleFr    String   @default("À PROPOS DE BAKED")
+  aboutTitleEn    String   @default("ABOUT BAKED")
+  aboutBodyFr     String   @default("Baked Growth développe un écosystème unifié d'applications digitales pensé pour simplifier le quotidien grâce à la technologie. Notre mission est de connecter les personnes, les entreprises, les services, la mobilité, le commerce, la restauration et l'immobilier dans une expérience fluide et unique.")
+  aboutBodyEn     String   @default("Baked Growth builds a unified ecosystem of digital applications designed to simplify everyday life through technology. Our mission is to connect people, businesses, services, mobility, commerce, food, and real estate into one seamless experience.")
+  careersImage    String   @default("https://images.pexels.com/photos/7109013/pexels-photo-7109013.jpeg")
+  updatedAt       DateTime @updatedAt
+}
+
+// ---------- Applications (the 6 baked apps) ----------
+model Application {
+  id            String   @id @default(cuid())
+  slug          String   @unique
+  prefix        String   // e.g. "EXPRESS"
+  brandName     String   @default("bakēd")
+  color         String   // hex
+  colorKey      String   // "gold" | "green" | "purple" | "blue"
+  titleFr       String   @default("")
+  titleEn       String   @default("")
+  descFr        String
+  descEn        String
+  illustration  String   // image url
+  icon          String   @default("Package") // lucide icon name
+  enabled       Boolean  @default(true)
+  order         Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+// ---------- Contact messages ----------
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  company   String?
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+// ---------- Career job openings ----------
+model JobOpening {
+  id           String   @id @default(cuid())
+  slug         String   @unique
+  titleFr      String
+  titleEn      String
+  departmentFr String
+  departmentEn String
+  locationFr   String   @default("Remote")
+  locationEn   String   @default("Remote")
+  typeFr       String   @default("Temps plein")
+  typeEn       String   @default("Full-time")
+  descFr       String
+  descEn       String
+  published    Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  applications JobApplication[]
+}
+
+model JobApplication {
+  id          String   @id @default(cuid())
+  jobId       String
+  job         JobOpening @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  name        String
+  email       String
+  phone       String?
+  resumeUrl   String?
+  message     String
+  read        Boolean  @default(false)
+  createdAt   DateTime @default(now())
+}
+
+// ---------- Blog ----------
+model BlogPost {
+  id            String   @id @default(cuid())
+  slug          String   @unique
+  titleFr       String
+  titleEn       String
+  excerptFr     String
+  excerptEn     String
+  contentFr     String
+  contentEn     String
+  featuredImage String   @default("")
+  category      String   @default("News")
+  metaTitleFr   String   @default("")
+  metaTitleEn   String   @default("")
+  metaDescFr    String   @default("")
+  metaDescEn    String   @default("")
+  published     Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+// ---------- News ----------
+model NewsArticle {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  titleFr   String
+  titleEn   String
+  bodyFr    String
+  bodyEn    String
+  image     String   @default("")
+  published Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

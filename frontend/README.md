@@ -1,70 +1,179 @@
-# Getting Started with Create React App
+# Baked Growth — Corporate Website
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Premium, multilingual (FR/EN), CMS-enabled corporate website for Baked Growth — parent company of the Baked super-app ecosystem (EXPRESSbakēd, FOODbakēd, MARTbakēd, SHOPbakēd, AUTObakēd, IMMObakēd).
 
-## Available Scripts
+**Stack**: Next.js 15 · TypeScript · Tailwind CSS · Framer Motion · PostgreSQL · Prisma ORM · JWT auth
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## 1. Project structure
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+```
+/app/frontend/
+├── prisma/
+│   ├── schema.prisma        ← PostgreSQL schema (10 models)
+│   └── seed.ts              ← Seeds admin + apps + jobs + settings
+├── messages/
+│   ├── fr.json              ← French translations
+│   └── en.json              ← English translations
+├── public/
+│   └── uploads/             ← Local image uploads (Hostinger-friendly)
+├── src/
+│   ├── app/
+│   │   ├── page.tsx                 ← Public homepage
+│   │   ├── layout.tsx               ← Root layout (fonts, i18n)
+│   │   ├── globals.css
+│   │   ├── manifest.ts              ← PWA manifest
+│   │   ├── sitemap.ts               ← Auto-generated sitemap.xml
+│   │   ├── robots.ts                ← robots.txt
+│   │   ├── careers/                 ← /careers page
+│   │   ├── admin/                   ← Protected /admin CMS
+│   │   │   ├── login/
+│   │   │   ├── page.tsx             ← Dashboard
+│   │   │   ├── applications/        ← Manage 6 baked apps
+│   │   │   ├── messages/            ← Contact inbox
+│   │   │   ├── jobs/                ← Careers CMS + applications view
+│   │   │   ├── settings/            ← Site/homepage/social settings
+│   │   │   ├── blog/                ← (Phase 2)
+│   │   │   └── news/                ← (Phase 2)
+│   │   └── api/                     ← Next.js API routes
+│   │       ├── contact/             ← Public contact form
+│   │       ├── careers/             ← Public job application
+│   │       ├── auth/login,logout/   ← Admin auth
+│   │       └── admin/*              ← Protected admin endpoints
+│   ├── components/site/             ← Public site components
+│   ├── i18n/I18nProvider.tsx        ← Custom React Context i18n
+│   └── lib/{prisma,auth,utils}.ts
+├── .env / .env.example
+├── package.json
+├── next.config.mjs
+├── tailwind.config.ts
+├── tsconfig.json
+├── Dockerfile
+└── docker-compose.yml
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 2. Local development (Emergent environment)
 
-### `npm test`
+PostgreSQL and the Next.js app are already running via supervisor. To re-seed the database:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+cd /app/frontend
+yarn db:push       # sync schema
+yarn db:seed       # seed admin user + apps + jobs
+```
 
-### `npm run build`
+- **Public site**: `http://localhost:3000` (or the Emergent preview URL)
+- **Admin panel**: `/admin/login`
+  - Email: `admin@baked.group`
+  - Password: `BakedAdmin2025!`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 3. Environment variables
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+See `.env.example`. All variables are required for production:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+| Variable | Description |
+| -------- | ----------- |
+| `DATABASE_URL` | PostgreSQL connection string (works for MySQL too if you change provider in schema.prisma). |
+| `JWT_SECRET` | Long random string used to sign admin sessions. **Change in prod.** |
+| `ADMIN_EMAIL` / `ADMIN_PASSWORD` | Seeded admin credentials. |
+| `NEXT_PUBLIC_SITE_URL` | Public canonical URL (used in SEO and sitemap). |
+| `NEXT_PUBLIC_CONTACT_EMAIL` | Displayed contact email. |
+| `NEXT_PUBLIC_{FACEBOOK,LINKEDIN,INSTAGRAM,TIKTOK,YOUTUBE}_URL` | Social links. |
+| `SMTP_HOST/PORT/USER/PASSWORD/FROM/TO` | Optional — when set, contact form emails are forwarded. |
 
-### `npm run eject`
+## 4. Hostinger VPS deployment
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```bash
+# 1. SSH into your VPS and install Node 20+ and PostgreSQL
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo bash -
+sudo apt install -y nodejs postgresql postgresql-contrib
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+# 2. Create a database
+sudo -u postgres psql -c "CREATE USER baked WITH PASSWORD 'STRONG_PASSWORD';"
+sudo -u postgres psql -c "CREATE DATABASE baked_growth OWNER baked;"
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+# 3. Clone your repo and install
+git clone <your-repo> /var/www/baked-growth
+cd /var/www/baked-growth/frontend
+cp .env.example .env
+nano .env            # set DATABASE_URL, JWT_SECRET, etc.
+yarn install
+yarn prisma migrate deploy
+yarn db:seed
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+# 4. Build
+yarn build
 
-## Learn More
+# 5. Run with PM2
+sudo npm install -g pm2
+pm2 start npm --name baked-growth -- run prod
+pm2 save
+pm2 startup
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+# 6. Configure nginx as reverse proxy (Hostinger Business uses Apache/LiteSpeed too):
+#   server {
+#     server_name baked.group www.baked.group;
+#     location / { proxy_pass http://127.0.0.1:3000; proxy_set_header Host $host; }
+#   }
+# Then run certbot for HTTPS.
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## 5. Vercel deployment
 
-### Code Splitting
+```bash
+# Vercel auto-detects Next.js. Just push to a connected git repo, OR:
+npx vercel
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+In the Vercel dashboard, set the environment variables (`DATABASE_URL` pointing to a managed PG like Neon/Supabase/Railway, `JWT_SECRET`, etc.).
 
-### Analyzing the Bundle Size
+## 6. Docker deployment
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```bash
+cd /app/frontend
+cp .env.example .env   # set passwords + secrets
+docker-compose up -d --build
+```
 
-### Making a Progressive Web App
+The compose file provisions PostgreSQL, runs migrations, seeds the admin user, and starts the app on port 3000.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## 7. About the FastAPI proxy (`/app/backend/server.py`)
 
-### Advanced Configuration
+The Emergent Kubernetes ingress routes `/api/*` to port 8001 by convention, while Next.js wants to serve its API routes on port 3000. The FastAPI service in `/app/backend/` is a **thin transparent proxy** that forwards every `/api/*` request to `localhost:3000/api/*`.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+**For Hostinger, Vercel, AWS, or any standard deployment, you do NOT need this proxy.** Next.js handles `/api/*` natively. Simply ignore `/app/backend` and deploy only `/app/frontend`.
 
-### Deployment
+## 8. SEO
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+- `robots.txt` and `sitemap.xml` are auto-generated by Next.js (`src/app/robots.ts`, `src/app/sitemap.ts`).
+- `manifest.json` for PWA generated by `src/app/manifest.ts`.
+- Meta tags, OpenGraph, Twitter Card, structured locale alternates are set in `src/app/layout.tsx`.
 
-### `npm run build` fails to minify
+## 9. CMS feature matrix
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+| Module | Status | Location |
+| ------ | ------ | -------- |
+| Authentication (JWT + bcrypt) | ✅ | `/admin/login` |
+| Dashboard (stats + recent messages) | ✅ | `/admin` |
+| Applications management (6 apps) | ✅ | `/admin/applications` |
+| Homepage content (FR + EN) | ✅ | `/admin/settings` → Homepage tab |
+| Site settings (contact, social, footer, branding) | ✅ | `/admin/settings` |
+| Contact messages inbox | ✅ | `/admin/messages` |
+| Job openings CRUD + applications inbox | ✅ | `/admin/jobs` |
+| Blog CRUD | 🟡 Schema ready, full editor in Phase 2 | `/admin/blog` |
+| News CRUD | 🟡 Schema ready, full editor in Phase 2 | `/admin/news` |
+| Image upload | 🟡 Stored URLs work today; uploader Phase 2 | — |
+
+## 10. Resetting the admin password
+
+```bash
+cd /app/frontend
+ADMIN_PASSWORD="newStrongPassword" yarn db:seed
+```
+
+The seed script is idempotent and upserts the admin user.
+
+## 11. License
+
+Proprietary © Baked Growth. All rights reserved.

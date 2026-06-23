@@ -1,0 +1,50 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: baked-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: baked
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-baked_change_me}
+      POSTGRES_DB: baked_growth
+    volumes:
+      - baked-postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U baked"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    container_name: baked-app
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: "postgresql://baked:${POSTGRES_PASSWORD:-baked_change_me}@postgres:5432/baked_growth?schema=public"
+      JWT_SECRET: ${JWT_SECRET:-change-me-in-production}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@baked.group}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-BakedAdmin2025!}
+      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-https://baked.group}
+      NEXT_PUBLIC_CONTACT_EMAIL: ${NEXT_PUBLIC_CONTACT_EMAIL:-contact@baked.group}
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+      SMTP_FROM: ${SMTP_FROM:-noreply@baked.group}
+      SMTP_TO: ${SMTP_TO:-contact@baked.group}
+    ports:
+      - "3000:3000"
+    command: >
+      sh -c "yarn prisma migrate deploy &&
+             yarn db:seed &&
+             yarn prod"
+
+volumes:
+  baked-postgres-data:

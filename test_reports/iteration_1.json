@@ -1,0 +1,45 @@
+{
+  "summary": "End-to-end testing of Baked Growth Next.js corporate site. Backend API tests: 12 passed, 3 skipped (no GET list endpoints for admin/apps and admin/messages). Public homepage UI fully tested via Playwright (sections, ecosystem 6 cards, floating icons, language switch FR<->EN with localStorage persistence, WhyBaked counters animation, contact form submission). Admin UI testing was started but interrupted when PostgreSQL was no longer available in the container (postgres binaries and /var/lib/postgresql disappeared mid-session). Auth+admin endpoints were validated via backend API tests prior to the loss.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {"endpoint": "GET /api/admin/apps", "issue": "No GET handler exists (only [id]/route with PUT/DELETE). Admin UI must source list via server component. Consider adding GET for completeness/API parity."},
+      {"endpoint": "GET /api/admin/messages", "issue": "Same as above — no list GET handler."},
+      {"endpoint": "POST /api/contact (whitespace handling)", "issue": "Validation accepts payload but should verify trimmed name/message non-empty (not blocker)."}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Hero section", "issues": ["Framer Motion console warning: 'Please ensure that the container has a non-static position, like relative, fixed, or absolute to ensure scroll offset is calculated correctly.' Affects useScroll target ref. Cosmetic only."]}
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/baked_api_test.py",
+    "/app/test_reports/pytest/pytest_results.xml"
+  ],
+  "action_items": [
+    "ENVIRONMENT BLOCKER: PostgreSQL has been removed from the container during testing — /usr/lib/postgresql, /etc/postgresql, /var/lib/postgresql are all missing. Main agent must restore postgres+seed before further admin UI verification. Without DB, Next.js returns 500 on all routes that touch Prisma.",
+    "(Optional) Add GET handlers for /api/admin/apps and /api/admin/messages so admin UI can refresh via API instead of server-component reloads.",
+    "(Cosmetic) Make Hero section container position non-static (add `relative`) to silence Framer Motion useScroll warning."
+  ],
+  "critical_code_review_comments": [
+    "PUT /api/admin/apps/[id] uses Prisma id (cuid). Data-testid in admin UI suffix is the slug (e.g. app-row-express) but the actual PUT uses app.id correctly inside AppsEditor.tsx. Behaviour is correct but mismatch between testid naming and DB id can confuse external automation — consider exposing the slug as the route param.",
+    "I18nProvider correctly hydrates from localStorage; server-side render is always FR which causes a brief FR flash before client effect promotes to EN (acceptable behaviour, persisted correctly across reload — verified)."
+  ],
+  "updated_files": [
+    "/app/backend/tests/baked_api_test.py (created)",
+    "/app/test_reports/pytest/pytest_results.xml (generated)"
+  ],
+  "success_rate": {
+    "backend": "100% (12/12 executed tests passed; 3 unrelated skips)",
+    "frontend": "~55% (public homepage 100% verified; admin UI not fully verified due to mid-test Postgres loss)"
+  },
+  "test_credentials": "admin@baked.group / BakedAdmin2025! (from /app/memory/test_credentials.md). Backend login API confirmed working with cookie baked_admin_token issued.",
+  "seed_data_creation": "Pre-existing seed verified: 6 Applications (slugs express, food, mart, shop, auto, immo), 2 JobOpenings (senior-product-designer, senior-fullstack-engineer). Test created 1 ContactMessage (TEST_User) and 1 JobApplication (TEST_Applicant) via API tests.",
+  "retest_needed": true,
+  "main_agent_can_self_test": false,
+  "context_for_next_testing_agent": "VERIFIED: (1) public homepage sections + testids, (2) ecosystem 6 cards, (3) hero 6 floating icons, (4) language switch FR<->EN updates hero-title/subtitle, (5) localStorage persistence across reload (needs >=3s wait after reload before assertion because SSR renders FR first), (6) WhyBaked counters animate to 6+/1/100% — requires slow scroll into view (~3s), (7) contact form submission shows contact-success and POST /api/contact returns ok:true with id, (8) POST /api/contact with missing email returns 400, (9) careers list >=2 jobs, (10) careers apply creates application, (11) login OK/bad creds, logout clears cookie, (12) admin endpoints 401 without cookie. NOT YET VERIFIED in browser due to Postgres loss: admin login UI flow, dashboard stat tiles, applications save in UI, settings save in UI, messages toggle, jobs create modal, admin sidebar logout. Backend equivalents of these were verified via API.",
+  "rca of the issue": "PostgreSQL service died and its package files were also removed from the container during the testing session. supervisord lost its socket and had to be restarted manually; postgresql program is now FATAL ('can't find command /usr/lib/postgresql/15/bin/postgres'). The postgres OS user was also missing and I recreated it, but the binaries themselves need reinstallation by main agent (apt-get install postgresql-15) and the cluster needs initdb + restoration of seed data. Until then, all Next.js routes hitting Prisma return 500."
+}

@@ -1,0 +1,116 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "about": "Qui sommes-nous",
+    "services": "Nos Services",
+    "careers": "Nous Rejoindre",
+    "contact": "Contact",
+    "download": "Télécharger l'App"
+  },
+  "hero": {
+    "subtitle": "Une seule application. Plusieurs services. Une expérience connectée.",
+    "cta_primary": "Découvrir les Services",
+    "cta_secondary": "Nous Rejoindre",
+    "scroll": "Découvrir"
+  },
+  "about": {
+    "kicker": "À propos",
+    "cards": {
+      "mission": { "title": "Mission", "desc": "Simplifier le quotidien à travers des produits digitaux pensés pour les gens." },
+      "vision": { "title": "Vision", "desc": "Devenir le super-app de référence reliant chaque service essentiel." },
+      "innovation": { "title": "Innovation", "desc": "Construire des technologies au service de l'expérience humaine." },
+      "community": { "title": "Communauté", "desc": "Connecter les personnes, les commerces et les villes dans un même écosystème." }
+    }
+  },
+  "ecosystem": {
+    "kicker": "L'écosystème",
+    "title": "UNE SEULE APP, DE NOMBREUX SERVICES",
+    "subtitle": "Six applications. Une seule expérience. Une infinité de possibilités."
+  },
+  "why": {
+    "kicker": "Pourquoi Baked",
+    "title": "Pourquoi choisir Baked ?",
+    "subtitle": "Un écosystème pensé pour vous accompagner partout, tous les jours.",
+    "benefits": {
+      "unified": { "title": "Écosystème unifié", "desc": "Une seule app pour tous les services du quotidien." },
+      "fast": { "title": "Rapide & fiable", "desc": "Une infrastructure pensée pour la vitesse et la stabilité." },
+      "secure": { "title": "Plateforme sécurisée", "desc": "Vos données protégées, vos transactions chiffrées." },
+      "human": { "title": "Centré humain", "desc": "Une technologie au service des personnes et des communautés." }
+    },
+    "stats": {
+      "apps": "Applications",
+      "superapp": "Super App",
+      "connected": "Expérience connectée"
+    }
+  },
+  "mobile": {
+    "kicker": "Application mobile",
+    "title": "TÉLÉCHARGEZ NOTRE APPLICATION",
+    "subtitle": "Disponible bientôt sur iOS et Android.",
+    "appstore": "App Store",
+    "playstore": "Google Play",
+    "comingsoon": "Bientôt disponible"
+  },
+  "careers": {
+    "kicker": "Rejoignez l'équipe",
+    "title": "NOUS VOULONS FAÇONNER L'AVENIR DE LA TECHNOLOGIE. REJOIGNEZ-NOUS.",
+    "body": "Nous construisons des produits digitaux innovants qui impactent le quotidien. Rejoignez une équipe de créateurs, ingénieurs, designers, marketeurs et innovateurs en pleine croissance.",
+    "cta": "Voir les opportunités",
+    "open_positions": "Offres ouvertes",
+    "no_positions": "Aucune offre ouverte pour le moment. Envoyez-nous une candidature spontanée à",
+    "apply": "Postuler",
+    "back": "Retour aux offres",
+    "form": {
+      "title": "Postuler à cette offre",
+      "name": "Nom complet",
+      "email": "Email",
+      "phone": "Téléphone",
+      "message": "Lettre de motivation",
+      "submit": "Envoyer ma candidature",
+      "submitting": "Envoi...",
+      "success": "Candidature envoyée. Nous reviendrons vers vous très bientôt.",
+      "error": "Une erreur est survenue. Merci de réessayer."
+    }
+  },
+  "contact": {
+    "kicker": "Parlons-en",
+    "title": "Contactez-nous",
+    "subtitle": "Une question, un partenariat, une opportunité ? Nous serions ravis d'échanger.",
+    "form": {
+      "name": "Nom complet",
+      "email": "Email",
+      "phone": "Téléphone",
+      "company": "Entreprise",
+      "message": "Votre message",
+      "submit": "Envoyer le message",
+      "submitting": "Envoi...",
+      "success": "Message envoyé. Nous vous répondrons rapidement.",
+      "error": "Une erreur est survenue. Merci de réessayer."
+    },
+    "info": {
+      "email": "Email",
+      "phone": "Téléphone",
+      "address": "Adresse",
+      "social": "Suivez-nous"
+    }
+  },
+  "footer": {
+    "download": "Télécharger Baked",
+    "discover": "Découvrir Baked",
+    "social": "Réseaux sociaux",
+    "help": "Besoin d'aide ?",
+    "language": "Langue",
+    "about": "À propos",
+    "services": "Nos services",
+    "careers": "Nous rejoindre",
+    "press": "Espace presse",
+    "support": "Assistance",
+    "privacy": "Confidentialité",
+    "terms": "Conditions",
+    "contact": "Contactez-nous"
+  },
+  "common": {
+    "learn_more": "En savoir plus",
+    "loading": "Chargement..."
+  }
+}

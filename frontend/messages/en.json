@@ -1,0 +1,116 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "services": "Services",
+    "careers": "Join Us",
+    "contact": "Contact",
+    "download": "Download App"
+  },
+  "hero": {
+    "subtitle": "One application. Multiple services. One connected experience.",
+    "cta_primary": "Discover the Services",
+    "cta_secondary": "Join Us",
+    "scroll": "Discover"
+  },
+  "about": {
+    "kicker": "About",
+    "cards": {
+      "mission": { "title": "Mission", "desc": "Simplify everyday life with digital products built for real people." },
+      "vision": { "title": "Vision", "desc": "Become the reference super-app connecting every essential service." },
+      "innovation": { "title": "Innovation", "desc": "Build technology that serves the human experience." },
+      "community": { "title": "Community", "desc": "Connect people, businesses, and cities into one ecosystem." }
+    }
+  },
+  "ecosystem": {
+    "kicker": "The ecosystem",
+    "title": "ONE APP, MANY SERVICES",
+    "subtitle": "Six applications. One seamless experience. Endless possibilities."
+  },
+  "why": {
+    "kicker": "Why Baked",
+    "title": "Why choose Baked?",
+    "subtitle": "An ecosystem designed to support you everywhere, every day.",
+    "benefits": {
+      "unified": { "title": "Unified ecosystem", "desc": "A single app for every essential service in your day." },
+      "fast": { "title": "Fast & reliable", "desc": "Infrastructure engineered for speed and stability." },
+      "secure": { "title": "Secure platform", "desc": "Your data protected, your transactions encrypted." },
+      "human": { "title": "Human-centered", "desc": "Technology built around people and communities." }
+    },
+    "stats": {
+      "apps": "Applications",
+      "superapp": "Super App",
+      "connected": "Connected experience"
+    }
+  },
+  "mobile": {
+    "kicker": "Mobile app",
+    "title": "DOWNLOAD OUR APPLICATION",
+    "subtitle": "Coming soon on iOS and Android.",
+    "appstore": "App Store",
+    "playstore": "Google Play",
+    "comingsoon": "Coming Soon"
+  },
+  "careers": {
+    "kicker": "Join the team",
+    "title": "WE WANT TO SHAPE THE FUTURE OF TECHNOLOGY. JOIN US.",
+    "body": "We are building innovative digital products that impact everyday life. Join our growing team of creators, engineers, designers, marketers and innovators.",
+    "cta": "View opportunities",
+    "open_positions": "Open positions",
+    "no_positions": "No open positions right now. Send us a spontaneous application at",
+    "apply": "Apply",
+    "back": "Back to openings",
+    "form": {
+      "title": "Apply for this position",
+      "name": "Full name",
+      "email": "Email",
+      "phone": "Phone",
+      "message": "Cover letter",
+      "submit": "Send my application",
+      "submitting": "Sending...",
+      "success": "Application sent. We'll get back to you very soon.",
+      "error": "Something went wrong. Please try again."
+    }
+  },
+  "contact": {
+    "kicker": "Let's talk",
+    "title": "Contact us",
+    "subtitle": "A question, a partnership, an opportunity? We'd love to hear from you.",
+    "form": {
+      "name": "Full name",
+      "email": "Email",
+      "phone": "Phone",
+      "company": "Company",
+      "message": "Your message",
+      "submit": "Send message",
+      "submitting": "Sending...",
+      "success": "Message sent. We'll get back to you shortly.",
+      "error": "Something went wrong. Please try again."
+    },
+    "info": {
+      "email": "Email",
+      "phone": "Phone",
+      "address": "Address",
+      "social": "Follow us"
+    }
+  },
+  "footer": {
+    "download": "Download Baked",
+    "discover": "Discover Baked",
+    "social": "Social media",
+    "help": "Need help?",
+    "language": "Language",
+    "about": "About",
+    "services": "Services",
+    "careers": "Join us",
+    "press": "Press",
+    "support": "Support",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "contact": "Contact us"
+  },
+  "common": {
+    "learn_more": "Learn more",
+    "loading": "Loading..."
+  }
+}

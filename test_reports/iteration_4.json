@@ -1,0 +1,21 @@
+{
+  "summary": "Focused single-bug retest from iteration_3: verified that the Careers homepage section wraps the language-specific highlight phrase ('JOIN US.' in EN, 'REJOIGNEZ-NOUS.' in FR) inside a `.text-brand-gold` span. Both languages render correctly.",
+  "backend_issues": { "critical": [], "minor": [] },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "CareersHeadline helper in /app/frontend/src/components/site/Careers.tsx is locale-agnostic (iterates HIGHLIGHTS for any matching phrase). Works for both fr.json ('REJOIGNEZ-NOUS.') and en.json ('JOIN US.'). Clean, no DRY violations."
+  ],
+  "updated_files": [],
+  "success_rate": { "backend": "n/a (frontend only)", "frontend": "100%" },
+  "seed_data_creation": "none",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "iteration_4 retested only the careers-title gold span bug from iteration_3. Verified via Playwright on http://localhost:3000/: EN title -> innerHTML = 'WE WANT TO SHAPE THE FUTURE OF TECHNOLOGY. <span class=\"text-brand-gold\">JOIN US.</span>'; FR title -> innerHTML = 'NOUS VOULONS FAÇONNER L'AVENIR DE LA TECHNOLOGIE. <span class=\"text-brand-gold\">REJOIGNEZ-NOUS.</span>'. Other 78 assertions from iteration_3 were not re-run per request, all were green previously.",
+  "rca of the issue": "Original bug (iteration_3): inline JSX used `.split('REJOIGNEZ-NOUS.')` which only matched the French phrase, leaving EN title without a gold highlight on 'JOIN US.'. Fix: introduced a `CareersHeadline` helper iterating over HIGHLIGHTS = ['REJOIGNEZ-NOUS.', 'JOIN US.'] and wrapping the matched phrase in a `<span class=\"text-brand-gold\">`. Both locales now produce a single gold span with the correct exact text."
+}

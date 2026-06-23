@@ -71,15 +71,7 @@ export function Careers({ image }: { image: string }) {
               data-testid="careers-title"
               className="font-heading mt-4 text-3xl md:text-4xl lg:text-5xl font-black leading-[0.95] tracking-tighter"
             >
-              {t('careers.title').split('REJOIGNEZ-NOUS.').map((part, i, arr) =>
-                arr.length > 1 && i === arr.length - 1 ? (
-                  <span key={i}>
-                    <span className="text-brand-gold">REJOIGNEZ-NOUS.</span>{part}
-                  </span>
-                ) : (
-                  <span key={i}>{part}{arr.length > 1 && i === 0 ? '' : ''}</span>
-                )
-              )}
+              <CareersHeadline text={t('careers.title')} />
             </h2>
             <p className="mt-5 text-base md:text-lg text-zinc-600 leading-relaxed">
               {t('careers.body')}

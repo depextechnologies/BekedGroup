@@ -51,6 +51,13 @@
     "playstore": "Google Play",
     "comingsoon": "Coming Soon"
   },
+  "phones": {
+    "delivery": "Delivery",
+    "restaurants": "Restaurants",
+    "vehicles": "Vehicles",
+    "realestate": "Real Estate",
+    "marketplace": "Marketplace"
+  },
   "careers": {
     "kicker": "Join the team",
     "title": "WE WANT TO SHAPE THE FUTURE OF TECHNOLOGY. JOIN US.",

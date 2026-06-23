@@ -46,7 +46,7 @@ export function Header() {
     >
       <div className="max-w-7xl mx-auto px-6 md:px-10 py-4 flex items-center justify-between gap-6">
         <Link href="/" data-testid="header-logo-link" className="shrink-0 inline-flex items-center">
-          <img src="/logos/baked.jpeg" alt="bakēd" className="h-9 md:h-10 w-auto object-contain rounded-md" />
+          <img src="/logos/baked-header.png" alt="bakēd" className="h-10 md:h-12 w-auto object-contain" />
         </Link>
 
         <nav className="hidden lg:flex items-center gap-8" data-testid="header-nav">

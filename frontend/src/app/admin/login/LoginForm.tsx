@@ -45,7 +45,7 @@ export function LoginForm() {
 
       <div className="relative w-full max-w-md">
         <div className="text-center mb-10">
-          <img src="/logos/baked.jpeg" alt="bakēd" className="mx-auto h-14 w-auto object-contain rounded-md" />
+          <img src="/logos/baked-header.png" alt="bakēd" className="mx-auto h-16 w-auto object-contain" />
           <div className="text-xs uppercase tracking-[0.3em] font-bold text-brand-gold mt-4">
             Admin Console
           </div>

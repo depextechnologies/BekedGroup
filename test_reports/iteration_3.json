@@ -1,0 +1,34 @@
+{
+  "summary": "Frontend-only re-test of BUG-1 (new baked-header.png logo in header/footer/admin) and BUG-2 (FR/EN i18n) on the public site. 79 assertions executed via Playwright; 78 passed. 1 REAL bug remains: the EN Careers headline does NOT wrap 'JOIN US.' in .text-brand-gold (only the FR 'REJOIGNEZ-NOUS.' is highlighted). Both logo bugs are FIXED. All other translation flows (nav, hero, ecosystem, why-baked, mobile-showcase phone labels, contact form, footer columns, persistence across reload, /careers page locale switching) pass in both FR and EN.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "Careers (homepage section) — /app/frontend/src/components/site/Careers.tsx lines 70-83",
+        "issue": "EN locale: the title 'WE WANT TO SHAPE THE FUTURE OF TECHNOLOGY. JOIN US.' is rendered inside a plain <span> with NO .text-brand-gold class. The inline title JSX only splits on the French phrase 'REJOIGNEZ-NOUS.', so the English phrase 'JOIN US.' is never wrapped in the gold span. A `CareersHeadline` helper + `HIGHLIGHTS = ['REJOIGNEZ-NOUS.', 'JOIN US.']` constant are defined at the top of the file (lines 8-10) but are NEVER called from the JSX. FR works (REJOIGNEZ-NOUS. is gold), EN does not.",
+        "selector": "[data-testid=\"careers-title\"] .text-brand-gold (returns nothing in EN; in EN there is only a plain <span>WE WANT TO SHAPE THE FUTURE OF TECHNOLOGY. JOIN US.</span>)",
+        "priority": "HIGH",
+        "evidence": "DOM in EN: <h2 data-testid=\"careers-title\"><span>WE WANT TO SHAPE THE FUTURE OF TECHNOLOGY. JOIN US.</span></h2>. DOM in FR: <h2 ...><span>NOUS VOULONS FAÇONNER L'AVENIR DE LA TECHNOLOGIE. <span class=\"text-brand-gold\">REJOIGNEZ-NOUS.</span></span></h2>"
+      }
+    ],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": ["/app/test_reports/iteration_3.json"],
+  "action_items": [
+    "Replace the inline `.split('REJOIGNEZ-NOUS.')` block in Careers.tsx (lines 74-82) with a call to the already-defined `CareersHeadline` helper (or extend the inline logic to also split on 'JOIN US.'). Example: `<CareersHeadline text={t('careers.title')} />` so that both 'REJOIGNEZ-NOUS.' (FR) and 'JOIN US.' (EN) are wrapped in <span className=\"text-brand-gold\">…</span>."
+  ],
+  "critical_code_review_comments": [
+    "Careers.tsx defines HIGHLIGHTS = ['REJOIGNEZ-NOUS.', 'JOIN US.'] AND a CareersHeadline helper at the top of the file, but the JSX at line 74 still uses a hard-coded `.split('REJOIGNEZ-NOUS.')`. Dead code (the helper is unused) + the bug. Use the helper.",
+    "Header.tsx, Footer.tsx, AdminShell.tsx and LoginForm.tsx all correctly reference /logos/baked-header.png. Footer has exactly two instances (top column + giant centered bottom). Giant logo measured at 920px wide on 1920px viewport — exceeds the 600px requirement.",
+    "i18n provider correctly persists to localStorage key 'baked_locale' and sets document.documentElement.lang. EN/FR switching is instant (no reload). Persistence across reload verified."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "not retested (per request)", "frontend": "98.7% (78/79 assertions)"},
+  "test_credentials": "admin@baked.group / BakedAdmin2025! — verified working on /admin/login.",
+  "seed_data_creation": "None.",
+  "retest_needed": true,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "BUG-1 (logo swap to /logos/baked-header.png) is fully fixed in Header, Footer (top + giant bottom), AdminShell sidebar, and /admin/login. BUG-2 (translations) is 98% fixed: nav, hero (title gold span CONNECTER/CONNECTING), subtitle, CTAs, ecosystem, why-baked, mobile-showcase phone labels, contact form, footer columns, footer lang label, persistence after reload, and /careers page locale switching all work in both FR and EN. The ONLY remaining issue is the EN Careers homepage section title — `JOIN US.` is not wrapped in `.text-brand-gold` because the JSX still hard-splits on the French phrase. Fix is small: swap the inline split for the existing `CareersHeadline` helper (already imported in scope).",
+  "rca of the issue": "Careers.tsx contains a dead helper `CareersHeadline` (with the correct multi-phrase HIGHLIGHTS) but the JSX at lines 74-82 still uses an inline `.split('REJOIGNEZ-NOUS.')`. Because the EN translation 'WE WANT TO SHAPE THE FUTURE OF TECHNOLOGY. JOIN US.' does not contain 'REJOIGNEZ-NOUS.', the split returns a single-element array and the else branch on line 80 wraps the entire title in one plain <span>, with no .text-brand-gold child. Fix: render `<CareersHeadline text={t('careers.title')} />` instead of the inline map."
+}

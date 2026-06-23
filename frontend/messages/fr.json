@@ -51,6 +51,13 @@
     "playstore": "Google Play",
     "comingsoon": "Bientôt disponible"
   },
+  "phones": {
+    "delivery": "Livraison",
+    "restaurants": "Restaurants",
+    "vehicles": "Véhicules",
+    "realestate": "Immobilier",
+    "marketplace": "Marketplace"
+  },
   "careers": {
     "kicker": "Rejoignez l'équipe",
     "title": "NOUS VOULONS FAÇONNER L'AVENIR DE LA TECHNOLOGIE. REJOIGNEZ-NOUS.",

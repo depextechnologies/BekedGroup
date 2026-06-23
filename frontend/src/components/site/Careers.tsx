@@ -5,9 +5,30 @@ import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { useI18n } from '@/i18n/I18nProvider';
 
+const HIGHLIGHTS = ['REJOIGNEZ-NOUS.', 'JOIN US.'];
+
+function CareersHeadline({ text }: { text: string }) {
+  // Find any of the highlight phrases at the end of the title and color them gold.
+  for (const phrase of HIGHLIGHTS) {
+    const idx = text.toUpperCase().indexOf(phrase);
+    if (idx !== -1) {
+      const before = text.slice(0, idx);
+      const match = text.slice(idx, idx + phrase.length);
+      const after = text.slice(idx + phrase.length);
+      return (
+        <>
+          {before}
+          <span className="text-brand-gold">{match}</span>
+          {after}
+        </>
+      );
+    }
+  }
+  return <>{text}</>;
+}
+
 export function Careers({ image }: { image: string }) {
   const { t } = useI18n();
-
   return (
     <section
       id="careers"

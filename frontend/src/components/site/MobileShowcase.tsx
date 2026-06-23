@@ -6,11 +6,11 @@ import { useI18n } from '@/i18n/I18nProvider';
 import { Logo } from './Logo';
 
 const phones = [
-  { color: '#F7A500', Icon: Truck, prefix: 'EXPRESS', rotate: -18, y: 40, x: -180, depth: 0.7, label: 'Delivery' },
-  { color: '#32CD32', Icon: UtensilsCrossed, prefix: 'FOOD', rotate: -8, y: -20, x: -90, depth: 0.85, label: 'Restaurants' },
-  { color: '#E5484D', Icon: Car, prefix: 'AUTO', rotate: 0, y: 0, x: 0, depth: 1, label: 'Vehicles' },
-  { color: '#7A3CFF', Icon: Home, prefix: 'IMMO', rotate: 8, y: -20, x: 90, depth: 0.85, label: 'Real Estate' },
-  { color: '#F7A500', Icon: ShoppingBag, prefix: 'SHOP', rotate: 18, y: 40, x: 180, depth: 0.7, label: 'Marketplace' },
+  { color: '#F7A500', Icon: Truck, prefix: 'EXPRESS', rotate: -18, y: 40, x: -180, depth: 0.7, labelKey: 'phones.delivery' },
+  { color: '#32CD32', Icon: UtensilsCrossed, prefix: 'FOOD', rotate: -8, y: -20, x: -90, depth: 0.85, labelKey: 'phones.restaurants' },
+  { color: '#E5484D', Icon: Car, prefix: 'AUTO', rotate: 0, y: 0, x: 0, depth: 1, labelKey: 'phones.vehicles' },
+  { color: '#7A3CFF', Icon: Home, prefix: 'IMMO', rotate: 8, y: -20, x: 90, depth: 0.85, labelKey: 'phones.realestate' },
+  { color: '#F7A500', Icon: ShoppingBag, prefix: 'SHOP', rotate: 18, y: 40, x: 180, depth: 0.7, labelKey: 'phones.marketplace' },
 ];
 
 export function MobileShowcase() {
@@ -47,7 +47,7 @@ export function MobileShowcase() {
                 animate={{ y: [0, -10, 0] }}
                 transition={{ duration: 5 + i * 0.3, repeat: Infinity, ease: 'easeInOut' }}
               >
-                <PhoneMock color={p.color} Icon={p.Icon} prefix={p.prefix} label={p.label} />
+                <PhoneMock color={p.color} Icon={p.Icon} prefix={p.prefix} label={t(p.labelKey)} />
               </motion.div>
             </motion.div>
           ))}

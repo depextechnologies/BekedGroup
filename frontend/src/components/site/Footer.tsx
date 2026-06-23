@@ -39,7 +39,7 @@ export function Footer({ settings }: FooterProps) {
     >
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <div className="mb-12 max-w-md">
-          <img src="/logos/baked.jpeg" alt="bakēd" className="h-12 w-auto object-contain rounded-md" />
+          <img src="/logos/baked-header.png" alt="bakēd" className="h-14 w-auto object-contain" />
           <p className="mt-5 text-sm text-white/60 leading-relaxed">{tagline}</p>
         </div>
 
@@ -110,8 +110,8 @@ export function Footer({ settings }: FooterProps) {
         </div>
 
         {/* Giant logo */}
-        <div className="mt-20 -mb-6 text-center select-none">
-          <Logo size="2xl" />
+        <div className="mt-20 -mb-6 flex justify-center select-none">
+          <img src="/logos/baked-header.png" alt="bakēd" className="w-full max-w-[920px] h-auto object-contain" />
         </div>
       </div>
       <style jsx>{`

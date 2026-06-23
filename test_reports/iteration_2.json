@@ -1,0 +1,32 @@
+{
+  "summary": "Re-verified all Admin UI flows after PostgreSQL was reinstalled and re-seeded. All 20+ admin UI scenarios pass via Playwright: login (good/bad creds), dashboard 4 stat tiles (apps=6, jobs=2, msgs=0, unread=0), sidebar navigation to applications/messages/careers/settings, applications save+persist on /admin/applications, applications enable/disable toggle for shop, settings save+persist (contactPhone), settings tabs (contact/social/footer/homepage) with field visibility, messages page renders (no messages to delete — list empty in current seed), jobs create modal flow with new job appearing and publish/draft toggle flipping, admin-logout clears cookie + /admin redirects to /admin/login, and public homepage ecosystem section reflects edited EXPRESS descFr. Backend NOT re-run per instructions.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/baked_api_test.py",
+    "/app/test_reports/pytest/pytest_results.xml",
+    "/app/test_reports/iteration_1.json"
+  ],
+  "action_items": [
+    "(Optional/Low) Add data-testid attributes to individual job form fields inside the New/Edit Job modal in /app/frontend/src/app/admin/jobs/JobsManager.tsx (e.g. job-field-slug, job-field-titleFr, job-field-titleEn, job-field-departmentFr, job-field-descFr, job-field-descEn). The JF helper currently renders unlabeled-for-testing inputs; tests had to rely on positional order. The job-row publish toggle, edit and delete buttons also lack testids — recommend job-publish-{id}, job-edit-{id}, job-delete-{id}.",
+    "(Optional/Low) Seed a couple of ContactMessages for QA so the messages page (delete + toggle-read) can be exercised end-to-end in browser. Current DB has zero messages."
+  ],
+  "critical_code_review_comments": [
+    "Admin Jobs modal save successfully closes modal and inserts new row with cuid id (job-row-{cuid}); publish toggle correctly switches state and badge text (Draft <-> Published).",
+    "Logout button is inside the AdminShell sidebar with proper data-testid=admin-logout; cookie is cleared and middleware redirects /admin -> /admin/login as expected.",
+    "Applications save uses PUT /api/admin/apps/{id} via internal Prisma id — confirmed persistence across reload. Public homepage SSR picks up the edited descFr instantly after re-fetch.",
+    "Settings save fires site-settings + homepage-content saves in parallel; both persisted on reload."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "100% (from iteration_1)", "frontend": "100% (20/20 admin UI scenarios)"},
+  "test_credentials": "admin@baked.group / BakedAdmin2025! (from /app/memory/test_credentials.md). Verified working.",
+  "seed_data_creation": "Persisted edits left in DB by these UI tests: (a) Applications.express.descFr = 'Test edited description — automated QA'; (b) SiteSettings.contactPhone = '+33 1 99 88 77 66'. The test-qa-engineer-auto Job created during the run was deleted via API at the end. Main agent should re-run prisma db seed if it wants to restore baseline copy on these two fields.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "All admin UI flows passing as of iteration_2. Two seeded text fields were mutated by tests (express descFr + site contactPhone) — they persist in DB and are reflected on the public homepage. Job form modal fields lack data-testids on individual inputs/textareas — relied on positional order (8 inputs, 2 textareas). Job publish toggle, edit, delete buttons also lack testids. Messages page had 0 messages in seed so delete/toggle-read paths were not browser-exercised but were already validated in backend tests (iteration_1).",
+  "rca of the issue": "N/A — all flows passing. Previous iteration_1 failure was an environment issue (PostgreSQL package removal), now resolved."
+}

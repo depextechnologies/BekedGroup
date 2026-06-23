@@ -50,6 +50,7 @@ export function Hero({ titleFr, titleEn, highlightFr, highlightEn, bgImage, fore
       ref={ref}
       id="home"
       data-testid="hero-section"
+      style={{ position: 'relative' }}
       className="relative min-h-[100vh] w-full overflow-hidden flex items-center justify-center"
     >
       {/* Background image with parallax */}

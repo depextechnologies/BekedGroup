@@ -113,7 +113,8 @@ export function Hero({ titleFr, titleEn, highlightFr, highlightEn, bgImage, fore
           </div>
           <h1
             data-testid="hero-title"
-            className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-[3rem] xl:text-[3.5rem] font-black leading-[1.05] tracking-tight text-white"
+            style={{ textWrap: 'balance' as any }}
+            className="font-heading text-3xl sm:text-4xl md:text-[2.75rem] lg:text-[2.75rem] xl:text-[3rem] font-black leading-[1.05] tracking-tight text-white"
           >
             {renderTitle()}
           </h1>

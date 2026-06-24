@@ -1,0 +1,35 @@
+{
+  "summary": "Final retest after hero font reduction (xl:text-[3rem] + textWrap:balance). Both EN and FR hero headlines now wrap to exactly 3 lines at desktop 1440x900. All regression spot-checks pass. ALL acceptance criteria PASS.",
+  "backend_issues": { "critical": [], "minor": [] },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "acceptance_criteria_results": {
+    "1_hero_3_lines_desktop_1440x900_EN": "PASS — 3 lines (rect.height=120, lineHeight=40, fontSize=48). Wraps as 'SIMPLIFYING PEOPLE'S' / 'LIVES AND CONNECTING' / 'THEM TOGETHER'. textWrap:balance computed correctly.",
+    "1_hero_3_lines_desktop_1440x900_FR": "PASS — 3 lines (rect.height=120, lineHeight=40, fontSize=48). Wraps as 'SIMPLIFIER LA VIE' / 'DES GENS ET LES' / 'CONNECTER ENSEMBLE'.",
+    "2_hero_tablet_768x1024_EN": "PASS — 3 lines (height=120, lineHeight=40, fontSize=44), width=672, visible, readable, no horizontal overflow (scrollWidth=clientWidth=768).",
+    "2_hero_tablet_768x1024_FR": "PASS — 3 lines (height=120, lineHeight=40, fontSize=44), no overflow.",
+    "2_hero_mobile_390x844_EN": "PASS — 4 lines (height=126, lineHeight=31.5, fontSize=30), width=342, readable, no horizontal overflow (scrollWidth=clientWidth=390). 4 lines acceptable at small viewport per acceptance criteria.",
+    "2_hero_mobile_390x844_FR": "PASS — 4 lines (height=126, lineHeight=31.5, fontSize=30), no overflow.",
+    "3_regression_services_cta": "PASS — service-card-cta-0 is <a> with href='/#mobile' and text 'Télécharger l'app' (FR locale active at time of check) / 'Download App' (EN). Verified previously in iter16.",
+    "3_regression_superapp_buttons": "PASS — superapp-appstore-btn and superapp-playstore-btn both present on /services with App Store and Google Play labels.",
+    "3_regression_ecosystem_download_app": "PASS — Home Ecosystem section shows 7 instances of 'Télécharger l'app' (FR) [12 in EN per iter16] across 6 cards.",
+    "3_regression_no_capital_Baked": "PASS — 0 occurrences of standalone 'Baked' (capital B) found in body innerText. Brand spelling counts: 'bakēd'=4, lowercase 'baked'=1 (email address contact@baked.group — domain names cannot use macron, acceptable)."
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Hero.tsx leading-[1.05] is overridden by computed lineHeight=40px instead of expected ~50.4px (1.05 × 48); font-heading may have its own line-height setting. Visual 3-line wrap still correct so non-blocking, but worth verifying intent.",
+    "textWrap:'balance' inline style works in modern browsers; would be cleaner via tailwind utility text-balance if available in project config."
+  ],
+  "updated_files": [],
+  "success_rate": { "backend": "n/a (skipped)", "frontend": "100% (10/10 acceptance criteria PASS)" },
+  "test_credentials": "Not required (public marketing pages)",
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "All hero headline acceptance criteria met. Both EN and FR fit in 3 lines @1440x900 and @768x1024; mobile @390 wraps to 4 lines without overflow which is acceptable. All regressions (services CTA, SuperApp buttons, Ecosystem cards, brand spelling) confirmed working. No further work required on hero font sizing.",
+  "rca_of_the_issue": "Previous EN-fails-4-lines RCA was due to long 'CONNECTING' word at fontSize=56. Current fix to xl:text-[3rem] (48px) plus textWrap:balance produces optimal wrap: 'SIMPLIFYING PEOPLE'S / LIVES AND CONNECTING / THEM TOGETHER' — exactly 3 balanced lines. FR also benefits from balance algorithm staying at 3 lines."
+}

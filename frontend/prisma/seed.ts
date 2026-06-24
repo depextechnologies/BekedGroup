@@ -232,6 +232,11 @@ async function main() {
   });
   console.log('✓ Blog posts');
 
+  // Ensure launch-super-app sits in the featured slot (most-recent updatedAt)
+  await prisma.$executeRawUnsafe(
+    `UPDATE "BlogPost" SET "updatedAt" = NOW() WHERE slug = 'launch-super-app'`
+  );
+
   // 7. Sample News Articles (idempotent)
   await prisma.newsArticle.upsert({
     where: { slug: 'series-a-2026' },

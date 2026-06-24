@@ -26,7 +26,7 @@ export function Header() {
   const links = [
     { href: homePrefix + '#home', label: t('nav.home'), active: pathname === '/' },
     { href: '/about-us', label: t('nav.about'), active: pathname === '/about-us' },
-    { href: homePrefix + '#services', label: t('nav.services'), active: false },
+    { href: '/services', label: t('nav.services'), active: pathname === '/services' },
     { href: homePrefix + '#careers', label: t('nav.careers'), active: pathname === '/careers' },
     { href: homePrefix + '#contact', label: t('nav.contact'), active: false },
   ];

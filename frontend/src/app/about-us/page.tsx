@@ -9,7 +9,7 @@ export const dynamic = 'force-dynamic';
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://baked.group';
 
 export const metadata: Metadata = {
-  title: 'À Propos de Nous | Baked Group',
+  title: { absolute: 'À Propos de Nous | Baked Group' },
   description:
     'Découvrez la mission, les valeurs et la vision de Baked Group, la Super App africaine qui simplifie la vie quotidienne grâce à la technologie.',
   alternates: { canonical: `${SITE_URL}/about-us` },

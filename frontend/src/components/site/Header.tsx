@@ -27,6 +27,8 @@ export function Header() {
     { href: homePrefix + '#home', label: t('nav.home'), active: pathname === '/' },
     { href: '/about-us', label: t('nav.about'), active: pathname === '/about-us' },
     { href: '/services', label: t('nav.services'), active: pathname === '/services' },
+    { href: '/blog', label: t('nav.blog'), active: pathname?.startsWith('/blog') ?? false },
+    { href: '/news', label: t('nav.news'), active: pathname?.startsWith('/news') ?? false },
     { href: homePrefix + '#careers', label: t('nav.careers'), active: pathname === '/careers' },
     { href: homePrefix + '#contact', label: t('nav.contact'), active: false },
   ];

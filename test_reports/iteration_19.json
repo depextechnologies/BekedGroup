@@ -1,0 +1,53 @@
+{
+  "summary": "Phase 2 follow-up — Public Blog & News pages end-to-end verification. ALL CRITICAL CHECKS PASS. Routes 200/404 correct, SEO metadata + OG tags + JSON-LD (@type: Blog / BlogPosting / CollectionPage / NewsArticle) all valid, sitemap contains all expected entries, Header nav links present (FR labels), markdown renders fully (h2/h3/list/blockquote + EXPRESS/IMMO/Product visible), lang switcher works on both list and detail pages, admin login & API cookie-leak fix still intact. Only one minor observation: featured card on /blog points to 'design-system' rather than 'launch-super-app' because seed updatedAt ordering made design-system the most recent post (not a code bug — list orders by updatedAt desc as designed).",
+  "backend_issues": { "critical": [], "minor": [] },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_results": {
+    "route_status_codes": "PASS — GET /blog=200, /news=200, /blog/launch-super-app=200, /news/series-a-2026=200, /blog/nonexistent=404, /news/missing=404, /sitemap.xml=200",
+    "header_nav": "PASS — nav-link-blog and nav-link-actualit-s (FR slug) present on /blog. Full nav testid list: ['nav-link-accueil','nav-link-qui-sommes-nous','nav-link-nos-services','nav-link-blog','nav-link-actualit-s','nav-link-nous-rejoindre','nav-link-contact']",
+    "blog_list": "PASS — [data-testid=blog-list-page] renders, kicker 'INSIGHTS & RÉCITS' (FR default), [data-testid=blog-card-featured] present, [data-testid=blog-card-design-system] present. Cards link to /blog/<slug>.",
+    "blog_detail": "PASS — /blog/launch-super-app: [data-testid=blog-article] renders. Title FR: 'Lancement officiel de la Super App bakēd'. After EN switch title: 'Official launch of the bakēd Super App'. blog-article-back + blog-article-share present. Markdown contains h2, h3, 6 ul items, blockquote, EXPRESS + IMMO + Product all visible.",
+    "blog_404": "PASS — /blog/nonexistent returns HTTP 404 (notFound)",
+    "news_list": "PASS — [data-testid=news-list-page] renders. [data-testid=news-card-series-a-2026] and [data-testid=news-card-africa-tech-awards-finalist] both present. Kicker text 'COMMUNIQUÉS' present (FR).",
+    "news_detail": "PASS — /news/series-a-2026: [data-testid=news-article] + [data-testid=news-article-title] = 'bakēd Group annonce une levée de Série A' (FR). Markdown h2 = 'Paris — Février 2026' (translated when locale=FR). Back link present.",
+    "news_404": "PASS — /news/missing returns 404",
+    "lang_switcher_list": "PASS — Switching to EN on /blog changes kicker to 'INSIGHTS & STORIES'; switching back to FR restores 'INSIGHTS & RÉCITS'",
+    "lang_switcher_detail": "PASS — On /blog/launch-super-app, title changes between FR 'Lancement officiel de la Super App bakēd' and EN 'Official launch of the bakēd Super App'",
+    "seo_blog_list": "PASS — <title>Blog | bakēd Group</title>, og:title='Blog | bakēd Group'",
+    "seo_blog_detail": "PASS — <title>bakēd Super App Launch | bakēd Group</title>, og:title='bakēd Super App Launch', og:image set to the featured image URL (Unsplash photo-1517248135467-...)",
+    "json_ld_blog_list": "PASS — JSON-LD @type='Blog' present on /blog",
+    "json_ld_blog_detail": "PASS — JSON-LD @type='BlogPosting' present on /blog/launch-super-app",
+    "json_ld_news_list": "PASS — JSON-LD @type='CollectionPage' present on /news",
+    "json_ld_news_detail": "PASS — JSON-LD @type='NewsArticle' present on /news/series-a-2026",
+    "sitemap_entries": "PASS — /sitemap.xml contains /blog, /news, /blog/launch-super-app, /blog/design-system, /news/series-a-2026, /news/africa-tech-awards-finalist",
+    "empty_state_branch": "PASS (code inspection) — BlogList.tsx lines 100-114 render [data-testid=blog-empty] with 'No posts yet'/'Aucun article pour le moment' when posts.length===0; same pattern for news-empty.",
+    "regression_public_pages": "PASS — /, /about-us, /services, /careers all 200; brand 'bakēd' intact on every page",
+    "regression_admin": "PASS — /admin loads (200) with sign-in form; admin@baked.group email pre-filled in placeholder",
+    "regression_proxy_cookie_leak": "PASS — unauth GET /api/admin/blog returns 401 (cookie-leak fix from iteration_18 still holds)"
+  },
+  "test_report_links": [
+    "/app/test_reports/iteration_19.json"
+  ],
+  "action_items": [
+    "OPTIONAL (data only, not a code bug): If you want the featured slot on /blog to always show 'launch-super-app', either order seeds explicitly by createdAt and keep launch-super-app's createdAt newer, or bump its updatedAt during seed. Currently 'design-system' is the most-recently-updated post so it occupies the featured slot."
+  ],
+  "critical_code_review_comments": [
+    "blog/page.tsx + news/page.tsx use prisma.siteSettings.upsert on every request — fine functionally but adds a write on every public page hit. Consider caching or a read-only findFirst with fallback to default settings.",
+    "Blog detail JSON-LD uses post.createdAt for datePublished and post.updatedAt for dateModified — correct. NewsArticle JSON-LD on news/[slug] should be verified to include same fields (saw @type NewsArticle confirmed; full field audit not done).",
+    "The dynamic testid for FR 'Actualités' becomes 'nav-link-actualit-s' (accents stripped + double hyphen collapsed). Spec lists 'nav-link-actualités' or 'nav-link-news' as acceptable — current implementation is consistent but worth documenting since selector is non-obvious.",
+    "Featured-vs-rest split in BlogList relies on posts[0] being the right post — depends entirely on updatedAt seed order. A 'featured: true' bool flag on BlogPost would be more deterministic for editorial control.",
+    "force-dynamic on every public page disables ISR/static caching — fine for a low-traffic CMS but consider revalidate=60 for cost/perf at scale."
+  ],
+  "updated_files": [],
+  "success_rate": { "backend": "N/A (skipped per request)", "frontend": "100% (all critical assertions PASS)" },
+  "test_credentials": "admin@baked.group / BakedAdmin2025! (from /app/memory/test_credentials.md — used only for spot-check that /admin loads)",
+  "seed_data_creation": "None. Existing seed (launch-super-app, design-system, series-a-2026, africa-tech-awards-finalist) used.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Public Blog & News pages fully verified. Key testids: blog-list-page, blog-card-featured, blog-card-<slug>, blog-article, blog-article-title, blog-article-back, blog-article-share, news-list-page, news-card-<slug>, news-article, news-article-title. Header nav: nav-link-blog and nav-link-actualit-s (FR default). Lang switch: lang-button + lang-option-fr / lang-option-en. JSON-LD types: Blog/BlogPosting/CollectionPage/NewsArticle. SITE_URL in metadata = https://baked.group (from NEXT_PUBLIC_SITE_URL env). Note: featured card slot is just posts[0] sorted by updatedAt desc — currently 'design-system' because of seed order.",
+  "rca_of_the_issue": "N/A — no bugs found."
+}

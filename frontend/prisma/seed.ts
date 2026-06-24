@@ -11,7 +11,7 @@ async function main() {
   await prisma.adminUser.upsert({
     where: { email: adminEmail },
     update: { password: hash },
-    create: { email: adminEmail, password: hash, name: 'Baked Admin', role: 'admin' },
+    create: { email: adminEmail, password: hash, name: 'bakēd Admin', role: 'admin' },
   });
   console.log(`✓ Admin: ${adminEmail}`);
 
@@ -19,14 +19,14 @@ async function main() {
   await prisma.siteSettings.upsert({
     where: { id: 1 },
     update: {
-      companyName: 'Baked Group',
-      copyrightText: '© 2025 Baked Group. Tous droits réservés.',
+      companyName: 'bakēd Group',
+      copyrightText: '© 2025 bakēd Group. Tous droits réservés.',
       footerTextFr: 'Simplifier la vie des gens et les connecter ensemble.',
       footerTextEn: "Simplifying people's lives and connecting them together.",
     },
     create: {
       id: 1,
-      companyName: 'Baked Group',
+      companyName: 'bakēd Group',
       contactEmail: 'contact@baked.group',
       contactPhone: '+33 1 23 45 67 89',
       contactAddress: 'Paris, France',
@@ -36,19 +36,24 @@ async function main() {
       instagramUrl: 'https://instagram.com/bakedgroup',
       tiktokUrl: 'https://tiktok.com/@bakedgroup',
       youtubeUrl: 'https://youtube.com/@bakedgroup',
-      copyrightText: '© 2025 Baked Group. Tous droits réservés.',
+      copyrightText: '© 2025 bakēd Group. Tous droits réservés.',
     },
   });
   console.log('✓ Site settings');
 
-  // 3. Homepage content (idempotent — patch any 'Baked Growth' -> 'Baked Group')
+  // 3. Homepage content (idempotent — patch any 'Baked Growth'/'Baked Group' -> 'bakēd Group', and BAKED -> bakēd in titles)
   await prisma.homepageContent.upsert({
     where: { id: 1 },
     update: {},
     create: { id: 1 },
   });
   await prisma.$executeRawUnsafe(
-    `UPDATE "HomepageContent" SET "aboutBodyFr" = REPLACE("aboutBodyFr", 'Baked Growth', 'Baked Group'), "aboutBodyEn" = REPLACE("aboutBodyEn", 'Baked Growth', 'Baked Group') WHERE id = 1`
+    `UPDATE "HomepageContent" SET
+      "aboutBodyFr" = REPLACE(REPLACE("aboutBodyFr", 'Baked Growth', 'bakēd Group'), 'Baked Group', 'bakēd Group'),
+      "aboutBodyEn" = REPLACE(REPLACE("aboutBodyEn", 'Baked Growth', 'bakēd Group'), 'Baked Group', 'bakēd Group'),
+      "aboutTitleFr" = REPLACE("aboutTitleFr", 'BAKED', 'bakēd'),
+      "aboutTitleEn" = REPLACE("aboutTitleEn", 'BAKED', 'bakēd')
+     WHERE id = 1`
   );
   console.log('✓ Homepage content');
 
@@ -151,8 +156,8 @@ async function main() {
       locationEn: 'Paris / Remote',
       typeFr: 'Temps plein',
       typeEn: 'Full-time',
-      descFr: 'Rejoignez notre équipe design et façonnez l\'avenir de l\'écosystème Baked.',
-      descEn: 'Join our design team and shape the future of the Baked ecosystem.',
+      descFr: 'Rejoignez notre équipe design et façonnez l\'avenir de l\'écosystème bakēd.',
+      descEn: 'Join our design team and shape the future of the bakēd ecosystem.',
       published: true,
     },
   });
@@ -170,8 +175,8 @@ async function main() {
       locationEn: 'Remote',
       typeFr: 'Temps plein',
       typeEn: 'Full-time',
-      descFr: 'Construisez les API et les expériences qui propulsent l\'écosystème Baked à grande échelle.',
-      descEn: 'Build the APIs and experiences that power the Baked ecosystem at scale.',
+      descFr: 'Construisez les API et les expériences qui propulsent l\'écosystème bakēd à grande échelle.',
+      descEn: 'Build the APIs and experiences that power the bakēd ecosystem at scale.',
       published: true,
     },
   });

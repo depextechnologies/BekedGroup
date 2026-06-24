@@ -23,16 +23,16 @@ function AboutHero() {
   const heroKicker = locale === 'fr' ? 'QUI SOMMES-NOUS' : 'WHO WE ARE';
   const paragraphs = locale === 'fr'
     ? [
-        "Baked Group développe l'application incontournable d'Afrique, simplifiant plus que jamais la livraison à la demande, la commande de repas et de courses, le commerce électronique, le marché de l'immobilier et de l'automobile, la gestion des paiements et bien plus encore.",
-        "Baked Group est guidé par une mission forte : simplifier et améliorer la vie des gens et bâtir une organisation inspirante et performante.",
+        "bakēd Group développe l'application incontournable d'Afrique, simplifiant plus que jamais la livraison à la demande, la commande de repas et de courses, le commerce électronique, le marché de l'immobilier et de l'automobile, la gestion des paiements et bien plus encore.",
+        "bakēd Group est guidé par une mission forte : simplifier et améliorer la vie des gens et bâtir une organisation inspirante et performante.",
         "Notre Super App vise à répondre aux besoins les plus exigeants des utilisateurs. Nous fournissons à nos clients les meilleurs outils pour réussir aujourd'hui et demain.",
-        "L'application Baked est disponible en téléchargement via iOS et Android.",
+        "L'application bakēd est disponible en téléchargement via iOS et Android.",
       ]
     : [
-        'Baked Group is building Africa\'s essential super-app — making on-demand delivery, food and groceries ordering, e-commerce, real estate and automotive marketplaces, payment management and so much more simpler than ever.',
-        'Baked Group is driven by a strong mission: to simplify and improve people\'s lives and to build an inspiring, high-performing organization.',
+        'bakēd Group is building Africa\'s essential super-app — making on-demand delivery, food and groceries ordering, e-commerce, real estate and automotive marketplaces, payment management and so much more simpler than ever.',
+        'bakēd Group is driven by a strong mission: to simplify and improve people\'s lives and to build an inspiring, high-performing organization.',
         'Our Super App is designed to meet the most demanding user needs. We give our customers the best tools to succeed today and tomorrow.',
-        'The Baked app is available to download on iOS and Android.',
+        'The bakēd app is available to download on iOS and Android.',
       ];
 
   return (
@@ -171,11 +171,11 @@ function MissionSection() {
   const { locale } = useI18n();
   const body = locale === 'fr'
     ? [
-        "Baked Group s'engage à résoudre les problèmes quotidiens rencontrés par les consommateurs, tout en améliorant la qualité de vie de millions de personnes en Afrique, notamment celles du secteur informel, ainsi que les petites et moyennes entreprises.",
+        "bakēd Group s'engage à résoudre les problèmes quotidiens rencontrés par les consommateurs, tout en améliorant la qualité de vie de millions de personnes en Afrique, notamment celles du secteur informel, ainsi que les petites et moyennes entreprises.",
         "Nous facilitons la vie de nos utilisateurs en connectant des millions de personnes et en leur donnant les moyens de prendre des décisions rapides et avisées.",
       ]
     : [
-        'Baked Group is committed to solving the everyday problems consumers face, while improving the quality of life for millions of people across Africa — especially those in the informal sector, and small and medium businesses.',
+        'bakēd Group is committed to solving the everyday problems consumers face, while improving the quality of life for millions of people across Africa — especially those in the informal sector, and small and medium businesses.',
         'We make our users\' lives easier by connecting millions of people and empowering them to make fast, informed decisions.',
       ];
 
@@ -359,7 +359,7 @@ function BakedEnBref() {
             {locale === 'fr' ? "L'écosystème" : 'The ecosystem'}
           </span>
           <h2 className="font-heading mt-4 text-4xl md:text-5xl lg:text-6xl font-black leading-[0.95] tracking-tighter">
-            {locale === 'fr' ? 'BAKED GROUP EN BREF' : 'BAKED GROUP AT A GLANCE'}
+            {locale === 'fr' ? 'bakēd GROUP EN BREF' : 'bakēd GROUP AT A GLANCE'}
           </h2>
           <p className="mt-5 text-base md:text-lg text-zinc-700 leading-relaxed max-w-xl">
             {locale === 'fr'
@@ -440,7 +440,7 @@ function WhySection() {
           className="text-center mb-16"
         >
           <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-black leading-[0.95] tracking-tighter">
-            {locale === 'fr' ? 'Pourquoi choisir Baked ?' : 'Why choose Baked?'}
+            {locale === 'fr' ? 'Pourquoi choisir bakēd ?' : 'Why choose bakēd?'}
           </h2>
         </motion.div>
 
@@ -501,9 +501,9 @@ function CTASection() {
       >
         <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-black leading-[1.05] tracking-tighter">
           {locale === 'fr' ? (
-            <>Baked Group, votre quotidien <span className="text-brand-gold">simplifié</span>,<br />vos opportunités <span className="text-brand-gold">multipliées</span>.</>
+            <>bakēd Group, votre quotidien <span className="text-brand-gold">simplifié</span>,<br />vos opportunités <span className="text-brand-gold">multipliées</span>.</>
           ) : (
-            <>Baked Group — your everyday <span className="text-brand-gold">simplified</span>,<br />your opportunities <span className="text-brand-gold">multiplied</span>.</>
+            <>bakēd Group — your everyday <span className="text-brand-gold">simplified</span>,<br />your opportunities <span className="text-brand-gold">multiplied</span>.</>
           )}
         </h2>
         <div className="mt-10 flex flex-wrap items-center justify-center gap-4">

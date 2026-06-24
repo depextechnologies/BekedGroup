@@ -8,19 +8,19 @@ export const dynamic = 'force-dynamic';
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://baked.group';
 
 export const metadata: Metadata = {
-  title: { absolute: 'Nos Services | Baked Group' },
+  title: { absolute: 'Nos Services | bakēd Group' },
   description:
-    'Découvrez les services innovants de Baked Group : livraison, restauration, commerce électronique, automobile, immobilier et bien plus encore.',
+    'Découvrez les services innovants de bakēd Group : livraison, restauration, commerce électronique, automobile, immobilier et bien plus encore.',
   alternates: { canonical: `${SITE_URL}/services` },
   openGraph: {
     type: 'website',
     url: `${SITE_URL}/services`,
-    title: 'Nos Services | Baked Group',
+    title: 'Nos Services | bakēd Group',
     description:
       'La Super App africaine — livraison, repas, marché, boutique, automobile, immobilier.',
-    siteName: 'Baked Group',
+    siteName: 'bakēd Group',
   },
-  twitter: { card: 'summary_large_image', title: 'Nos Services | Baked Group' },
+  twitter: { card: 'summary_large_image', title: 'Nos Services | bakēd Group' },
 };
 
 export default async function ServicesPage() {
@@ -38,9 +38,9 @@ export default async function ServicesPage() {
           __html: JSON.stringify({
             '@context': 'https://schema.org',
             '@type': 'Service',
-            provider: { '@type': 'Organization', name: 'Baked Group', url: SITE_URL },
+            provider: { '@type': 'Organization', name: 'bakēd Group', url: SITE_URL },
             url: `${SITE_URL}/services`,
-            name: 'Nos Services | Baked Group',
+            name: 'Nos Services | bakēd Group',
             description: metadata.description,
             areaServed: 'Africa',
             serviceType: ['Delivery', 'Food', 'Marketplace', 'E-commerce', 'Automotive', 'Real Estate'],

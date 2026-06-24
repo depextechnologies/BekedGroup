@@ -23,11 +23,11 @@ function ServicesHero() {
     : 'Technology that powers your everyday life.';
   const paras = locale === 'fr'
     ? [
-        "Baked Group est un pionnier du numérique qui simplifie la vie des gens grâce à des produits révolutionnaires.",
+        "bakēd Group est un pionnier du numérique qui simplifie la vie des gens grâce à des produits révolutionnaires.",
         "Nous cherchons à répondre aux besoins des utilisateurs les plus exigeants.",
       ]
     : [
-        'Baked Group is a digital pioneer simplifying lives with revolutionary products.',
+        'bakēd Group is a digital pioneer simplifying lives with revolutionary products.',
         'We meet the needs of the most demanding users.',
       ];
 
@@ -56,7 +56,7 @@ function ServicesHero() {
       >
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm mb-6">
           <span className="h-2 w-2 rounded-full bg-brand-gold animate-pulse" />
-          <span className="text-xs uppercase tracking-[0.3em] text-white/70 font-semibold">Baked Group</span>
+          <span className="text-xs uppercase tracking-[0.3em] text-white/70 font-semibold">bakēd Group</span>
         </div>
         <h1 data-testid="services-hero-title" className="font-heading text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black leading-[0.95] tracking-tighter">
           {title.split(' ')[0]} <span className="text-brand-gold">{title.split(' ')[1]}</span>
@@ -97,9 +97,9 @@ function SuperAppSection() {
             <div className="h-[2px] w-12 bg-brand-gold" />
             <span className="text-xs uppercase tracking-[0.3em] font-bold text-brand-gold">{locale === 'fr' ? "L'écosystème" : 'The ecosystem'}</span>
           </div>
-          <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-black leading-[0.95] tracking-tighter">SUPER APPLICATION <span className="text-brand-gold">BAKED</span></h2>
+          <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-black leading-[0.95] tracking-tighter">SUPER APPLICATION <span className="text-brand-gold">bakēd</span></h2>
           <div className="mt-7 space-y-5 text-base md:text-lg text-zinc-700 leading-relaxed">
-            <p>{locale === 'fr' ? "La mission de Baked est d'améliorer et de faciliter la vie des clients au quotidien en innovant sans relâche pour eux." : "Baked's mission is to improve and simplify daily life by relentlessly innovating for our customers."}</p>
+            <p>{locale === 'fr' ? "La mission de bakēd est d'améliorer et de faciliter la vie des clients au quotidien en innovant sans relâche pour eux." : "bakēd's mission is to improve and simplify daily life by relentlessly innovating for our customers."}</p>
             <p>{locale === 'fr' ? "Nous nous efforçons d'offrir un large choix, de la valeur et de la commodité à travers une gamme d'expériences client, notamment les achats en ligne, la livraison à la demande, la logistique, l'immobilier, l'automobile, la publicité, les moyens de paiement et bien plus encore." : 'We strive to deliver wide selection, value and convenience across online shopping, on-demand delivery, logistics, real estate, automotive, advertising, payments and much more.'}</p>
           </div>
         </motion.div>
@@ -146,14 +146,14 @@ function SuperAppSection() {
 function ServicesGrid() {
   const { locale } = useI18n();
   const services = locale === 'fr' ? [
-    { Icon: Truck, color: '#F7A500', title: 'Livraison & Logistique', desc: "Baked est le leader des services de livraison express avec suivi GPS en temps réel. Vos documents, colis et autres articles sont expédiés en toute sécurité. Choisissez entre la livraison instantanée ou programmée. Un service sûr, abordable et rapide, à portée de main.", img: 'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=900&q=80' },
+    { Icon: Truck, color: '#F7A500', title: 'Livraison & Logistique', desc: "bakēd est le leader des services de livraison express avec suivi GPS en temps réel. Vos documents, colis et autres articles sont expédiés en toute sécurité. Choisissez entre la livraison instantanée ou programmée. Un service sûr, abordable et rapide, à portée de main.", img: 'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=900&q=80' },
     { Icon: UtensilsCrossed, color: '#32CD32', title: 'Livraison de repas', desc: "Chaque jour, nous assurons la livraison rapide de plats et de boissons de restaurants et de cafés à des milliers de clients affamés. En quelques clics, vous pouvez vous faire livrer vos envies directement chez vous.", img: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=900&q=80' },
     { Icon: ShoppingCart, color: '#32CD32', title: 'Marché & Supermarché', desc: "Trouvez tout ce dont vous avez besoin : produits d'épicerie et bien plus encore. Nous livrons vos essentiels du quotidien en moins d'une heure ou à votre convenance. Des produits frais aux bouquets, livraison rapide et sans tracas.", img: 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=900&q=80' },
     { Icon: ShoppingBag, color: '#F7A500', title: 'Boutique', desc: "Nous travaillons chaque jour pour gagner et conserver la confiance de nos clients et des milliers de petites et moyennes entreprises. De la mode et high-tech aux équipements automobiles, nous proposons une vaste sélection.", img: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=900&q=80' },
     { Icon: Car, color: '#E5484D', title: 'Automobile', desc: "Notre plateforme automobile innovante permet de trouver le véhicule qui correspond parfaitement à votre mode de vie. Nous accompagnons chaque utilisateur et aidons concessionnaires et partenaires grâce à des outils basés sur les données.", img: 'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=900&q=80' },
     { Icon: Home, color: '#7A3CFF', title: 'Immobilier', desc: "Notre compréhension de l'immobilier n'a pas d'égal. Qu'il s'agisse de nouveaux locataires, d'appartements urbains ou de maisons de campagne, notre plateforme est conçue pour satisfaire et dépasser les attentes.", img: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=900&q=80' },
   ] : [
-    { Icon: Truck, color: '#F7A500', title: 'Delivery & Logistics', desc: 'Baked leads express delivery with real-time GPS tracking. Your documents, parcels and items ship safely. Choose instant or scheduled — safe, affordable, fast.', img: 'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=900&q=80' },
+    { Icon: Truck, color: '#F7A500', title: 'Delivery & Logistics', desc: 'bakēd leads express delivery with real-time GPS tracking. Your documents, parcels and items ship safely. Choose instant or scheduled — safe, affordable, fast.', img: 'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=900&q=80' },
     { Icon: UtensilsCrossed, color: '#32CD32', title: 'Food Delivery', desc: 'Every day we deliver meals and drinks from restaurants and cafés to thousands of hungry customers. In a few taps, get your favorites delivered.', img: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=900&q=80' },
     { Icon: ShoppingCart, color: '#32CD32', title: 'Market & Grocery', desc: 'Find groceries and everyday essentials. Get them in under an hour or scheduled at your convenience — from fresh produce to flowers.', img: 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=900&q=80' },
     { Icon: ShoppingBag, color: '#F7A500', title: 'Marketplace', desc: 'We work every day to earn and keep the trust of customers and thousands of SMBs. From fashion and tech to auto parts and crafts — wide selection with multiple delivery options.', img: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=900&q=80' },
@@ -243,7 +243,7 @@ function WhyChooseBaked() {
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }} className="text-center mb-16">
           <span className="text-xs uppercase tracking-[0.3em] font-bold text-brand-gold">{locale === 'fr' ? 'Pourquoi nous' : 'Why us'}</span>
-          <h2 className="font-heading mt-4 text-4xl md:text-5xl lg:text-6xl font-black leading-[0.95] tracking-tighter">{locale === 'fr' ? 'Pourquoi choisir Baked ?' : 'Why choose Baked?'}</h2>
+          <h2 className="font-heading mt-4 text-4xl md:text-5xl lg:text-6xl font-black leading-[0.95] tracking-tighter">{locale === 'fr' ? 'Pourquoi choisir bakēd ?' : 'Why choose bakēd?'}</h2>
         </motion.div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-16">
@@ -297,7 +297,7 @@ function DigitalAfricaSection() {
               {locale === 'fr' ? <>Construire <span className="text-brand-gold">{`l'avenir numérique`}</span> {`de l'Afrique.`}</> : <>Building Africa&apos;s <span className="text-brand-gold">digital future.</span></>}
             </h2>
             <p className="mt-6 text-lg text-white/75 max-w-xl leading-relaxed">
-              {locale === 'fr' ? "Baked Group développe des solutions numériques innovantes destinées à simplifier le quotidien des particuliers, des entreprises et des communautés à travers l'Afrique." : "Baked Group builds innovative digital solutions to simplify daily life for individuals, businesses and communities across Africa."}
+              {locale === 'fr' ? "bakēd Group développe des solutions numériques innovantes destinées à simplifier le quotidien des particuliers, des entreprises et des communautés à travers l'Afrique." : "bakēd Group builds innovative digital solutions to simplify daily life for individuals, businesses and communities across Africa."}
             </p>
           </motion.div>
         </div>
@@ -316,7 +316,7 @@ function ServicesCTA() {
       </div>
       <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="relative max-w-4xl mx-auto px-6 md:px-12 text-center">
         <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-black leading-[1.05] tracking-tighter">
-          {locale === 'fr' ? <>Rejoignez la <span className="text-brand-gold">révolution numérique</span><br />avec Baked.</> : <>Join the <span className="text-brand-gold">digital revolution</span><br />with Baked.</>}
+          {locale === 'fr' ? <>Rejoignez la <span className="text-brand-gold">révolution numérique</span><br />avec bakēd.</> : <>Join the <span className="text-brand-gold">digital revolution</span><br />with bakēd.</>}
         </h2>
         <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
           <Link href="/#mobile" className="inline-flex items-center gap-2 px-7 py-4 rounded-full bg-gradient-to-r from-brand-gold to-yellow-500 text-bg-primary font-bold text-sm uppercase tracking-wider hover:from-yellow-400 hover:to-brand-gold transition-all shadow-glow-gold">

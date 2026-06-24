@@ -52,7 +52,7 @@ export function Careers({ image }: { image: string }) {
             transition={{ duration: 0.7 }}
             className="relative aspect-[4/3] lg:aspect-auto"
           >
-            <img src={image} alt="Baked team" className="w-full h-full object-cover" />
+            <img src={image} alt="bakēd team" className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-r from-transparent to-white/10 lg:to-transparent" />
           </motion.div>
 

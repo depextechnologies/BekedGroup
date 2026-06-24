@@ -27,10 +27,10 @@ async function trySendEmail(msg: {
       auth: { user, pass },
     });
     await transporter.sendMail({
-      from: process.env.SMTP_FROM || `Baked Group <${user}>`,
+      from: process.env.SMTP_FROM || `bakēd Group <${user}>`,
       to: process.env.SMTP_TO || user,
       replyTo: msg.email,
-      subject: `[Baked Group] New contact from ${msg.name}`,
+      subject: `[bakēd Group] New contact from ${msg.name}`,
       text: `Name: ${msg.name}\nEmail: ${msg.email}\nPhone: ${msg.phone || '-'}\nCompany: ${msg.company || '-'}\n\n${msg.message}`,
     });
     return true;

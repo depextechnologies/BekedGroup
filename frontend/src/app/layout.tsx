@@ -23,29 +23,29 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://baked.group';
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'Baked Group — Simplifier la vie des gens et les connecter ensemble',
-    template: '%s — Baked Group',
+    default: 'bakēd Group — Simplifier la vie des gens et les connecter ensemble',
+    template: '%s — bakēd Group',
   },
   description:
-    'Baked Group construit un écosystème unifié de super-app : EXPRESSbakēd, FOODbakēd, MARTbakēd, SHOPbakēd, AUTObakēd, IMMObakēd. Une seule application. Plusieurs services. Une expérience connectée.',
+    'bakēd Group construit un écosystème unifié de super-app : EXPRESSbakēd, FOODbakēd, MARTbakēd, SHOPbakēd, AUTObakēd, IMMObakēd. Une seule application. Plusieurs services. Une expérience connectée.',
   keywords: [
-    'Baked Group', 'super app', 'écosystème digital', 'food delivery', 'marketplace',
+    'bakēd Group', 'super app', 'écosystème digital', 'food delivery', 'marketplace',
     'real estate', 'vehicle marketplace', 'smart services', 'technology', 'EXPRESSbakēd',
     'FOODbakēd', 'MARTbakēd', 'SHOPbakēd', 'AUTObakēd', 'IMMObakēd',
   ],
-  authors: [{ name: 'Baked Group' }],
+  authors: [{ name: 'bakēd Group' }],
   openGraph: {
     type: 'website',
     locale: 'fr_FR',
     alternateLocale: 'en_US',
     url: SITE_URL,
-    siteName: 'Baked Group',
-    title: 'Baked Group — Simplifier la vie des gens et les connecter ensemble',
+    siteName: 'bakēd Group',
+    title: 'bakēd Group — Simplifier la vie des gens et les connecter ensemble',
     description: 'Une seule application. Plusieurs services. Une expérience connectée.',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Baked Group',
+    title: 'bakēd Group',
     description: 'Simplifier la vie des gens et les connecter ensemble.',
   },
   robots: {

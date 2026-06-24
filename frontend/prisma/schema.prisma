@@ -21,7 +21,7 @@ model AdminUser {
 // ---------- Site settings (singleton row id=1) ----------
 model SiteSettings {
   id              Int      @id @default(1)
-  companyName     String   @default("Baked Group")
+  companyName     String   @default("bakēd Group")
   contactEmail    String   @default("contact@baked.group")
   contactPhone    String   @default("")
   contactAddress  String   @default("")
@@ -33,7 +33,7 @@ model SiteSettings {
   youtubeUrl      String   @default("")
   footerTextFr    String   @default("Simplifier la vie des gens et les connecter ensemble.")
   footerTextEn    String   @default("Simplifying people's lives and connecting them together.")
-  copyrightText   String   @default("© 2025 Baked Group. Tous droits réservés.")
+  copyrightText   String   @default("© 2025 bakēd Group. Tous droits réservés.")
   logoUrl         String   @default("/logos/baked.jpeg")
   faviconUrl      String   @default("")
   appStoreUrl     String   @default("")
@@ -56,10 +56,10 @@ model HomepageContent {
   heroCta2En      String   @default("Join Us")
   heroBgImage     String   @default("https://images.pexels.com/photos/1787044/pexels-photo-1787044.jpeg")
   heroForegroundImage String @default("https://images.pexels.com/photos/4963439/pexels-photo-4963439.jpeg")
-  aboutTitleFr    String   @default("À PROPOS DE BAKED")
-  aboutTitleEn    String   @default("ABOUT BAKED")
-  aboutBodyFr     String   @default("Baked Group développe un écosystème unifié d'applications digitales pensé pour simplifier le quotidien grâce à la technologie. Notre mission est de connecter les personnes, les entreprises, les services, la mobilité, le commerce, la restauration et l'immobilier dans une expérience fluide et unique.")
-  aboutBodyEn     String   @default("Baked Group builds a unified ecosystem of digital applications designed to simplify everyday life through technology. Our mission is to connect people, businesses, services, mobility, commerce, food, and real estate into one seamless experience.")
+  aboutTitleFr    String   @default("À PROPOS DE bakēd")
+  aboutTitleEn    String   @default("ABOUT bakēd")
+  aboutBodyFr     String   @default("bakēd Group développe un écosystème unifié d'applications digitales pensé pour simplifier le quotidien grâce à la technologie. Notre mission est de connecter les personnes, les entreprises, les services, la mobilité, le commerce, la restauration et l'immobilier dans une expérience fluide et unique.")
+  aboutBodyEn     String   @default("bakēd Group builds a unified ecosystem of digital applications designed to simplify everyday life through technology. Our mission is to connect people, businesses, services, mobility, commerce, food, and real estate into one seamless experience.")
   careersImage    String   @default("https://images.pexels.com/photos/7109013/pexels-photo-7109013.jpeg")
   updatedAt       DateTime @updatedAt
 }

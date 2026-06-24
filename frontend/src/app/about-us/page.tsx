@@ -9,19 +9,19 @@ export const dynamic = 'force-dynamic';
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://baked.group';
 
 export const metadata: Metadata = {
-  title: { absolute: 'À Propos de Nous | Baked Group' },
+  title: { absolute: 'À Propos de Nous | bakēd Group' },
   description:
-    'Découvrez la mission, les valeurs et la vision de Baked Group, la Super App africaine qui simplifie la vie quotidienne grâce à la technologie.',
+    'Découvrez la mission, les valeurs et la vision de bakēd Group, la Super App africaine qui simplifie la vie quotidienne grâce à la technologie.',
   alternates: { canonical: `${SITE_URL}/about-us` },
   openGraph: {
     type: 'website',
     url: `${SITE_URL}/about-us`,
-    title: 'À Propos de Nous | Baked Group',
+    title: 'À Propos de Nous | bakēd Group',
     description:
-      'La mission, les valeurs et la vision de Baked Group — la Super App africaine qui simplifie la vie quotidienne.',
-    siteName: 'Baked Group',
+      'La mission, les valeurs et la vision de bakēd Group — la Super App africaine qui simplifie la vie quotidienne.',
+    siteName: 'bakēd Group',
   },
-  twitter: { card: 'summary_large_image', title: 'À Propos de Nous | Baked Group' },
+  twitter: { card: 'summary_large_image', title: 'À Propos de Nous | bakēd Group' },
 };
 
 export default async function AboutUsPage() {
@@ -44,11 +44,11 @@ export default async function AboutUsPage() {
             '@context': 'https://schema.org',
             '@type': 'AboutPage',
             url: `${SITE_URL}/about-us`,
-            name: 'À Propos de Nous | Baked Group',
+            name: 'À Propos de Nous | bakēd Group',
             description: metadata.description,
             mainEntity: {
               '@type': 'Organization',
-              name: 'Baked Group',
+              name: 'bakēd Group',
               url: SITE_URL,
               email: 'contact@baked.group',
               sameAs: [

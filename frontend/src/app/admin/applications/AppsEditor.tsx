@@ -78,7 +78,7 @@ export function AppsEditor({ initialApps }: { initialApps: App[] }) {
     <div className="space-y-8" data-testid="apps-editor">
       <div>
         <h1 className="font-heading text-3xl md:text-4xl font-black tracking-tight">Applications</h1>
-        <p className="text-white/60 mt-2">Manage the 6 apps of the Baked ecosystem.</p>
+        <p className="text-white/60 mt-2">Manage the 6 apps of the bakēd ecosystem.</p>
       </div>
 
       <div className="space-y-6">

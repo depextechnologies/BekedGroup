@@ -28,8 +28,8 @@
     "subtitle": "Six applications. One seamless experience. Endless possibilities."
   },
   "why": {
-    "kicker": "Why Baked",
-    "title": "Why choose Baked?",
+    "kicker": "Why bakēd",
+    "title": "Why choose bakēd?",
     "subtitle": "An ecosystem designed to support you everywhere, every day.",
     "benefits": {
       "unified": { "title": "Unified ecosystem", "desc": "A single app for every essential service in your day." },
@@ -106,8 +106,8 @@
     }
   },
   "footer": {
-    "download": "Download Baked",
-    "discover": "Discover Baked",
+    "download": "Download bakēd",
+    "discover": "Discover bakēd",
     "social": "Social media",
     "help": "Need help?",
     "language": "Language",

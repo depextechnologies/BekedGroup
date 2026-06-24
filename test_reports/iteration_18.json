@@ -1,0 +1,51 @@
+{
+  "summary": "Phase 2 Admin CMS (Blog + News CRUD) end-to-end testing — full UI flows + API + security regression. ALL CRITICAL TESTS PASS. Backend pytest: 19/19 PASS. Playwright UI flows: 14/14 PASS (login, dashboard 6-tile, blog nav+create+edit+toggle+delete+empty+validation, news nav+create+edit+toggle+delete). Critical security fix verified: proxy no longer leaks cookies between unauth/auth/unauth sequence on /api/admin/blog.",
+  "backend_issues": { "critical": [], "minor": [] },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_results": {
+    "backend_pytest": "19/19 PASS (test_admin_cms_security.py): 12 unauth-401 cases (blog/news/jobs/apps/messages/settings × methods), 1 cookie-leak regression PASS, blog CRUD lifecycle PASS, news CRUD lifecycle PASS, 4 public-page smoke PASS.",
+    "ui_login": "PASS — admin@baked.group/BakedAdmin2025! → /admin",
+    "ui_dashboard_tiles": "PASS — page contains Blog and News (6-tile layout confirmed)",
+    "ui_blog_nav": "PASS — sidebar admin-nav-blog → /admin/blog renders [data-testid=blog-manager]",
+    "ui_blog_empty_or_existing": "PASS — empty state rendered when no posts; or existing rows when present",
+    "ui_blog_validation": "PASS — saving with empty FR+EN titles shows toast 'Title (FR + EN) is required' and does NOT submit to API",
+    "ui_blog_create": "PASS — modal CRUD, FR/EN locale tabs, save → modal closes, row appears with title 'Lancement de la Super App'",
+    "ui_blog_edit": "PASS — clicking edit pre-fills modal (verified prefilled titleFr exactly == 'Lancement de la Super App'); update propagates to row",
+    "ui_blog_toggle_publish": "PASS — pill flips Published → Draft via PUT (no error toast)",
+    "ui_blog_delete": "PASS — confirm dialog accepted, row disappears, 'Deleted' toast shown",
+    "ui_news_nav": "PASS — admin-nav-news → /admin/news renders [data-testid=news-manager]",
+    "ui_news_create": "PASS",
+    "ui_news_edit": "PASS",
+    "ui_news_toggle_publish": "PASS — pill flips Published → Draft",
+    "ui_news_delete": "PASS — 'Deleted' toast visible (confirmed in screenshot)",
+    "api_security_unauth_401": "PASS — all of GET/POST/PUT/DELETE on /api/admin/{blog,news,jobs,apps,messages,settings} return 401 {ok:false,error:'unauthorized'} without cookie",
+    "api_security_no_cookie_leak": "PASS (CRITICAL) — sequence unauth(401) → auth(200) → unauth(401) confirmed; httpx.AsyncClient.cookies.clear() before each forwarded request + cookies={} on per-request call works as intended",
+    "public_site_regression": "PASS — /, /about-us, /services, /careers all 200 with content"
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_admin_cms_security.py",
+    "/app/test_reports/pytest/admin_cms.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "BlogManager.tsx & NewsManager.tsx are single-file ~300 LOC each; acceptable but Field/LocaleTab helpers could be lifted to /components/ui for reuse across the two managers (currently duplicated).",
+    "togglePublish in BlogManager.tsx (line 85-93) optimistically updates UI but does NOT roll back on PUT failure — if the network/PUT fails the UI is permanently out of sync with DB. Recommend reverting state on !res.ok and toast.error.",
+    "remove() in BlogManager.tsx uses window.confirm — works but a styled confirm modal would match the rest of the admin design.",
+    "Security fix in /app/backend/server.py (cookies=None on AsyncClient + _client.cookies.clear() before each call + cookies={} per-request) is solid defense-in-depth and verified via automated regression test (test_proxy_does_not_leak_cookies_between_calls).",
+    "Backend tests originally used field name 'coverImage' for News — actual prisma model uses 'image'. Fixed in test file."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_admin_cms_security.py (NEW — 19-case regression suite for admin CRUD + cookie-leak security)"
+  ],
+  "success_rate": { "backend": "100% (19/19)", "frontend": "100% (14/14 UI flows)" },
+  "test_credentials": "admin@baked.group / BakedAdmin2025! (from /app/memory/test_credentials.md)",
+  "seed_data_creation": "Test data (TEST_ slug-prefixed posts/articles, 'launch-2026-test*' and 'press-release-1-test*') was created and cleaned up by the same test runs. No residual test data in DB.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Admin CMS Blog/News fully verified. All testids in place: blog-manager, blog-create-btn, blog-row-<id>, blog-edit-<id>, blog-toggle-<id>, blog-delete-<id>, blog-tab-{fr,en}, blog-field-{slug,category,image,titleFr,titleEn,excerptFr,excerptEn,contentFr,contentEn,metaTitleFr,metaTitleEn,metaDescFr,metaDescEn,published}, blog-save-btn, blog-empty (same pattern for news-*). News uses field name 'image' not 'coverImage'. Sidebar nav testids: admin-nav-{dashboard,applications,messages,careers,blog,news,settings}. Cookie-leak proxy bug fix confirmed working in production proxy at port 8001.",
+  "rca_of_the_issue": "N/A — main agent already RCAed and fixed the httpx.AsyncClient shared-cookie-jar issue. Verified via test_proxy_does_not_leak_cookies_between_calls."
+}

@@ -1,6 +1,6 @@
 'use client';
 
-import { AppWindow, Inbox, MailQuestion, Briefcase } from 'lucide-react';
+import { AppWindow, Inbox, MailQuestion, Briefcase, FileText, Newspaper } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 interface Stats {
@@ -8,6 +8,8 @@ interface Stats {
   messagesCount: number;
   unreadCount: number;
   jobsCount: number;
+  blogCount: number;
+  newsCount: number;
 }
 
 interface Message {
@@ -25,6 +27,8 @@ export function Dashboard({ stats, recentMessages }: { stats: Stats; recentMessa
     { label: 'Total messages', value: stats.messagesCount, Icon: Inbox, color: '#3498FF' },
     { label: 'Unread messages', value: stats.unreadCount, Icon: MailQuestion, color: '#E5484D' },
     { label: 'Open positions', value: stats.jobsCount, Icon: Briefcase, color: '#32CD32' },
+    { label: 'Blog posts', value: stats.blogCount, Icon: FileText, color: '#7A3CFF' },
+    { label: 'News articles', value: stats.newsCount, Icon: Newspaper, color: '#F7A500' },
   ];
 
   return (
@@ -34,7 +38,7 @@ export function Dashboard({ stats, recentMessages }: { stats: Stats; recentMessa
         <p className="text-white/60 mt-2">Overview of your bakēd Group website</p>
       </div>
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-5">
         {tiles.map((t, i) => (
           <motion.div
             key={t.label}

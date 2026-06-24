@@ -24,7 +24,7 @@ _client: httpx.AsyncClient | None = None
 @app.on_event("startup")
 async def _startup():
     global _client
-    _client = httpx.AsyncClient(timeout=60.0, follow_redirects=False)
+    _client = httpx.AsyncClient(timeout=60.0, follow_redirects=False, cookies=None)
     logger.info("Proxy started, forwarding /api/* -> %s", NEXT_TARGET)
 
 
@@ -66,12 +66,21 @@ async def proxy(path: str, request: Request):
     }
     body = await request.body()
 
+    # Defense-in-depth: clear any cookies httpx may have accumulated in its jar.
+    # The proxy is stateless — only the Cookie header the caller explicitly sent
+    # (already inside fwd_headers) should reach upstream.
+    _client.cookies.clear()
+
     try:
+        # cookies={} on the per-request call prevents httpx from auto-storing the
+        # upstream Set-Cookie in the client's cookie jar (defense-in-depth on top
+        # of the AsyncClient being created with cookies=None at startup).
         upstream = await _client.request(
             request.method,
             url,
             headers=fwd_headers,
             content=body,
+            cookies={},
         )
     except httpx.RequestError as e:
         logger.error("upstream error: %s", e)

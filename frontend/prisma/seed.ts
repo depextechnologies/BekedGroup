@@ -145,7 +145,10 @@ async function main() {
   // 5. Sample job opening
   await prisma.jobOpening.upsert({
     where: { slug: 'senior-product-designer' },
-    update: {},
+    update: {
+      descFr: 'Rejoignez notre équipe design et façonnez l\'avenir de l\'écosystème bakēd.',
+      descEn: 'Join our design team and shape the future of the bakēd ecosystem.',
+    },
     create: {
       slug: 'senior-product-designer',
       titleFr: 'Designer Produit Senior',
@@ -164,7 +167,10 @@ async function main() {
 
   await prisma.jobOpening.upsert({
     where: { slug: 'senior-fullstack-engineer' },
-    update: {},
+    update: {
+      descFr: 'Construisez les API et les expériences qui propulsent l\'écosystème bakēd à grande échelle.',
+      descEn: 'Build the APIs and experiences that power the bakēd ecosystem at scale.',
+    },
     create: {
       slug: 'senior-fullstack-engineer',
       titleFr: 'Ingénieur·e Full-Stack Senior',

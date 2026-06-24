@@ -60,6 +60,7 @@ Build a premium, modern, multilingual corporate website for Baked Group (domain:
 - All public sections + i18n ✅
 - /admin with auth, applications, messages, settings, jobs ✅
 - Hostinger/Docker/Vercel docs ✅
+- **2026-02-24 — Strict brand identity rename ("Baked" → "bakēd"):** Replaced all visible text occurrences of "Baked" / "BAKED" / "Baked Group" with "bakēd" / "bakēd Group" (lowercase b, macron over e) across Hero, Why-section, Footer, About-Us page (paragraphs, "bakēd GROUP EN BREF" headline, "Pourquoi choisir bakēd ?", CTA), Services page (hero badge, "SUPER APPLICATION bakēd", grid copy, Africa section, CTA), Careers job descriptions, admin Dashboard/Messages/Applications strings, contact-route SMTP from-address/subject, manifest, all SEO metadata (layout/about-us/services pages), translation files (messages/en.json + fr.json), Prisma schema defaults, and seed.ts (companyName, copyrightText, jobOpening descs — upserts made idempotent on `update`). Verified by testing agent (iteration_14.json) — 100% pass, zero visible "Baked"/"BAKED" remaining in body text across /, /about-us, /services, /careers in FR + EN. Intentionally retained internal identifiers: CSS classes `rounded-baked`/`baked-wordmark`, file path `/logos/baked-header.png`, email/domain `baked.group`, social handle `bakedgroup`, React component/function names (`WhyBaked`, `BakedEnBref`, `WhyChooseBaked`), data-testid values.
 
 ## P1 — Phase 2 backlog
 - Blog full editor (rich text, categories, featured image upload, SEO meta)

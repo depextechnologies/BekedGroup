@@ -85,11 +85,15 @@ export function BlogManager({ initialPosts }: { initialPosts: BlogPost[] }) {
   const togglePublish = async (p: BlogPost) => {
     const next = !p.published;
     setPosts(posts.map((x) => (x.id === p.id ? { ...x, published: next } : x)));
-    await fetch(`/api/admin/blog/${p.id}`, {
+    const res = await fetch(`/api/admin/blog/${p.id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ ...p, published: next }),
     });
+    if (!res.ok) {
+      setPosts((curr) => curr.map((x) => (x.id === p.id ? { ...x, published: p.published } : x)));
+      toast.error('Failed to update publish status');
+    }
   };
 
   return (

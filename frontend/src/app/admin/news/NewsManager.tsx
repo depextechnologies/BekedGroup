@@ -69,11 +69,15 @@ export function NewsManager({ initialArticles }: { initialArticles: NewsArticle[
   const togglePublish = async (a: NewsArticle) => {
     const next = !a.published;
     setArticles(articles.map((x) => (x.id === a.id ? { ...x, published: next } : x)));
-    await fetch(`/api/admin/news/${a.id}`, {
+    const res = await fetch(`/api/admin/news/${a.id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ ...a, published: next }),
     });
+    if (!res.ok) {
+      setArticles((curr) => curr.map((x) => (x.id === a.id ? { ...x, published: a.published } : x)));
+      toast.error('Failed to update publish status');
+    }
   };
 
   return (

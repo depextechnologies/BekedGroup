@@ -57,6 +57,8 @@ export function Footer({ settings }: FooterProps) {
             <a href="#about" className="footer-link" data-testid="footer-about">{t('footer.about')}</a>
             <a href="#services" className="footer-link" data-testid="footer-services">{t('footer.services')}</a>
             <Link href="/careers" className="footer-link" data-testid="footer-careers">{t('footer.careers')}</Link>
+            <Link href="/blog" className="footer-link" data-testid="footer-blog">{t('nav.blog')}</Link>
+            <Link href="/news" className="footer-link" data-testid="footer-news">{t('nav.news')}</Link>
             <a href="#contact" className="footer-link" data-testid="footer-press">{t('footer.press')}</a>
           </Column>
 

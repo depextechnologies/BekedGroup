@@ -223,12 +223,19 @@ function ServicesGrid() {
               <div className="p-7">
                 <h3 className="font-heading text-2xl font-bold tracking-tight mb-3">{s.title}</h3>
                 <p className="text-sm md:text-base text-white/65 leading-relaxed mb-5">{s.desc}</p>
-                <div className="flex items-center justify-between">
-                  <span className="text-xs uppercase tracking-[0.25em] font-bold opacity-70 group-hover:opacity-100 transition-opacity" style={{ color: s.color }}>{locale === 'fr' ? 'En savoir plus' : 'Learn more'}</span>
+                <Link
+                  href="/#mobile"
+                  data-testid={`service-card-cta-${i}`}
+                  className="flex items-center justify-between group/cta"
+                >
+                  <span className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.25em] font-bold opacity-80 group-hover:opacity-100 transition-opacity" style={{ color: s.color }}>
+                    <Download className="h-3.5 w-3.5" />
+                    {locale === 'fr' ? "Télécharger l'app" : 'Download App'}
+                  </span>
                   <span className="h-10 w-10 rounded-full border-2 flex items-center justify-center transition-all group-hover:scale-110" style={{ borderColor: s.color, color: s.color }}>
                     <ArrowRight className="h-4 w-4" />
                   </span>
-                </div>
+                </Link>
               </div>
             </motion.div>
           ))}

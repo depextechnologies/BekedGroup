@@ -1,0 +1,41 @@
+{
+  "summary": "Retest of iteration_15 FAIL items at desktop 1440x900. RESULT: 1 of 2 retest acceptance criteria PASS; 1 still FAIL. ServicesGrid CTA (FAIL #2) is now FULLY FIXED — all 6 cards render <a> with data-testid=service-card-cta-0..5, href='/#mobile', text 'TÉLÉCHARGER L'APP'/'DOWNLOAD APP'; no 'Learn more'/'En savoir plus' anywhere in [data-testid=services-grid]; clicking service-card-cta-0 navigates to /#mobile. Hero headline (FAIL #1) is PARTIALLY fixed — FR now wraps to 3 lines (PASS), but EN still wraps to 4 lines (FAIL). All regression spot-checks PASS.",
+  "backend_issues": { "critical": [], "minor": [] },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "Hero (homepage) — EN locale only",
+        "issue": "EN headline 'SIMPLIFYING PEOPLE'S LIVES AND CONNECTING THEM TOGETHER' still wraps to 4 lines at desktop 1440x900. Measured: fontSize=56px, lineHeight=56px (from leading-[1.05] × 56 ≈ 56), rect.height=224px → 224/56 = 4 lines. Wraps as: 'SIMPLIFYING PEOPLE'S' / 'LIVES AND' / 'CONNECTING THEM' / 'TOGETHER'. FR locale at same viewport now correctly fits in 3 lines (height=168, 168/56=3) — the new xl=3.5rem class fixed FR but EN is still 1 line over due to the longer string (54 chars EN vs 52 chars FR) and the long word 'CONNECTING' (10 chars) that cannot share a line with 'THEM'/'TOGETHER' at the current column width (~674px). Mitigation options: (a) reduce xl further to ~3rem / lg to ~2.75rem; (b) widen lg:col-span-7 → lg:col-span-8 only when locale=='en'; (c) insert manual <br/> for EN; (d) use balance via text-wrap: balance css.",
+        "selector": "[data-testid=\"hero-title\"]",
+        "priority": "HIGH"
+      }
+    ],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "acceptance_criteria_results": {
+    "1_hero_3_lines_desktop_FR": "PASS — 3 lines @1440 (height=168, lineHeight=56)",
+    "1_hero_3_lines_desktop_EN": "FAIL — 4 lines @1440 (height=224, lineHeight=56, fontSize=56). EN string is longer; current xl=3.5rem still too large to fit ≤3 lines.",
+    "2_services_grid_download_cta": "PASS — All 6 service cards have data-testid=service-card-cta-0..5 as <a> with href='/#mobile' and text 'TÉLÉCHARGER L'APP' (FR) / 'DOWNLOAD APP' (EN). No 'Learn more' / 'En savoir plus' inside [data-testid=services-grid]. Clicking service-card-cta-0 navigated to /#mobile (verified URL change).",
+    "regression_superapp_buttons": "PASS — superapp-appstore-btn and superapp-playstore-btn both present on /services, both disabled, container [data-testid=superapp-download-buttons] uses 'flex flex-col sm:flex-row' (column on mobile @390, row on desktop @1440).",
+    "regression_ecosystem_cards": "PASS — Ecosystem (#services) section on homepage shows 'Download App'/'Télécharger l'app' text, 12 links to #mobile (2 per card × 6 cards), no 'Learn more'/'En savoir plus' present.",
+    "regression_logo_macron": "PASS — Header uses image asset /logos/baked-header.png (macron renders via image). Logo.tsx CSS for macron span unchanged. Code-level unchanged from iter15.",
+    "regression_brand_spelling": "PASS — 'bakēd' present on home, /services, /about-us. Only non-macron 'baked' occurrence is 'contact@baked.group' email address (acceptable since domain names cannot contain macron) and Next.js script payload (not user-visible)."
+  },
+  "test_report_links": [],
+  "action_items": [
+    "FIX Hero EN headline at desktop 1440 to ≤3 lines. Recommended: change h1 className xl breakpoint from xl:text-[3.5rem] to xl:text-[3rem] (or 3.25rem), OR add explicit <br/> after 'CONNECTING' for EN title, OR apply text-wrap:balance, OR widen col-span to lg:col-span-8 for the headline column. Re-verify both FR (must stay ≤3) and EN (must reach ≤3)."
+  ],
+  "critical_code_review_comments": [
+    "Hydration mismatch warning on /services SuperAppSection — orbital icon container has different style props between SSR and client (left/top values use different precision strings). Not blocking but should use stable rounding or skip SSR for the framer-motion orbital animation.",
+    "Hero.tsx h1 uses a different font size for each breakpoint but no upper-bound for very wide viewports; consider clamp() or maxWidth on the column to prevent excessive growth at 2xl+."
+  ],
+  "updated_files": [],
+  "success_rate": { "backend": "n/a (skipped)", "frontend": "1/2 retest criteria PASS = 50% on retest; 7/8 overall acceptance criteria including regressions = 87.5%" },
+  "test_credentials": "Not required (public marketing pages)",
+  "seed_data_creation": "None",
+  "retest_needed": true,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Only EN hero headline still needs to fit in ≤3 lines at desktop 1440x900. FR already passes. ServicesGrid CTA is fully fixed and verified — no further work needed there. Regression: SuperApp buttons, Ecosystem CTAs, Logo macron, brand spelling are all good. To retest after main agent fixes EN hero: load homepage at 1440x900, switch language to English via dropdown (click button:has-text('FR') → click text=English), then measure [data-testid='hero-title'] rect.height / lineHeight and assert ≤3.",
+  "rca_of_the_issue": "RCA: The iter15 fix reduced xl from text-[4.5rem] (72px) to xl:text-[3.5rem] (56px) plus leading-[1.05]. At 1440x900 with lg:col-span-7 (~674px content), this fits FR's 52-char headline in 3 lines but the EN's 54-char headline still wraps to 4 because 'CONNECTING' (10 chars × 56px wide-ish kerning) plus another word exceeds the column width. Reproduction: open homepage @1440x900 in EN, inspect hero-title — height=224, lineHeight=56, lines=4. Mitigation: reduce xl to 3rem (48px) or add manual break, or use balanced wrapping (text-wrap:balance) which often resolves 4-line ↔ 3-line edge cases."
+}

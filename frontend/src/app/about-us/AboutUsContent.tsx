@@ -5,8 +5,8 @@ import Link from 'next/link';
 import { motion, useScroll, useTransform, useInView, useMotionValue, animate } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import {
-  Users, Rocket, Globe2, Truck, UtensilsCrossed, ShoppingBag, Car, Home, Wallet, Sparkles, MessageCircleHeart,
-  ArrowRight, Download, ArrowUpRight, Layers, Cpu, Sparkle, Heart,
+  Users, Rocket, Globe2, Truck, UtensilsCrossed, ShoppingBag, Car, Home, Zap,
+  ArrowRight, Download, Layers, Cpu, Sparkle, Heart,
 } from 'lucide-react';
 import { useI18n } from '@/i18n/I18nProvider';
 
@@ -303,18 +303,16 @@ function BakedEnBref() {
         { Icon: UtensilsCrossed, label: 'Commande de repas et de courses', color: '#32CD32' },
         { Icon: ShoppingBag, label: 'Commerce électronique', color: '#F7A500' },
         { Icon: Car, label: 'Automobile', color: '#E5484D' },
-        { Icon: Wallet, label: 'Gestion des paiements', color: '#3498FF' },
-        { Icon: Sparkles, label: 'Services intelligents (SmartBaked)', color: '#7A3CFF' },
-        { Icon: MessageCircleHeart, label: 'Réseau social et communauté (EmoBaked)', color: '#7A3CFF' },
+        { Icon: Zap, label: 'Quick Commerce', color: '#32CD32' },
+        { Icon: Home, label: 'Immobilier', color: '#7A3CFF' },
       ]
     : [
         { Icon: Truck, label: 'On-demand delivery', color: '#F7A500' },
         { Icon: UtensilsCrossed, label: 'Food & grocery ordering', color: '#32CD32' },
         { Icon: ShoppingBag, label: 'E-commerce', color: '#F7A500' },
         { Icon: Car, label: 'Automotive', color: '#E5484D' },
-        { Icon: Wallet, label: 'Payment management', color: '#3498FF' },
-        { Icon: Sparkles, label: 'Smart services (SmartBaked)', color: '#7A3CFF' },
-        { Icon: MessageCircleHeart, label: 'Social network & community (EmoBaked)', color: '#7A3CFF' },
+        { Icon: Zap, label: 'Quick Commerce', color: '#32CD32' },
+        { Icon: Home, label: 'Real Estate', color: '#7A3CFF' },
       ];
 
   const images = [

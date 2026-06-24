@@ -1,0 +1,37 @@
+{
+  "summary": "Verified the BakedEnBref module changes on /about-us. The right column now has EXACTLY 6 service items in correct DOM order, both FR and EN. The 3 removed labels ('Gestion des paiements', 'Services intelligents (SmartBaked)', 'Réseau social et communauté (EmoBaked)') and the strings 'SmartBaked', 'EmoBaked', 'Payment management' do NOT appear anywhere on the page in either locale. The new 'Quick Commerce' item uses the lucide Zap icon (svg class 'lucide lucide-zap') and 'Immobilier'/'Real Estate' uses the lucide Home icon (svg class 'lucide lucide-house'). Both colored chips render. Sanity: about-hero, about-mission, about-pillars, about-why and about-cta still render. Homepage / still shows the 6 ecosystem cards (express, food, mart, shop, auto, immo).",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "AboutUsContent.tsx is now ~540 lines with 5 sections + Counter + NetworkParticles. Splitting into one file per section under src/app/about-us/sections/* would improve maintainability (still open from prior iterations).",
+    "Unused lucide import 'Home' alias collision is fine but the rendered svg class is 'lucide-house' (lucide-react renamed). Tests/selectors that previously looked for 'lucide-home' would miss it — none in this repo today, but worth noting if any future automation pins on the icon class."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A (frontend-only)", "frontend": "100%"},
+  "test_credentials": "n/a for this run",
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "test_results_detail": {
+    "fr_items_count": 6,
+    "fr_items": ["Livraison à la demande","Commande de repas et de courses","Commerce électronique","Automobile","Quick Commerce","Immobilier"],
+    "fr_exact_order_match": true,
+    "fr_forbidden_strings_absent": ["Gestion des paiements","Services intelligents (SmartBaked)","Réseau social et communauté (EmoBaked)","SmartBaked","EmoBaked"],
+    "en_items_count": 6,
+    "en_items": ["On-demand delivery","Food & grocery ordering","E-commerce","Automotive","Quick Commerce","Real Estate"],
+    "en_exact_order_match": true,
+    "en_forbidden_strings_absent": ["SmartBaked","EmoBaked","Payment management"],
+    "icon_quick_commerce_class": "lucide lucide-zap h-5 w-5",
+    "icon_immobilier_class": "lucide lucide-house h-5 w-5",
+    "other_sections_present": {"about-hero": true, "about-mission": true, "about-pillars": true, "about-why": true, "about-cta": true},
+    "homepage_ecosystem_cards": ["ecosystem-card-express","ecosystem-card-food","ecosystem-card-mart","ecosystem-card-shop","ecosystem-card-auto","ecosystem-card-immo"]
+  },
+  "context_for_next_testing_agent": "BakedEnBref now contains exactly 6 modules in both FR/EN. Useful testids unchanged: about-us-page, about-hero, about-mission, about-pillars, about-enbref, about-why, about-cta. Locale persisted in localStorage.baked_locale. The SEO <title> deviation flagged in iteration_11 was NOT re-checked this iteration — still open unless main agent has since fixed it via Metadata.title.absolute on /about-us.",
+  "rca of the issue": "N/A — feature change verified working as specified."
+}

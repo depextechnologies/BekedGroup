@@ -113,7 +113,7 @@ export function Hero({ titleFr, titleEn, highlightFr, highlightEn, bgImage, fore
           </div>
           <h1
             data-testid="hero-title"
-            className="font-heading text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-black leading-[0.95] tracking-tighter text-white"
+            className="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-[3.75rem] xl:text-[4.5rem] font-black leading-[1.02] tracking-tighter text-white"
           >
             {renderTitle()}
           </h1>

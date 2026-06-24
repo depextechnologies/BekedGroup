@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { motion, useScroll, useTransform, useInView, useMotionValue, animate } from 'framer-motion';
 import {
   Truck, UtensilsCrossed, ShoppingCart, ShoppingBag, Car, Home,
-  ArrowRight, ArrowUpRight, Download, Sparkles, Layers, Cpu, Heart, Clock, Globe,
+  ArrowRight, ArrowUpRight, Download, Sparkles, Layers, Cpu, Heart, Clock, Globe, Apple, Play,
 } from 'lucide-react';
 import { useI18n } from '@/i18n/I18nProvider';
 
@@ -101,6 +101,36 @@ function SuperAppSection() {
           <div className="mt-7 space-y-5 text-base md:text-lg text-zinc-700 leading-relaxed">
             <p>{locale === 'fr' ? "La mission de bakēd est d'améliorer et de faciliter la vie des clients au quotidien en innovant sans relâche pour eux." : "bakēd's mission is to improve and simplify daily life by relentlessly innovating for our customers."}</p>
             <p>{locale === 'fr' ? "Nous nous efforçons d'offrir un large choix, de la valeur et de la commodité à travers une gamme d'expériences client, notamment les achats en ligne, la livraison à la demande, la logistique, l'immobilier, l'automobile, la publicité, les moyens de paiement et bien plus encore." : 'We strive to deliver wide selection, value and convenience across online shopping, on-demand delivery, logistics, real estate, automotive, advertising, payments and much more.'}</p>
+          </div>
+
+          {/* App Store + Google Play download buttons */}
+          <div className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-3" data-testid="superapp-download-buttons">
+            <button
+              type="button"
+              disabled
+              aria-disabled="true"
+              data-testid="superapp-appstore-btn"
+              className="group inline-flex items-center justify-center gap-3 px-6 py-4 rounded-2xl bg-bg-primary text-white shadow-lg shadow-black/20 ring-1 ring-black/10 hover:ring-brand-gold/60 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 cursor-not-allowed"
+            >
+              <Apple className="h-7 w-7" />
+              <div className="text-left">
+                <div className="text-[10px] uppercase tracking-[0.18em] text-white/60 leading-none mb-1">{locale === 'fr' ? 'Bientôt disponible' : 'Coming soon'}</div>
+                <div className="text-sm font-bold leading-none">{locale === 'fr' ? "Sur l'App Store" : 'Download on the App Store'}</div>
+              </div>
+            </button>
+            <button
+              type="button"
+              disabled
+              aria-disabled="true"
+              data-testid="superapp-playstore-btn"
+              className="group inline-flex items-center justify-center gap-3 px-6 py-4 rounded-2xl bg-bg-primary text-white shadow-lg shadow-black/20 ring-1 ring-black/10 hover:ring-brand-gold/60 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 cursor-not-allowed"
+            >
+              <Play className="h-7 w-7 fill-white" />
+              <div className="text-left">
+                <div className="text-[10px] uppercase tracking-[0.18em] text-white/60 leading-none mb-1">{locale === 'fr' ? 'Bientôt disponible' : 'Coming soon'}</div>
+                <div className="text-sm font-bold leading-none">{locale === 'fr' ? 'Sur Google Play' : 'Get it on Google Play'}</div>
+              </div>
+            </button>
           </div>
         </motion.div>
 

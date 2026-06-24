@@ -1,0 +1,53 @@
+{
+  "summary": "Frontend-only verification of 4 UI refinements on bakēd Group. 2 of 4 acceptance criteria PASS, 2 FAIL. Hero font size reduction did NOT achieve ≤3 line target at desktop 1440 (still 4 lines, both FR & EN). ServicesGrid CTA refactor was NEVER applied — code still renders 'Learn more'/'En savoir plus' as a non-link <span>, with no service-card-cta-N data-testids and no /#mobile navigation. SuperApp download buttons (Apple+Play, disabled, coming soon, side-by-side desktop / stacked mobile) PASS. Ecosystem CTAs (Download App + arrows, all 6 cards → #mobile) PASS. Logo macron CSS values match spec in code; visual rendering of Logo text component could not be located on rendered page (header uses image-based baked-header.png so Logo macron change only affects fallback in Ecosystem cards & possibly Footer).",
+  "backend_issues": { "critical": [], "minor": [] },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "Hero (homepage)",
+        "issue": "Hero headline still wraps to 4 lines at desktop 1440x900 in both FR ('SIMPLIFIER LA VIE DES GENS ET LES CONNECTER ENSEMBLE') and EN ('SIMPLIFYING PEOPLE'S LIVES AND CONNECTING THEM TOGETHER'). Acceptance criterion requires ≤3 lines. Current xl breakpoint uses text-[4.5rem] (72px) which is still too large for the chosen viewport. Suggest reducing xl to ~3.5rem (56px) or splitting content with line-breaks, or applying a max-width that allows the content to fit in 3 lines. Computed: fontSize=72px lineHeight=72px height=288px → 4 lines.",
+        "selector": "[data-testid=\"hero-title\"]",
+        "priority": "HIGH"
+      },
+      {
+        "component": "ServicesGrid (/services)",
+        "issue": "Change #3 (Learn more → Download App on /services service cards) was NEVER applied. Code at /app/frontend/src/app/services/ServicesContent.tsx line 227 still renders: <span>{locale === 'fr' ? 'En savoir plus' : 'Learn more'}</span> — there is no Link, no /#mobile navigation, and no data-testid='service-card-cta-N' on any of the 6 cards. Both 'Learn more' and 'En savoir plus' are still visible in the grid (hasLearnMore=true, hasDownload=false). The arrow circle is also a non-clickable <span> (not a Link).",
+        "selector": "[data-testid=\"services-grid\"] .group span",
+        "priority": "HIGH"
+      }
+    ],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "acceptance_criteria_results": {
+    "1_hero_3_lines_desktop": "FAIL — 4 lines @1440 in both FR and EN",
+    "2_hero_responsive_tablet_mobile": "PASS — opacity=1, no horizontal overflow at 768 and 390",
+    "3_superapp_download_buttons": "PASS — both buttons present, disabled, cursor-not-allowed, COMING SOON labels, side-by-side on desktop (flex-row) and stacked on mobile (flex-column), correct testids superapp-appstore-btn / superapp-playstore-btn / superapp-download-buttons",
+    "4_services_grid_download_cta": "FAIL — code not updated; still shows Learn more / En savoir plus; no Link to /#mobile; no service-card-cta-N data-testids",
+    "5_ecosystem_download_cta": "PASS — all 6 ecosystem cards show Download App / Télécharger l'app, both text link and arrow button navigate to #mobile, no Learn more text",
+    "6_logo_macron_alignment": "PASS (code-level) — Logo.tsx span has top-[0.06em] h-[0.09em] w-[0.55em] matching spec. Visual verification limited because Header & Ecosystem cards use image-based logos (logos/baked-header.png and per-app logoImage); Logo component is only rendered as fallback. Visible bakēd in header screenshot shows macron correctly above the e (but that's the image asset).",
+    "7_brand_text_intact": "PASS — bakēd Group visible in Hero badge, ServicesHero, etc.",
+    "8_lang_switcher": "PASS — switching between FR and EN updates Hero text correctly"
+  },
+  "test_report_links": [],
+  "action_items": [
+    "FIX Hero font sizing: at xl (≥1280px) the 4.5rem (72px) headline still wraps to 4 lines. Reduce xl to ~3.25rem-3.5rem OR add max-width / explicit line breaks to ensure ≤3 lines for both FR (52 chars) and EN (54 chars) headlines.",
+    "FIX ServicesGrid CTA: in /app/frontend/src/app/services/ServicesContent.tsx around line 226-231, replace the <span>Learn more / En savoir plus</span> + <span> arrow with a <Link href='/#mobile' data-testid={`service-card-cta-${i}`}> containing the 'Download App' / 'Télécharger l'app' text and the arrow icon. This change was claimed as done in the problem statement but was not applied to the code.",
+    "(Optional) Verify Logo macron visually by either viewing a Logo-component-using location (Footer / Ecosystem fallback) or replacing image logos with the Logo component to ensure consistent macron alignment everywhere."
+  ],
+  "critical_code_review_comments": [
+    "ServicesContent.tsx line 227-230: span elements are decorative only — entire CTA row is non-interactive. Users cannot click 'Learn more' to navigate anywhere. Even before the refinement request, this was broken UX.",
+    "Hero responsive class chain text-4xl sm:text-5xl md:text-6xl lg:text-[3.75rem] xl:text-[4.5rem] — the xl step UP to 4.5rem is what causes the 4-line wrap at 1440 (which hits xl ≥1280). A 4.5rem class actually pushes line count up vs. lg. Consider reversing or removing xl step.",
+    "Logo.tsx is used minimally in the rendered site — most logos are now image assets (baked-header.png, per-app SVGs). Macron CSS change in Logo.tsx only impacts fallback rendering; consider standardizing on either Logo component or images consistently.",
+    "Ecosystem.tsx line 118-134: both anchor tags share the same href='#mobile' — fine, but consider DRY/extracting since identical aria-label & href.",
+    "Hero.tsx — floating icons absolutely positioned overlap the headline at xl viewports because the headline grows tall; cosmetic but worth checking."
+  ],
+  "updated_files": [],
+  "success_rate": { "backend": "n/a (skipped)", "frontend": "6/8 acceptance criteria = 75%" },
+  "test_credentials": "Not required for this iteration (public marketing pages)",
+  "seed_data_creation": "None",
+  "retest_needed": true,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Two main bugs remain after iteration 15: (1) Hero headline still wraps to 4 lines at desktop 1440 — needs smaller xl font size. (2) ServicesGrid CTA refactor in /app/frontend/src/app/services/ServicesContent.tsx was never applied (Learn more/En savoir plus text still rendered as non-link span; no /#mobile navigation; no service-card-cta-N data-testids). Other 4 refinements (SuperApp download buttons, Ecosystem CTAs, hero mobile/tablet responsive, lang switcher, logo macron CSS) are working as expected. To retest: re-run the same Playwright introspection (innerText, getBoundingClientRect/lineHeight ratio for line count; query for service-card-cta-{0..5} testids; verify no 'Learn more'/'En savoir plus' inside [data-testid=services-grid]).",
+  "rca_of_the_issue": "RCA #1 (Hero 4 lines): The xl breakpoint class text-[4.5rem] = 72px combined with the wide FR (52 chars) and EN (54 chars) headlines exceeds the lg:col-span-7 column width at 1440 (≈770px content), forcing wrap to 4 lines. Reproduction: load homepage at viewport 1440x900, inspect [data-testid=hero-title] — lineHeight≈72, height≈288, lines=4. Mitigation: drop xl class or reduce to ~3.25rem.  RCA #2 (Learn more): The PR description claims ServicesGrid was updated, but the code at ServicesContent.tsx:227 still has the original <span>{locale === 'fr' ? 'En savoir plus' : 'Learn more'}</span>. The Apple+Play lucide imports were added (line 8) but the import of Link is already present (line 4) yet not used for the CTA. Likely the change was made in working memory but not committed to disk for this section. Mitigation: replace lines 226-231 with an interactive Link as described in action items."
+}

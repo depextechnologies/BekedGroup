@@ -115,20 +115,23 @@ export function Ecosystem({ apps }: { apps: AppItem[] }) {
 
                 {/* Arrow */}
                 <div className="mt-5 flex items-center justify-between">
-                  <button
-                    aria-label={`${app.prefix} bakēd`}
+                  <a
+                    href="#mobile"
+                    aria-label={`${app.prefix} bakēd — Download App`}
                     data-testid={`ecosystem-arrow-${app.slug}`}
+                    className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.25em] font-bold transition-opacity hover:opacity-80"
+                    style={{ color: app.color }}
+                  >
+                    <span>{locale === 'fr' ? "Télécharger l'app" : 'Download App'}</span>
+                  </a>
+                  <a
+                    href="#mobile"
+                    aria-label={`${app.prefix} bakēd — Download App`}
                     className="h-11 w-11 rounded-full border-2 flex items-center justify-center transition-all duration-300 group-hover:scale-110"
                     style={{ borderColor: app.color, color: app.color }}
                   >
                     <ArrowRight className="h-5 w-5" />
-                  </button>
-                  <span
-                    className="text-xs uppercase tracking-[0.25em] font-bold opacity-0 group-hover:opacity-100 transition-opacity"
-                    style={{ color: app.color }}
-                  >
-                    {t('common.learn_more')}
-                  </span>
+                  </a>
                 </div>
               </motion.div>
             );

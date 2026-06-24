@@ -2,14 +2,15 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ChevronDown, Download } from 'lucide-react';
 import { useI18n, type Locale } from '@/i18n/I18nProvider';
-import { Logo } from './Logo';
 import { cn } from '@/lib/utils';
 
 export function Header() {
   const { t, locale, setLocale } = useI18n();
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
@@ -21,12 +22,13 @@ export function Header() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  const homePrefix = pathname === '/' ? '' : '/';
   const links = [
-    { href: '#home', label: t('nav.home') },
-    { href: '#about', label: t('nav.about') },
-    { href: '#services', label: t('nav.services') },
-    { href: '#careers', label: t('nav.careers') },
-    { href: '#contact', label: t('nav.contact') },
+    { href: homePrefix + '#home', label: t('nav.home'), active: pathname === '/' },
+    { href: '/about-us', label: t('nav.about'), active: pathname === '/about-us' },
+    { href: homePrefix + '#services', label: t('nav.services'), active: false },
+    { href: homePrefix + '#careers', label: t('nav.careers'), active: pathname === '/careers' },
+    { href: homePrefix + '#contact', label: t('nav.contact'), active: false },
   ];
 
   const switchLocale = (l: Locale) => {
@@ -51,14 +53,17 @@ export function Header() {
 
         <nav className="hidden lg:flex items-center gap-8" data-testid="header-nav">
           {links.map((l) => (
-            <a
-              key={l.href}
+            <Link
+              key={l.href + l.label}
               href={l.href}
-              data-testid={`nav-link-${l.href.replace('#', '')}`}
-              className="text-white/80 hover:text-white text-sm font-medium uppercase tracking-wider link-underline transition-colors"
+              data-testid={`nav-link-${l.label.toLowerCase().replace(/[^a-z]+/g, '-').replace(/^-|-$/g, '')}`}
+              className={cn(
+                'text-sm font-medium uppercase tracking-wider link-underline transition-colors',
+                l.active ? 'text-brand-gold' : 'text-white/80 hover:text-white'
+              )}
             >
               {l.label}
-            </a>
+            </Link>
           ))}
         </nav>
 
@@ -141,15 +146,18 @@ export function Header() {
           >
             <div className="px-6 py-6 flex flex-col gap-4">
               {links.map((l) => (
-                <a
-                  key={l.href}
+                <Link
+                  key={l.href + l.label}
                   href={l.href}
                   onClick={() => setMobileOpen(false)}
-                  data-testid={`mobile-nav-${l.href.replace('#', '')}`}
-                  className="text-white/85 text-base font-medium uppercase tracking-wider py-2 border-b border-white/5"
+                  data-testid={`mobile-nav-${l.label.toLowerCase().replace(/[^a-z]+/g, '-').replace(/^-|-$/g, '')}`}
+                  className={cn(
+                    'text-base font-medium uppercase tracking-wider py-2 border-b border-white/5',
+                    l.active ? 'text-brand-gold' : 'text-white/85'
+                  )}
                 >
                   {l.label}
-                </a>
+                </Link>
               ))}
               <a
                 href="#mobile"

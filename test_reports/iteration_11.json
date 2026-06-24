@@ -1,0 +1,78 @@
+{
+  "summary": "Verified the new premium /about-us page end-to-end against the spec. All 6 sections render in correct DOM order (about-hero → about-mission → about-pillars → about-enbref → about-why → about-cta). FR content, EN translations, gold-highlighted spans, 3 pillar cards with icon+h3+p, 7 en-bref service rows (exact French labels), 4 collage images all loaded (naturalWidth=600, no 404), 4 'Why Baked' benefit cards, animated counters resolve to '6+', '1', '100%', CTA gold words 'simplifié' & 'multipliées' with correct buttons → /#services and /#mobile. Header nav 'QUI SOMMES-NOUS' link has text-brand-gold ONLY when on /about-us; clicking it navigates to /about-us. Language switch flips all 6 section titles to EN, localStorage baked_locale='en', CTA EN string 'your everyday simplified, your opportunities multiplied' present. JSON-LD AboutPage script + meta description 'Découvrez la mission' present in HTML. Regression: homepage still renders 6 ecosystem cards in correct order, MobileShowcase still has exactly 4 phone dots.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "SEO <title> on /about-us",
+        "issue": "Rendered <title> is 'À Propos de Nous | Baked Group — Baked Group' (the root layout template '%s — Baked Group' is being appended). The spec requires the exact string '<title>À Propos de Nous | Baked Group</title>'. Fix: in /app/frontend/src/app/about-us/page.tsx set `title: { absolute: 'À Propos de Nous | Baked Group' }` so the template is bypassed.",
+        "selector": "<title> tag",
+        "priority": "MEDIUM"
+      }
+    ],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [],
+  "action_items": [
+    "Use Metadata.title.absolute on /about-us page so the rendered <title> exactly matches 'À Propos de Nous | Baked Group' (current output has an extra ' — Baked Group' suffix from the layout-level template)."
+  ],
+  "critical_code_review_comments": [
+    "AboutUsContent.tsx is a single ~540-line client file with 5 sections + Counter + NetworkParticles. Consider splitting into one file per section under src/app/about-us/sections/* to improve maintainability and unlock per-section code-splitting.",
+    "JSON-LD <script> is injected as a sibling AFTER <Footer> inside <main>. This still works for SEO but the canonical place is inside the <head>. Move it via a child of next/script in app/about-us/page.tsx or put it inside a fragment rendered ahead of Header.",
+    "The hero title gold-span split logic uses heroTitle.split('NOUS') / .replace('US') which works today but would silently break for any future translation containing those substrings. Prefer storing parts as data (e.g. {pre, gold, post}) per locale.",
+    "Hero image, mission image and en-bref collage images are loaded from Unsplash hot-link URLs — if Unsplash rate-limits or blocks the production domain, the page degrades visually. Consider hosting locally under /public.",
+    "Header.tsx active-state logic uses hard-coded pathname checks; works but does not handle nested routes like /about-us/anything (would lose the active class). Use pathname.startsWith('/about-us') for resilience."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A (frontend-only run)", "frontend": "95% (1 minor SEO title deviation)"},
+  "test_credentials": "admin@baked.group / BakedAdmin2025! (regression item, not executed this iteration — was verified green in iteration_10)",
+  "seed_data_creation": "None this iteration.",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "test_results_detail": {
+    "about_us_page_present": true,
+    "section_dom_order": ["about-hero","about-mission","about-pillars","about-enbref","about-why","about-cta"],
+    "section_order_correct": true,
+    "hero_title_fr": "À PROPOS DE NOUS",
+    "hero_gold_span_fr": "NOUS",
+    "hero_first_paragraph_fr_ok": true,
+    "mission_title_fr": "NOTRE MISSION",
+    "mission_p1_fr_ok": true,
+    "pillars_title_fr": "NOS PILIERS FONDAMENTAUX",
+    "pillars_count": 3,
+    "pillar_titles_fr": ["Travail en une seule équipe","Soutien à l'entrepreneuriat","Impact à l'échelle locale"],
+    "each_pillar_has_icon_h3_p": true,
+    "enbref_title_fr": "BAKED GROUP EN BREF",
+    "enbref_items_count": 7,
+    "enbref_items_fr": ["Livraison à la demande","Commande de repas et de courses","Commerce électronique","Automobile","Gestion des paiements","Services intelligents (SmartBaked)","Réseau social et communauté (EmoBaked)"],
+    "enbref_collage_imgs_loaded": [true, true, true, true],
+    "why_title_fr": "Pourquoi choisir Baked ?",
+    "why_benefit_card_count": 4,
+    "counter_values": ["6+","1","100%"],
+    "cta_heading_fr": "Baked Group, votre quotidien simplifié, vos opportunités multipliées.",
+    "cta_gold_spans_fr": ["simplifié","multipliées"],
+    "cta_buttons": [{"text":"Découvrir nos services","href":"/#services"},{"text":"Télécharger l'application","href":"/#mobile"}],
+    "header_on_about_us_about_link_classes_contain_text_brand_gold": true,
+    "header_on_about_us_about_link_label_fr": "Qui sommes-nous",
+    "header_on_home_about_link_gold_active": false,
+    "click_about_navigates_to_about_us": true,
+    "locale_switch_localStorage_value": "en",
+    "hero_title_en": "ABOUT US",
+    "hero_gold_span_en": "US",
+    "mission_title_en": "OUR MISSION",
+    "pillars_title_en": "OUR CORE PILLARS",
+    "enbref_title_en": "BAKED GROUP AT A GLANCE",
+    "why_title_en": "Why choose Baked?",
+    "cta_en_text": "Baked Group — your everyday simplified, your opportunities multiplied.",
+    "seo_meta_description_contains_decouvrez_la_mission": true,
+    "seo_jsonld_aboutpage_present": true,
+    "seo_title_exact_match": false,
+    "seo_actual_title": "À Propos de Nous | Baked Group — Baked Group",
+    "seo_expected_title": "À Propos de Nous | Baked Group",
+    "regression_homepage_ecosystem_cards": ["ecosystem-card-express","ecosystem-card-food","ecosystem-card-mart","ecosystem-card-shop","ecosystem-card-auto","ecosystem-card-immo"],
+    "regression_phone_dots": ["phone-dot-0","phone-dot-1","phone-dot-2","phone-dot-3"]
+  },
+  "context_for_next_testing_agent": "Frontend at http://localhost:3000 is healthy. /about-us is fully wired and i18n-aware. Only outstanding deviation is the rendered <title> on /about-us — the root layout template appends ' — Baked Group'. To get an exact match to the spec, the page must set `title: { absolute: 'À Propos de Nous | Baked Group' }` (same EN counterpart if needed). Counters are framer-motion animated; if you re-test, scroll [data-testid=\"about-why\"] into view and wait ~2s before reading their text. Useful testids: about-us-page, about-hero, about-hero-title, about-mission, about-pillars, pillar-0/1/2, about-enbref, about-why, about-cta, lang-button, lang-option-fr, lang-option-en.",
+  "rca of the issue": "SEO title mismatch root cause: /app/frontend/src/app/layout.tsx defines `metadata.title.template = '%s — Baked Group'`. Next.js applies that template to every page's string-form title. /app/frontend/src/app/about-us/page.tsx sets `title: 'À Propos de Nous | Baked Group'` (a string), so Next.js renders '<title>À Propos de Nous | Baked Group — Baked Group</title>'. Mitigation: switch the about-us page metadata to `title: { absolute: 'À Propos de Nous | Baked Group' }` which suppresses the template."
+}

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { createContext, useContext, useState, useRef } from 'react';
 import Link from 'next/link';
 import {
   motion, useScroll, useTransform, useInView, useMotionValue, animate, AnimatePresence,
@@ -14,14 +14,23 @@ import {
 } from 'lucide-react';
 import { useI18n } from '@/i18n/I18nProvider';
 import { cn } from '@/lib/utils';
+import type { AdvertisingPageData } from '@/lib/pageContent';
+
+const CmsCtx = createContext<AdvertisingPageData>({});
+const useCms = () => useContext(CmsCtx);
 
 /* ============ HERO ============ */
 function Hero() {
   const { locale } = useI18n();
+  const cms = useCms();
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
   const yImg = useTransform(scrollYProgress, [0, 1], [0, 120]);
   const opacityBg = useTransform(scrollYProgress, [0, 1], [1, 0.4]);
+
+  const cmsEyebrow = locale === 'fr' ? cms.hero?.eyebrowFr : cms.hero?.eyebrowEn;
+  const cmsTitle = locale === 'fr' ? cms.hero?.titleFr : cms.hero?.titleEn;
+  const cmsSubtitle = locale === 'fr' ? cms.hero?.subtitleFr : cms.hero?.subtitleEn;
 
   return (
     <section
@@ -50,23 +59,23 @@ function Hero() {
         >
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-gold/10 border border-brand-gold/30 backdrop-blur-sm mb-6">
             <Sparkles className="h-3.5 w-3.5 text-brand-gold" />
-            <span className="text-xs uppercase tracking-[0.3em] text-brand-gold font-semibold">AD<span className="lowercase">bakēd</span></span>
+            <span className="text-xs uppercase tracking-[0.3em] text-brand-gold font-semibold">{cmsEyebrow || <>AD<span className="lowercase">bakēd</span></>}</span>
           </div>
           <h1
             data-testid="ad-hero-title"
             style={{ textWrap: 'balance' as any }}
             className="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-[4.25rem] font-black leading-[1.02] tracking-tighter text-white"
           >
-            {locale === 'fr' ? (
+            {cmsTitle ? cmsTitle : locale === 'fr' ? (
               <>SOYEZ <span className="text-brand-gold">VISIBLE</span> PARTOUT EN LIGNE</>
             ) : (
               <>GET <span className="text-brand-gold">VISIBLE</span> EVERYWHERE ONLINE</>
             )}
           </h1>
           <p className="mt-7 text-base md:text-lg text-white/70 leading-relaxed max-w-2xl">
-            {locale === 'fr'
+            {cmsSubtitle || (locale === 'fr'
               ? "Nous aidons les entreprises à booster leur visibilité grâce à nos solutions de e-commerce, services locaux et publicité digitale. Des campagnes pensées pour vous démarquer sur les moteurs de recherche, les réseaux sociaux et l'écosystème bakēd."
-              : 'We help businesses boost their online visibility using our e-commerce, local services, and digital advertising solutions. Campaigns designed to help you stand out across search engines, social media, and the bakēd ecosystem.'}
+              : 'We help businesses boost their online visibility using our e-commerce, local services, and digital advertising solutions. Campaigns designed to help you stand out across search engines, social media, and the bakēd ecosystem.')}
           </p>
           <div className="mt-10 flex flex-wrap gap-3">
             <a
@@ -142,7 +151,8 @@ function FloatingMetric({ Icon, value, suffix, label, color, pos, delay }: { Ico
 /* ============ WHY ADbakēd — PREMIUM SLIDER ============ */
 function WhyAd() {
   const { locale } = useI18n();
-  const slides = locale === 'fr'
+  const cms = useCms();
+  const defaultSlides = locale === 'fr'
     ? [
         { Icon: Search, t: 'Visibilité de recherche', d: 'Apparaissez en tête lorsque les clients cherchent vos produits.', c: '#F7A500', img: 'https://images.unsplash.com/photo-1432888622747-4eb9a8efeb07?w=1400&q=85', cta: 'Booster ma visibilité' },
         { Icon: Target, t: 'Publicité ciblée', d: 'Atteignez la bonne audience au bon moment, sans gaspillage budgétaire.', c: '#3498FF', img: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1400&q=85', cta: 'Configurer mon ciblage' },
@@ -159,6 +169,15 @@ function WhyAd() {
         { Icon: BarChart3, t: 'Real-Time Analytics', d: 'Track campaign performance and optimize results instantly.', c: '#E5484D', img: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1400&q=85&fit=crop&crop=entropy', cta: 'See the dashboard' },
         { Icon: Users, t: 'Smart Audience Matching', d: 'Connect with the most relevant customers automatically via AI.', c: '#F7A500', img: 'https://images.unsplash.com/photo-1573164713988-8665fc963095?w=1400&q=85', cta: 'Enable smart matching' },
       ];
+
+  // CMS overrides title (t) and description (d); icons/images/colors/cta labels stay from defaults
+  const slides = (cms.features && cms.features.length > 0)
+    ? cms.features.map((f, i) => ({
+        ...(defaultSlides[i] || defaultSlides[defaultSlides.length - 1]),
+        t: (locale === 'fr' ? f.titleFr : f.titleEn) || f.titleFr || f.titleEn || '',
+        d: (locale === 'fr' ? f.descFr : f.descEn) || f.descFr || f.descEn || '',
+      }))
+    : defaultSlides;
 
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -993,6 +1012,11 @@ function Input({ label, required, type = 'text', value, onChange, testid }: any)
 /* ============ FINAL CTA ============ */
 function FinalCTA() {
   const { locale } = useI18n();
+  const cms = useCms();
+  const cmsTitle = locale === 'fr' ? cms.cta?.titleFr : cms.cta?.titleEn;
+  const cmsBody = locale === 'fr' ? cms.cta?.bodyFr : cms.cta?.bodyEn;
+  const cmsLabel = locale === 'fr' ? cms.cta?.labelFr : cms.cta?.labelEn;
+  const cmsUrl = cms.cta?.url;
   return (
     <section className="relative bg-bg-primary py-24 md:py-32 overflow-hidden" data-testid="ad-final-cta">
       <div className="absolute inset-0 pointer-events-none">
@@ -1009,16 +1033,17 @@ function FinalCTA() {
         transition={{ duration: 0.8 }}
         className="relative max-w-4xl mx-auto px-6 md:px-12 text-center"
       >
-        <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-black leading-[1.05] tracking-tighter text-white">
-          {locale === 'fr' ? <>Prêt à <span className="text-brand-gold">accélérer</span> votre croissance ?</> : <>Ready to <span className="text-brand-gold">grow</span> your business?</>}
+        <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-black leading-[1.05] tracking-tighter text-white" data-testid="ad-cta-title">
+          {cmsTitle ? cmsTitle : locale === 'fr' ? <>Prêt à <span className="text-brand-gold">accélérer</span> votre croissance ?</> : <>Ready to <span className="text-brand-gold">grow</span> your business?</>}
         </h2>
+        {cmsBody && <p className="mt-6 text-base md:text-lg text-white/70 max-w-2xl mx-auto" data-testid="ad-cta-body">{cmsBody}</p>}
         <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
           <a
-            href="#contact"
+            href={cmsUrl || '#contact'}
             data-testid="ad-final-launch"
             className="inline-flex items-center gap-2 px-7 py-4 rounded-full bg-gradient-to-r from-brand-gold to-yellow-500 text-bg-primary font-bold text-sm uppercase tracking-wider hover:from-yellow-400 hover:to-brand-gold transition-all shadow-glow-gold"
           >
-            {locale === 'fr' ? 'Lancer une campagne' : 'Launch Campaign'} <ArrowRight className="h-4 w-4" />
+            {cmsLabel || (locale === 'fr' ? 'Lancer une campagne' : 'Launch Campaign')} <ArrowRight className="h-4 w-4" />
           </a>
           <a
             href="#contact"
@@ -1034,19 +1059,21 @@ function FinalCTA() {
 }
 
 /* ============ EXPORT ============ */
-export function AdvertisingContent() {
+export function AdvertisingContent({ cms = {} }: { cms?: AdvertisingPageData }) {
   return (
-    <div data-testid="advertising-page">
-      <Hero />
-      <WhyAd />
-      <AdNetwork />
-      <HowItWorks />
-      <BudgetControl />
-      <Targeting />
-      <DeliveryNetwork />
-      <FAQ />
-      <ContactForm />
-      <FinalCTA />
-    </div>
+    <CmsCtx.Provider value={cms}>
+      <div data-testid="advertising-page">
+        <Hero />
+        <WhyAd />
+        <AdNetwork />
+        <HowItWorks />
+        <BudgetControl />
+        <Targeting />
+        <DeliveryNetwork />
+        <FAQ />
+        <ContactForm />
+        <FinalCTA />
+      </div>
+    </CmsCtx.Provider>
   );
 }

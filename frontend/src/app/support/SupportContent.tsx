@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { createContext, useContext, useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Search, UserPlus, LogIn, ShoppingBag, Truck, CreditCard, AlertTriangle,
@@ -10,10 +10,18 @@ import {
 } from 'lucide-react';
 import { useI18n } from '@/i18n/I18nProvider';
 import { cn } from '@/lib/utils';
+import type { SupportPageData } from '@/lib/pageContent';
+
+const CmsCtx = createContext<SupportPageData>({});
+const useCms = () => useContext(CmsCtx);
 
 /* ============ HERO ============ */
 function Hero({ onSearch }: { onSearch: (q: string) => void }) {
   const { locale } = useI18n();
+  const cms = useCms();
+  const cmsEyebrow = locale === 'fr' ? cms.hero?.eyebrowFr : cms.hero?.eyebrowEn;
+  const cmsTitle = locale === 'fr' ? cms.hero?.titleFr : cms.hero?.titleEn;
+  const cmsSubtitle = locale === 'fr' ? cms.hero?.subtitleFr : cms.hero?.subtitleEn;
   return (
     <section data-testid="support-hero" className="relative pt-32 md:pt-40 pb-20 overflow-hidden">
       <div className="absolute inset-0 pointer-events-none">
@@ -27,17 +35,17 @@ function Hero({ onSearch }: { onSearch: (q: string) => void }) {
         <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm mb-7">
             <Sparkles className="h-3.5 w-3.5 text-brand-gold" />
-            <span className="text-xs uppercase tracking-[0.3em] text-white/80 font-semibold">{locale === 'fr' ? 'Centre d\'assistance' : 'Help Center'}</span>
+            <span className="text-xs uppercase tracking-[0.3em] text-white/80 font-semibold">{cmsEyebrow || (locale === 'fr' ? "Centre d'assistance" : 'Help Center')}</span>
           </div>
           <h1 data-testid="support-hero-title" className="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-[3.75rem] font-black leading-[1.05] tracking-tighter">
-            {locale === 'fr'
+            {cmsTitle ? cmsTitle : locale === 'fr'
               ? <>Bienvenue dans le <span className="text-brand-gold">centre d&apos;assistance</span> bakēd</>
               : <>Welcome to the bakēd <span className="text-brand-gold">support center</span></>}
           </h1>
           <p className="mt-6 text-base md:text-lg text-white/65 max-w-3xl mx-auto leading-relaxed">
-            {locale === 'fr'
+            {cmsSubtitle || (locale === 'fr'
               ? "Notre objectif : vous aider rapidement et clairement pour toute question liée à notre site, application, commandes, paiements, livraisons, votre compte ou nos services."
-              : 'Our goal: help you quickly and clearly with anything about our site, app, orders, payments, deliveries, your account or our services.'}
+              : 'Our goal: help you quickly and clearly with anything about our site, app, orders, payments, deliveries, your account or our services.')}
           </p>
 
           {/* Search bar */}
@@ -158,7 +166,14 @@ const FAQS = (locale: 'fr' | 'en') => locale === 'fr'
 
 function FAQ({ search }: { search: string }) {
   const { locale } = useI18n();
-  const items = FAQS(locale);
+  const cms = useCms();
+  const defaultItems = FAQS(locale);
+  const items = (cms.faqs && cms.faqs.length > 0)
+    ? cms.faqs.map((f) => ({
+        q: (locale === 'fr' ? f.questionFr : f.questionEn) || f.questionFr || f.questionEn || '',
+        a: (locale === 'fr' ? f.answerFr : f.answerEn) || f.answerFr || f.answerEn || '',
+      }))
+    : defaultItems;
   const filtered = useMemo(() => {
     if (!search.trim()) return items;
     const q = search.toLowerCase();
@@ -455,6 +470,9 @@ function Commitment() {
 /* ============ DOWNLOAD APP ============ */
 function DownloadApp() {
   const { locale } = useI18n();
+  const cms = useCms();
+  const cmsTitle = locale === 'fr' ? cms.cta?.titleFr : cms.cta?.titleEn;
+  const cmsBody = locale === 'fr' ? cms.cta?.bodyFr : cms.cta?.bodyEn;
   return (
     <section data-testid="support-download" className="relative bg-gradient-to-br from-bg-primary via-[#0c0c0c] to-bg-primary text-white py-24 md:py-32 overflow-hidden">
       <div className="absolute inset-0 pointer-events-none">
@@ -463,8 +481,8 @@ function DownloadApp() {
       <div className="relative max-w-7xl mx-auto px-6 md:px-12 grid lg:grid-cols-12 gap-12 items-center">
         <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="lg:col-span-6">
           <span className="text-xs uppercase tracking-[0.3em] font-bold text-brand-gold">{locale === 'fr' ? "L'application" : 'The app'}</span>
-          <h2 className="font-heading mt-4 text-4xl md:text-5xl lg:text-6xl font-black leading-[0.95] tracking-tighter">{locale === 'fr' ? <>Téléchargez <span className="text-brand-gold">l&apos;application bakēd</span></> : <>Download <span className="text-brand-gold">the bakēd app</span></>}</h2>
-          <p className="mt-6 text-base md:text-lg text-white/70 leading-relaxed max-w-xl">{locale === 'fr' ? "Accédez à tous les services bakēd depuis une seule application." : 'Access all bakēd services from a single application.'}</p>
+          <h2 className="font-heading mt-4 text-4xl md:text-5xl lg:text-6xl font-black leading-[0.95] tracking-tighter" data-testid="support-cta-title">{cmsTitle ? cmsTitle : locale === 'fr' ? <>Téléchargez <span className="text-brand-gold">l&apos;application bakēd</span></> : <>Download <span className="text-brand-gold">the bakēd app</span></>}</h2>
+          <p className="mt-6 text-base md:text-lg text-white/70 leading-relaxed max-w-xl" data-testid="support-cta-body">{cmsBody || (locale === 'fr' ? "Accédez à tous les services bakēd depuis une seule application." : 'Access all bakēd services from a single application.')}</p>
           <div className="mt-9 flex flex-col sm:flex-row gap-3">
             <button type="button" disabled data-testid="support-app-store-btn" className="inline-flex items-center gap-3 px-6 py-4 rounded-2xl bg-white/[0.06] backdrop-blur border border-white/15 text-white cursor-not-allowed">
               <Apple className="h-7 w-7" />
@@ -506,18 +524,20 @@ function DownloadApp() {
 }
 
 /* ============ EXPORT ============ */
-export function SupportContent() {
+export function SupportContent({ cms = {} }: { cms?: SupportPageData }) {
   const [search, setSearch] = useState('');
   return (
-    <div data-testid="support-page">
-      <Hero onSearch={setSearch} />
-      <Categories />
-      <FAQ search={search} />
-      <RequiredInfo />
-      <SupportForm />
-      <PartnerForm />
-      <Commitment />
-      <DownloadApp />
-    </div>
+    <CmsCtx.Provider value={cms}>
+      <div data-testid="support-page">
+        <Hero onSearch={setSearch} />
+        <Categories />
+        <FAQ search={search} />
+        <RequiredInfo />
+        <SupportForm />
+        <PartnerForm />
+        <Commitment />
+        <DownloadApp />
+      </div>
+    </CmsCtx.Provider>
   );
 }

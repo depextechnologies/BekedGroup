@@ -3,6 +3,7 @@ import { Header } from '@/components/site/Header';
 import { Footer } from '@/components/site/Footer';
 import { ServicesContent } from './ServicesContent';
 import { prisma } from '@/lib/prisma';
+import { getPageContent } from '@/lib/pageContent';
 
 export const dynamic = 'force-dynamic';
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://baked.group';
@@ -27,10 +28,11 @@ export default async function ServicesPage() {
   const settings = await prisma.siteSettings.upsert({
     where: { id: 1 }, update: {}, create: { id: 1 },
   });
+  const cms = await getPageContent('services');
   return (
     <main className="min-h-screen bg-bg-primary text-white">
       <Header />
-      <ServicesContent />
+      <ServicesContent cms={cms} />
       <Footer settings={settings} />
       <script
         type="application/ld+json"

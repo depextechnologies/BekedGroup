@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { LayoutDashboard, AppWindow, Inbox, Settings, LogOut, Briefcase, FileText, Newspaper, Megaphone, LifeBuoy, Handshake, Menu, X } from 'lucide-react';
+import { LayoutDashboard, AppWindow, Inbox, Settings, LogOut, Briefcase, FileText, Newspaper, Megaphone, LifeBuoy, Handshake, Menu, X, Pencil } from 'lucide-react';
 import { Logo } from '@/components/site/Logo';
 import { cn } from '@/lib/utils';
 
@@ -17,6 +17,10 @@ const navItems = [
   { href: '/admin/support/partners', label: 'Partners', Icon: Handshake },
   { href: '/admin/blog', label: 'Blog', Icon: FileText },
   { href: '/admin/news', label: 'News', Icon: Newspaper },
+  { href: '/admin/cms/about', label: 'Page · About', Icon: Pencil },
+  { href: '/admin/cms/services', label: 'Page · Services', Icon: Pencil },
+  { href: '/admin/cms/advertising', label: 'Page · Advertising', Icon: Pencil },
+  { href: '/admin/cms/support', label: 'Page · Support', Icon: Pencil },
   { href: '/admin/settings', label: 'Settings', Icon: Settings },
 ];
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { createContext, useContext, useRef } from 'react';
 import Link from 'next/link';
 import { motion, useScroll, useTransform, useInView, useMotionValue, animate } from 'framer-motion';
 import { useEffect, useState } from 'react';
@@ -9,18 +9,25 @@ import {
   ArrowRight, Download, Layers, Cpu, Sparkle, Heart,
 } from 'lucide-react';
 import { useI18n } from '@/i18n/I18nProvider';
+import type { AboutPageData } from '@/lib/pageContent';
+
+// CMS context — provided by the page wrapper, consumed by inner sections.
+const CmsCtx = createContext<AboutPageData>({});
+const useCms = () => useContext(CmsCtx);
 
 /* ---------- HERO ---------- */
 
 function AboutHero() {
   const { t, locale } = useI18n();
+  const cms = useCms();
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
   const yImg = useTransform(scrollYProgress, [0, 1], [0, 140]);
   const opacityBg = useTransform(scrollYProgress, [0, 1], [1, 0.3]);
 
-  const heroTitle = locale === 'fr' ? 'À PROPOS DE NOUS' : 'ABOUT US';
-  const heroKicker = locale === 'fr' ? 'QUI SOMMES-NOUS' : 'WHO WE ARE';
+  const heroTitle = (locale === 'fr' ? cms.hero?.titleFr : cms.hero?.titleEn) || (locale === 'fr' ? 'À PROPOS DE NOUS' : 'ABOUT US');
+  const heroKicker = (locale === 'fr' ? cms.hero?.eyebrowFr : cms.hero?.eyebrowEn) || (locale === 'fr' ? 'QUI SOMMES-NOUS' : 'WHO WE ARE');
+  const heroSubtitle = locale === 'fr' ? cms.hero?.subtitleFr : cms.hero?.subtitleEn;
   const paragraphs = locale === 'fr'
     ? [
         "bakēd Group développe l'application incontournable d'Afrique, simplifiant plus que jamais la livraison à la demande, la commande de repas et de courses, le commerce électronique, le marché de l'immobilier et de l'automobile, la gestion des paiements et bien plus encore.",
@@ -78,16 +85,20 @@ function AboutHero() {
             ) : heroTitle}
           </h1>
           <div className="mt-8 space-y-5 text-white/70 text-base md:text-lg leading-relaxed max-w-2xl">
-            {paragraphs.map((p, i) => (
-              <motion.p
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.2 + i * 0.1 }}
-              >
-                {p}
-              </motion.p>
-            ))}
+            {heroSubtitle ? (
+              <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.2 }}>{heroSubtitle}</motion.p>
+            ) : (
+              paragraphs.map((p, i) => (
+                <motion.p
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.7, delay: 0.2 + i * 0.1 }}
+                >
+                  {p}
+                </motion.p>
+              ))
+            )}
           </div>
 
           <motion.div
@@ -229,7 +240,8 @@ function MissionSection() {
 
 function PillarsSection() {
   const { locale } = useI18n();
-  const pillars = locale === 'fr'
+  const cms = useCms();
+  const defaultPillars = locale === 'fr'
     ? [
         { Icon: Users, title: 'Travail en une seule équipe', body: 'Nous nous soutenons mutuellement, communiquons ouvertement, donnons et recevons des commentaires honnêtes et respectueux, et obtenons ensemble d\'excellents résultats.', color: '#F7A500' },
         { Icon: Rocket, title: "Soutien à l'entrepreneuriat", body: 'Nous proposons des outils et des ressources pour aider les petites et moyennes entreprises, les commerçants, et les partenaires de livraison à développer leur activité.', color: '#7A3CFF' },
@@ -240,6 +252,18 @@ function PillarsSection() {
         { Icon: Rocket, title: 'Backing entrepreneurship', body: 'We provide tools and resources to help small and medium businesses, merchants and delivery partners grow their activity.', color: '#7A3CFF' },
         { Icon: Globe2, title: 'Local impact at scale', body: 'We strongly believe in the social and economic development of our continent. We play an essential role in the communities where our people live and work.', color: '#32CD32' },
       ];
+
+  // Override default pillars with CMS values if provided. Icons + colors cycle for any extra items.
+  const iconCycle = [Users, Rocket, Globe2, Heart, Sparkle, Zap];
+  const colorCycle = ['#F7A500', '#7A3CFF', '#32CD32', '#E5484D', '#3498FF', '#F7A500'];
+  const pillars = (cms.values && cms.values.length > 0)
+    ? cms.values.map((v, i) => ({
+        Icon: iconCycle[i % iconCycle.length],
+        color: colorCycle[i % colorCycle.length],
+        title: (locale === 'fr' ? v.titleFr : v.titleEn) || v.titleFr || v.titleEn || '',
+        body: (locale === 'fr' ? v.descFr : v.descEn) || v.descFr || v.descEn || '',
+      }))
+    : defaultPillars;
 
   return (
     <section className="relative bg-bg-primary text-white py-24 md:py-32 overflow-hidden" data-testid="about-pillars">
@@ -487,6 +511,11 @@ function WhySection() {
 
 function CTASection() {
   const { locale } = useI18n();
+  const cms = useCms();
+  const cmsTitle = locale === 'fr' ? cms.cta?.titleFr : cms.cta?.titleEn;
+  const cmsBody = locale === 'fr' ? cms.cta?.bodyFr : cms.cta?.bodyEn;
+  const cmsLabel = locale === 'fr' ? cms.cta?.labelFr : cms.cta?.labelEn;
+  const cmsUrl = cms.cta?.url;
   return (
     <section className="relative bg-bg-primary py-24 md:py-32 overflow-hidden" data-testid="about-cta">
       <div className="absolute inset-0 pointer-events-none">
@@ -499,19 +528,23 @@ function CTASection() {
         transition={{ duration: 0.8 }}
         className="relative max-w-4xl mx-auto px-6 md:px-12 text-center"
       >
-        <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-black leading-[1.05] tracking-tighter">
-          {locale === 'fr' ? (
+        <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-black leading-[1.05] tracking-tighter" data-testid="about-cta-title">
+          {cmsTitle ? (
+            cmsTitle
+          ) : locale === 'fr' ? (
             <>bakēd Group, votre quotidien <span className="text-brand-gold">simplifié</span>,<br />vos opportunités <span className="text-brand-gold">multipliées</span>.</>
           ) : (
             <>bakēd Group — your everyday <span className="text-brand-gold">simplified</span>,<br />your opportunities <span className="text-brand-gold">multiplied</span>.</>
           )}
         </h2>
+        {cmsBody && <p className="mt-6 text-base md:text-lg text-white/70 max-w-2xl mx-auto" data-testid="about-cta-body">{cmsBody}</p>}
         <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
           <Link
-            href="/#services"
+            href={cmsUrl || '/#services'}
+            data-testid="about-cta-primary"
             className="inline-flex items-center gap-2 px-7 py-4 rounded-full bg-gradient-to-r from-brand-gold to-yellow-500 text-bg-primary font-bold text-sm uppercase tracking-wider hover:from-yellow-400 hover:to-brand-gold transition-all shadow-glow-gold"
           >
-            {locale === 'fr' ? 'Découvrir nos services' : 'Discover our services'} <ArrowRight className="h-4 w-4" />
+            {cmsLabel || (locale === 'fr' ? 'Découvrir nos services' : 'Discover our services')} <ArrowRight className="h-4 w-4" />
           </Link>
           <Link
             href="/#mobile"
@@ -527,15 +560,17 @@ function CTASection() {
 
 /* ---------- EXPORT ---------- */
 
-export function AboutUsContent() {
+export function AboutUsContent({ cms = {} }: { cms?: AboutPageData }) {
   return (
-    <div data-testid="about-us-page">
-      <AboutHero />
-      <MissionSection />
-      <PillarsSection />
-      <BakedEnBref />
-      <WhySection />
-      <CTASection />
-    </div>
+    <CmsCtx.Provider value={cms}>
+      <div data-testid="about-us-page">
+        <AboutHero />
+        <MissionSection />
+        <PillarsSection />
+        <BakedEnBref />
+        <WhySection />
+        <CTASection />
+      </div>
+    </CmsCtx.Provider>
   );
 }

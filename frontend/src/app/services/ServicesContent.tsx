@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useEffect, useState } from 'react';
+import { createContext, useContext, useRef, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { motion, useScroll, useTransform, useInView, useMotionValue, animate } from 'framer-motion';
 import {
@@ -8,19 +8,28 @@ import {
   ArrowRight, ArrowUpRight, Download, Sparkles, Layers, Cpu, Heart, Clock, Globe, Apple, Play,
 } from 'lucide-react';
 import { useI18n } from '@/i18n/I18nProvider';
+import type { ServicesPageData } from '@/lib/pageContent';
+
+const CmsCtx = createContext<ServicesPageData>({});
+const useCms = () => useContext(CmsCtx);
 
 /* ---------- HERO ---------- */
 function ServicesHero() {
   const { locale } = useI18n();
+  const cms = useCms();
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
   const opacityBg = useTransform(scrollYProgress, [0, 1], [1, 0.3]);
   const yShift = useTransform(scrollYProgress, [0, 1], [0, 120]);
 
-  const title = locale === 'fr' ? 'NOS SERVICES' : 'OUR SERVICES';
-  const subtitle = locale === 'fr'
+  const cmsEyebrow = locale === 'fr' ? cms.hero?.eyebrowFr : cms.hero?.eyebrowEn;
+  const cmsTitle = locale === 'fr' ? cms.hero?.titleFr : cms.hero?.titleEn;
+  const cmsSubtitle = locale === 'fr' ? cms.hero?.subtitleFr : cms.hero?.subtitleEn;
+
+  const title = cmsEyebrow || cmsTitle || (locale === 'fr' ? 'NOS SERVICES' : 'OUR SERVICES');
+  const subtitle = cmsSubtitle || (locale === 'fr'
     ? 'La technologie au service de votre quotidien.'
-    : 'Technology that powers your everyday life.';
+    : 'Technology that powers your everyday life.');
   const paras = locale === 'fr'
     ? [
         "bakēd Group est un pionnier du numérique qui simplifie la vie des gens grâce à des produits révolutionnaires.",
@@ -175,7 +184,8 @@ function SuperAppSection() {
 /* ---------- SERVICES GRID ---------- */
 function ServicesGrid() {
   const { locale } = useI18n();
-  const services = locale === 'fr' ? [
+  const cms = useCms();
+  const defaultServices = locale === 'fr' ? [
     { Icon: Truck, color: '#F7A500', title: 'Livraison & Logistique', desc: "bakēd est le leader des services de livraison express avec suivi GPS en temps réel. Vos documents, colis et autres articles sont expédiés en toute sécurité. Choisissez entre la livraison instantanée ou programmée. Un service sûr, abordable et rapide, à portée de main.", img: 'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=900&q=80' },
     { Icon: UtensilsCrossed, color: '#32CD32', title: 'Livraison de repas', desc: "Chaque jour, nous assurons la livraison rapide de plats et de boissons de restaurants et de cafés à des milliers de clients affamés. En quelques clics, vous pouvez vous faire livrer vos envies directement chez vous.", img: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=900&q=80' },
     { Icon: ShoppingCart, color: '#32CD32', title: 'Marché & Supermarché', desc: "Trouvez tout ce dont vous avez besoin : produits d'épicerie et bien plus encore. Nous livrons vos essentiels du quotidien en moins d'une heure ou à votre convenance. Des produits frais aux bouquets, livraison rapide et sans tracas.", img: 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=900&q=80' },
@@ -190,6 +200,15 @@ function ServicesGrid() {
     { Icon: Car, color: '#E5484D', title: 'Automotive', desc: 'Our innovative auto platform helps consumers find the right vehicle. We guide every user end-to-end and help dealers grow with data-driven tools.', img: 'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=900&q=80' },
     { Icon: Home, color: '#7A3CFF', title: 'Real Estate', desc: 'Our real estate understanding is second to none — from rentals and urban apartments to country homes. A platform built to exceed expectations.', img: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=900&q=80' },
   ];
+
+  // CMS list overrides titles + descs only (icons / images / colors kept from defaults to preserve design)
+  const services = (cms.services && cms.services.length > 0)
+    ? cms.services.map((s, i) => ({
+        ...(defaultServices[i] || defaultServices[defaultServices.length - 1]),
+        title: (locale === 'fr' ? s.titleFr : s.titleEn) || s.titleFr || s.titleEn || '',
+        desc: (locale === 'fr' ? s.descFr : s.descEn) || s.descFr || s.descEn || '',
+      }))
+    : defaultServices;
 
   return (
     <section id="grid" className="relative bg-bg-primary text-white py-24 md:py-32 overflow-hidden" data-testid="services-grid">
@@ -346,18 +365,24 @@ function DigitalAfricaSection() {
 /* ---------- CTA ---------- */
 function ServicesCTA() {
   const { locale } = useI18n();
+  const cms = useCms();
+  const cmsTitle = locale === 'fr' ? cms.cta?.titleFr : cms.cta?.titleEn;
+  const cmsBody = locale === 'fr' ? cms.cta?.bodyFr : cms.cta?.bodyEn;
+  const cmsLabel = locale === 'fr' ? cms.cta?.labelFr : cms.cta?.labelEn;
+  const cmsUrl = cms.cta?.url;
   return (
     <section className="relative bg-bg-primary py-24 md:py-32 overflow-hidden" data-testid="services-cta">
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[500px] w-[900px] bg-gradient-to-r from-brand-gold/30 via-yellow-500/20 to-brand-gold/30 blur-[140px]" />
       </div>
       <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="relative max-w-4xl mx-auto px-6 md:px-12 text-center">
-        <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-black leading-[1.05] tracking-tighter">
-          {locale === 'fr' ? <>Rejoignez la <span className="text-brand-gold">révolution numérique</span><br />avec bakēd.</> : <>Join the <span className="text-brand-gold">digital revolution</span><br />with bakēd.</>}
+        <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-black leading-[1.05] tracking-tighter" data-testid="services-cta-title">
+          {cmsTitle ? cmsTitle : locale === 'fr' ? <>Rejoignez la <span className="text-brand-gold">révolution numérique</span><br />avec bakēd.</> : <>Join the <span className="text-brand-gold">digital revolution</span><br />with bakēd.</>}
         </h2>
+        {cmsBody && <p className="mt-6 text-base md:text-lg text-white/70 max-w-2xl mx-auto" data-testid="services-cta-body">{cmsBody}</p>}
         <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-          <Link href="/#mobile" className="inline-flex items-center gap-2 px-7 py-4 rounded-full bg-gradient-to-r from-brand-gold to-yellow-500 text-bg-primary font-bold text-sm uppercase tracking-wider hover:from-yellow-400 hover:to-brand-gold transition-all shadow-glow-gold">
-            <Download className="h-4 w-4" /> {locale === 'fr' ? "Télécharger l'application" : 'Download the app'}
+          <Link href={cmsUrl || '/#mobile'} data-testid="services-cta-primary" className="inline-flex items-center gap-2 px-7 py-4 rounded-full bg-gradient-to-r from-brand-gold to-yellow-500 text-bg-primary font-bold text-sm uppercase tracking-wider hover:from-yellow-400 hover:to-brand-gold transition-all shadow-glow-gold">
+            <Download className="h-4 w-4" /> {cmsLabel || (locale === 'fr' ? "Télécharger l'application" : 'Download the app')}
           </Link>
           <Link href="/#contact" className="inline-flex items-center gap-2 px-7 py-4 rounded-full border-2 border-white/20 text-white font-bold text-sm uppercase tracking-wider hover:border-brand-gold hover:text-brand-gold transition-all">
             {locale === 'fr' ? 'Nous contacter' : 'Contact us'} <ArrowUpRight className="h-4 w-4" />
@@ -368,15 +393,17 @@ function ServicesCTA() {
   );
 }
 
-export function ServicesContent() {
+export function ServicesContent({ cms = {} }: { cms?: ServicesPageData }) {
   return (
-    <div data-testid="services-page">
-      <ServicesHero />
-      <SuperAppSection />
-      <ServicesGrid />
-      <WhyChooseBaked />
-      <DigitalAfricaSection />
-      <ServicesCTA />
-    </div>
+    <CmsCtx.Provider value={cms}>
+      <div data-testid="services-page">
+        <ServicesHero />
+        <SuperAppSection />
+        <ServicesGrid />
+        <WhyChooseBaked />
+        <DigitalAfricaSection />
+        <ServicesCTA />
+      </div>
+    </CmsCtx.Provider>
   );
 }

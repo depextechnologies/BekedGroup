@@ -212,4 +212,16 @@ model PartnerApplication {
   createdAt    DateTime @default(now())
 }
 
+// =======================================================
+// Editable page content (CMS) — one row per public page
+// pageKey: 'about' | 'services' | 'advertising' | 'support'
+// data: JSON blob containing hero, CTA and a page-specific list
+// =======================================================
+model PageContent {
+  pageKey   String   @id
+  data      Json     @default("{}")
+  updatedAt DateTime @updatedAt
+}
+
+
 

@@ -3,6 +3,7 @@ import { Header } from '@/components/site/Header';
 import { Footer } from '@/components/site/Footer';
 import { prisma } from '@/lib/prisma';
 import { AdvertisingContent } from './AdvertisingContent';
+import { getPageContent } from '@/lib/pageContent';
 
 export const dynamic = 'force-dynamic';
 
@@ -30,11 +31,12 @@ export default async function AdvertisingPage() {
     update: {},
     create: { id: 1 },
   });
+  const cms = await getPageContent('advertising');
 
   return (
     <main className="min-h-screen bg-bg-primary text-white">
       <Header />
-      <AdvertisingContent />
+      <AdvertisingContent cms={cms} />
       <Footer settings={settings} />
       <script
         type="application/ld+json"

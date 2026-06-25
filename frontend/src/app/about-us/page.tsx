@@ -3,6 +3,7 @@ import { Header } from '@/components/site/Header';
 import { Footer } from '@/components/site/Footer';
 import { AboutUsContent } from './AboutUsContent';
 import { prisma } from '@/lib/prisma';
+import { getPageContent } from '@/lib/pageContent';
 
 export const dynamic = 'force-dynamic';
 
@@ -30,11 +31,12 @@ export default async function AboutUsPage() {
     update: {},
     create: { id: 1 },
   });
+  const cms = await getPageContent('about');
 
   return (
     <main className="min-h-screen bg-bg-primary text-white">
       <Header />
-      <AboutUsContent />
+      <AboutUsContent cms={cms} />
       <Footer settings={settings} />
       {/* JSON-LD schema */}
       <script

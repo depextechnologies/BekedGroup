@@ -484,19 +484,16 @@ function DownloadApp() {
         </motion.div>
 
         {/* iPhone mockup */}
-        <motion.div initial={{ opacity: 0, scale: 0.92 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="lg:col-span-6 relative h-[480px] flex items-center justify-center">
+        <motion.div initial={{ opacity: 0, scale: 0.92 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="lg:col-span-6 relative h-[560px] flex items-center justify-center">
           <motion.div animate={{ y: [-8, 8, -8] }} transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }} className="relative">
-            <div className="relative h-[420px] w-[210px] rounded-[42px] bg-gradient-to-br from-zinc-800 to-zinc-900 border-[6px] border-zinc-800 shadow-[0_30px_80px_-20px_rgba(247,165,0,0.4)] overflow-hidden">
-              <div className="absolute top-0 inset-x-0 h-6 bg-zinc-900 flex justify-center"><span className="mt-2 h-1 w-12 rounded bg-zinc-700" /></div>
-              <div className="absolute inset-0 mt-6 flex flex-col items-center justify-center text-center bg-gradient-to-b from-brand-gold/30 to-bg-primary p-5">
-                <div className="text-3xl font-heading font-black text-white">bakēd</div>
-                <div className="mt-2 text-[10px] uppercase tracking-[0.25em] text-white/65 font-bold">Super App</div>
-                <div className="mt-6 grid grid-cols-3 gap-2 w-full">
-                  {['🚚','🍔','🛒','🛍','🚗','🏠'].map((e,i)=>(
-                    <div key={i} className="aspect-square rounded-xl bg-white/10 backdrop-blur flex items-center justify-center text-xl">{e}</div>
-                  ))}
-                </div>
-              </div>
+            <div className="relative h-[520px] w-[260px] rounded-[42px] bg-gradient-to-br from-zinc-800 to-zinc-900 border-[6px] border-zinc-800 shadow-[0_30px_80px_-20px_rgba(247,165,0,0.4)] overflow-hidden">
+              <div className="absolute top-0 inset-x-0 h-6 bg-zinc-900 flex justify-center z-10"><span className="mt-2 h-1 w-12 rounded bg-zinc-700" /></div>
+              <img
+                src="/support/splash-screen.png"
+                alt="bakēd app splash screen"
+                data-testid="support-app-mockup-image"
+                className="absolute inset-0 w-full h-full object-cover"
+              />
             </div>
           </motion.div>
           {/* Floating accent chips */}

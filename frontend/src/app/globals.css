@@ -21,6 +21,15 @@ html, body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* All headings using the brand display font render at weight 700 (Bold)
+   instead of 900 (Black). Overrides Tailwind's `font-black` utility when
+   combined with `.font-heading` while leaving non-heading uses
+   (Logo wordmark, decorative chars) at their original weight. */
+.font-heading {
+  font-weight: 700 !important;
+}
+
+
 ::selection {
   background: #f7a500;
   color: #050505;

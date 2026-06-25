@@ -180,3 +180,36 @@ model AdvertisingLead {
   createdAt   DateTime @default(now())
 }
 
+// ---------- Support & Partners ----------
+model SupportTicket {
+  id            String   @id @default(cuid())
+  fullName      String
+  email         String
+  phone         String   @default("")
+  orderNumber   String   @default("")
+  service       String   @default("")
+  subject       String
+  description   String
+  attachmentUrl String   @default("")
+  status        String   @default("open") // open | in_progress | resolved | closed
+  read          Boolean  @default(false)
+  createdAt     DateTime @default(now())
+}
+
+model PartnerApplication {
+  id           String   @id @default(cuid())
+  companyName  String
+  activityType String
+  cityRegion   String   @default("")
+  contactName  String
+  phone        String
+  email        String
+  website      String   @default("")
+  partnerType  String
+  description  String
+  status       String   @default("new") // new | reviewing | approved | rejected
+  read         Boolean  @default(false)
+  createdAt    DateTime @default(now())
+}
+
+

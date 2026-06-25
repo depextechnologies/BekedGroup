@@ -1,0 +1,70 @@
+{
+  "summary": "Tested /advertising premium slider + ecosystem diagram per spec. Slider works perfectly (next/prev/dots/autoplay-4s/hover-pause/single-slide/mobile-stack/locale). Ecosystem diagram has a CRITICAL center-misalignment bug: ADbakēd center node is offset by exactly +84px in BOTH x and y from the diagram center, and all 6 platform nodes are offset by +48px x / +60px y. Lines correctly emanate from SVG center (300,300) but the visual gold AD ball and platform icons are NOT at those endpoints — so the connection lines do NOT visually terminate at the node centers. Root cause: framer-motion overrides the CSS transform on motion.div (center uses Tailwind '-translate-x-1/2 -translate-y-1/2', platforms use inline style.transform 'translate(-50%,-50%)'). Computed transform after mount/animation = 'none' on all 7 nodes, so the centering translate is wiped out.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "AdNetwork center node (ADbakēd)",
+        "issue": "CRITICAL: Visual offset of +84px in x AND y from diagram center at 1440x900 desktop (and +47.9px at 390 mobile = half of its rendered size). The motion.div has Tailwind classes 'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2' but framer-motion overrides 'transform' (computed transform = 'none' after mount), so the translate(-50%,-50%) is never applied. The AD ball sits in the bottom-right quadrant of where it should be. Spec requires center bbox within 4px of diagram bbox center; measured 84px.",
+        "selector": "[data-testid='ad-network-center']",
+        "priority": "CRITICAL"
+      },
+      {
+        "component": "AdNetwork platform nodes (all 6)",
+        "issue": "CRITICAL: All 6 platform nodes are offset by +48px x / +60px y from their expected radial positions (R=220 from SVG center 300,300). Same root cause: motion.a uses inline style={{ transform: 'translate(-50%, -50%)' }} but framer-motion sets computed transform to 'none' once the entry animation finishes, wiping the centering translate. Result: connection lines visually arrive at empty space, NOT at the node centers as the spec requires. Geometric measurements: platform-0 actual (768,410) vs expected (720,350); same Δ=(+48,+60) on all 6 nodes.",
+        "selector": "[data-testid='ad-network-platform-0..5']",
+        "priority": "CRITICAL"
+      }
+    ],
+    "integration_issues": [],
+    "design_issues": [
+      {
+        "screen": "/advertising ecosystem diagram",
+        "issues": ["AD center ball is visibly in the bottom-right of the diagram instead of geometric center", "Dashed connection lines visually terminate in empty space rather than at platform-icon centers", "Outer dashed rotating ring is correctly centered (it's pure SVG), making the AD ball mis-placement even more obvious"]
+      }
+    ]
+  },
+  "test_report_links": [],
+  "action_items": [
+    "FIX: Replace motion-overridden CSS transforms with framer-motion motion values. For center node, change className to remove '-translate-x-1/2 -translate-y-1/2' and add 'style={{ x: \"-50%\", y: \"-50%\" }}' to motion.div (framer-motion will then build transform as translateX(-50%) translateY(-50%) plus its own scale animations, preserving centering). Same fix for all 6 platform motion.a nodes — pass x/y via style prop instead of style.transform.",
+    "ALTERNATIVE FIX: Wrap motion components inside a non-animated positioning <div> that owns the top/left + translate(-50%,-50%), and let the inner motion.div handle only scale/opacity animations (which don't conflict with translate). This is the cleanest separation.",
+    "RE-VERIFY after fix: center bbox center must be within 4px of diagram bbox center in BOTH axes at 1440x900 (and at 390 mobile). All 6 platform-N bbox centers must align (within 4px) with the SVG line endpoints x2/y2."
+  ],
+  "critical_code_review_comments": [
+    "AdvertisingContent.tsx line 432-440: motion.div for ad-network-center mixes Tailwind translate utilities with framer-motion's transform — framer-motion always wins. This is a known framer-motion gotcha. Either move translate into style={{ x: '-50%', y: '-50%' }} OR wrap motion inside a positioning div.",
+    "AdvertisingContent.tsx line 471-476: motion.a for ad-network-platform-N sets style.transform = 'translate(-50%, -50%)'. Framer-motion overrides this with its own transform on whileInView/whileHover. Same fix needed.",
+    "Slider hover-pause uses onMouseEnter on the parent <section data-testid='ad-why'> which is large; this pauses even when hovering the section's headline, not just the slider. Minor — spec says 'hover slider section' so acceptable, but could be moved to data-testid='ad-why-slider' for tighter control.",
+    "Slider dot progress bar useEffect: the motion.span 'bar' inside the active dot has transition duration=4s (matches autoplay interval) but does not reset on hover-pause; visually the bar may complete during paused state. Cosmetic only."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A (frontend-only request)", "frontend": "60% (slider 100%, ecosystem 0% on geometric alignment which was the primary acceptance criterion)"},
+  "verified_passing": [
+    "ad-why-slider present inside ad-why",
+    "Only ONE ad-why-card-N visible at a time",
+    "ad-why-next advances slide (0 -> 1)",
+    "ad-why-prev decrements slide (1 -> 0)",
+    "ad-why-dot-4 click jumps to slide 4",
+    "Active dot is visibly wider (36px) vs inactive (10px) and uses slide color",
+    "Auto-play advances slide after ~4-5s with no user interaction (4 -> 5 observed)",
+    "Hovering the section pauses auto-play (5 -> 5 over 5s)",
+    "Mobile (390px): image stacks ABOVE content (imgTop=73, cardTop=365)",
+    "Locale switch FR -> EN updates slider title text ('Visibilité de recherche' -> 'Targeted Advertising')",
+    "ad-network-center present + contains .animate-ping pulse and a blur glow child",
+    "SVG viewBox = '0 0 600 600' with exactly 6 <line> elements starting at (300,300)",
+    "spinRing keyframes present and applied to <g> via inline style",
+    "Hover on platform-0 increases its line stroke-width and dims other lines (visual effect functional)",
+    "All 6 ad-network-platform-N nodes rendered",
+    "ad-network-diagram container is aspect-square (600x600 at desktop)",
+    "Regression: all 8 other ad-* sections render (ad-hero, ad-how, ad-budget, ad-targeting, ad-delivery, ad-faq, ad-contact, ad-final-cta)"
+  ],
+  "verified_failing": [
+    "Spec acceptance #2: 'bounding-box center of ad-network-center vs ad-network-diagram must be ≤4px in both axes' — measured 84px offset in BOTH axes at desktop, 47.9px at mobile. FAIL.",
+    "Spec acceptance #2: 'line endpoint sits exactly at platform-node center' — measured 48-60px gap between SVG line endpoint and platform bbox center. FAIL."
+  ],
+  "test_credentials": "Admin credentials not used — admin regression smoke not run since core acceptance criterion failed early; recommend retest after fix.",
+  "seed_data_creation": "None",
+  "retest_needed": true,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "After fix, re-run a quick geometry check: const dx=Math.abs(centerBBox.cx - diagramBBox.cx); dx must be ≤4. Same for dy. Repeat at 1440x900 AND 390x844 viewports. Also assert each platform-N bbox center == SVG <line> endpoint (x2,y2) within 4px (line x2/y2 in pixels = diagramBBox.left + (svg_x/600)*diagramBBox.width). Slider tests already pass — focus retest on ecosystem only.",
+  "rca of the issue": "Framer-motion's motion.div/motion.a takes ownership of the `transform` CSS property to animate scale/opacity/position. Any CSS-based translate (whether from Tailwind utility classes like `-translate-x-1/2` or inline `style.transform`) gets clobbered by framer-motion's own transform string at runtime. Reproduction: query `[data-testid=ad-network-center]` then read `window.getComputedStyle(el).transform` — returns `'none'`, proving the Tailwind translate was overridden. Mitigation: pass translate as framer-motion motion values via `style={{ x: '-50%', y: '-50%' }}` (these become part of motion's transform string and compose correctly with scale/opacity) OR separate concerns by wrapping the motion component inside a non-animated positioning div that owns the top/left + translate."
+}

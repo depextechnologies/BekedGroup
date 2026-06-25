@@ -139,40 +139,58 @@ function FloatingMetric({ Icon, value, suffix, label, color, pos, delay }: { Ico
   );
 }
 
-/* ============ WHY ADbakēd ============ */
+/* ============ WHY ADbakēd — PREMIUM SLIDER ============ */
 function WhyAd() {
   const { locale } = useI18n();
-  const cards = locale === 'fr'
+  const slides = locale === 'fr'
     ? [
-        { Icon: Search, t: 'Visibilité de recherche', d: 'Apparaissez en tête lorsque les clients cherchent vos produits.', c: '#F7A500' },
-        { Icon: Target, t: 'Publicité ciblée', d: 'Atteignez la bonne audience au bon moment, sans gaspillage.', c: '#3498FF' },
-        { Icon: MapPin, t: 'Acquisition locale', d: 'Captez les clients à proximité avec une portée géolocalisée.', c: '#32CD32' },
-        { Icon: Award, t: 'Notoriété de marque', d: 'Construisez une présence forte et durable dans votre marché.', c: '#7A3CFF' },
-        { Icon: BarChart3, t: 'Analyses en temps réel', d: 'Tableaux de bord clairs pour mesurer chaque euro investi.', c: '#E5484D' },
-        { Icon: Users, t: 'Matching d\'audience intelligent', d: 'Notre IA identifie vos meilleurs prospects automatiquement.', c: '#F7A500' },
+        { Icon: Search, t: 'Visibilité de recherche', d: 'Apparaissez en tête lorsque les clients cherchent vos produits.', c: '#F7A500', img: 'https://images.unsplash.com/photo-1432888622747-4eb9a8efeb07?w=1400&q=85', cta: 'Booster ma visibilité' },
+        { Icon: Target, t: 'Publicité ciblée', d: 'Atteignez la bonne audience au bon moment, sans gaspillage budgétaire.', c: '#3498FF', img: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1400&q=85', cta: 'Configurer mon ciblage' },
+        { Icon: MapPin, t: 'Acquisition locale', d: 'Captez les clients à proximité grâce au géo-ciblage précis.', c: '#32CD32', img: 'https://images.unsplash.com/photo-1524661135-423995f22d0b?w=1400&q=85', cta: "Lancer en local" },
+        { Icon: Award, t: 'Notoriété de marque', d: 'Renforcez la reconnaissance et la présence de votre marque.', c: '#7A3CFF', img: 'https://images.unsplash.com/photo-1542744095-fcf48d80b0fd?w=1400&q=85', cta: 'Renforcer ma marque' },
+        { Icon: BarChart3, t: 'Analyses en temps réel', d: 'Suivez la performance de vos campagnes et optimisez instantanément.', c: '#E5484D', img: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1400&q=85&fit=crop&crop=entropy', cta: 'Voir le dashboard' },
+        { Icon: Users, t: 'Matching d\'audience intelligent', d: "Connectez-vous aux clients les plus pertinents automatiquement grâce à l'IA.", c: '#F7A500', img: 'https://images.unsplash.com/photo-1573164713988-8665fc963095?w=1400&q=85', cta: 'Activer le smart matching' },
       ]
     : [
-        { Icon: Search, t: 'Search Visibility', d: 'Show up at the top when customers are looking for what you sell.', c: '#F7A500' },
-        { Icon: Target, t: 'Targeted Advertising', d: 'Reach the right audience at the right moment, with no waste.', c: '#3498FF' },
-        { Icon: MapPin, t: 'Local Customer Acquisition', d: 'Capture nearby customers with geo-targeted reach.', c: '#32CD32' },
-        { Icon: Award, t: 'Brand Awareness', d: 'Build strong, lasting presence in your market.', c: '#7A3CFF' },
-        { Icon: BarChart3, t: 'Real-Time Analytics', d: 'Clear dashboards to measure every dollar spent.', c: '#E5484D' },
-        { Icon: Users, t: 'Smart Audience Matching', d: 'Our AI identifies your best prospects automatically.', c: '#F7A500' },
+        { Icon: Search, t: 'Search Visibility', d: 'Show up at the top when customers are looking for what you sell.', c: '#F7A500', img: 'https://images.unsplash.com/photo-1432888622747-4eb9a8efeb07?w=1400&q=85', cta: 'Boost visibility' },
+        { Icon: Target, t: 'Targeted Advertising', d: 'Reach the right audience at the right moment with no wasted spend.', c: '#3498FF', img: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1400&q=85', cta: 'Configure targeting' },
+        { Icon: MapPin, t: 'Local Customer Acquisition', d: 'Capture nearby customers through precise geo-targeting.', c: '#32CD32', img: 'https://images.unsplash.com/photo-1524661135-423995f22d0b?w=1400&q=85', cta: 'Go local' },
+        { Icon: Award, t: 'Brand Awareness', d: 'Increase recognition and strengthen your brand presence.', c: '#7A3CFF', img: 'https://images.unsplash.com/photo-1542744095-fcf48d80b0fd?w=1400&q=85', cta: 'Build my brand' },
+        { Icon: BarChart3, t: 'Real-Time Analytics', d: 'Track campaign performance and optimize results instantly.', c: '#E5484D', img: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1400&q=85&fit=crop&crop=entropy', cta: 'See the dashboard' },
+        { Icon: Users, t: 'Smart Audience Matching', d: 'Connect with the most relevant customers automatically via AI.', c: '#F7A500', img: 'https://images.unsplash.com/photo-1573164713988-8665fc963095?w=1400&q=85', cta: 'Enable smart matching' },
       ];
 
+  const [active, setActive] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const total = slides.length;
+
+  useEffect(() => {
+    if (paused) return;
+    const t = setInterval(() => setActive((i) => (i + 1) % total), 4000);
+    return () => clearInterval(t);
+  }, [paused, total]);
+
+  const goto = (i: number) => setActive(((i % total) + total) % total);
+  const slide = slides[active];
+
   return (
-    <section className="relative bg-white text-bg-primary py-24 md:py-32" data-testid="ad-why">
+    <section
+      className="relative bg-white text-bg-primary py-24 md:py-32 overflow-hidden"
+      data-testid="ad-why"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7 }}
-          className="max-w-3xl mb-16"
+          className="max-w-3xl mb-12"
         >
-          <span className="text-xs uppercase tracking-[0.3em] font-bold text-brand-gold">{locale === 'fr' ? "Pourquoi ADbakēd" : 'Why ADbakēd'}</span>
+          <span className="text-xs uppercase tracking-[0.3em] font-bold text-brand-gold">{locale === 'fr' ? 'Pourquoi ADbakēd' : 'Why ADbakēd'}</span>
           <h2 className="font-heading mt-4 text-4xl md:text-5xl lg:text-6xl font-black leading-[0.95] tracking-tighter">
-            {locale === 'fr' ? <>Maximisez vos chances <span className="text-brand-gold">d&apos;être choisi</span></> : <>Give yourself the best chance of <span className="text-brand-gold">being chosen</span></>}
+            {locale === 'fr' ? <>Maximisez vos chances <span className="text-brand-gold">d&apos;être choisi</span></> : <>Maximize your chances of <span className="text-brand-gold">being chosen</span></>}
           </h2>
           <p className="mt-5 text-base md:text-lg text-zinc-700 leading-relaxed">
             {locale === 'fr'
@@ -181,42 +199,158 @@ function WhyAd() {
           </p>
         </motion.div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {cards.map((c, i) => (
-            <motion.div
-              key={i}
-              data-testid={`ad-why-card-${i}`}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-50px' }}
-              transition={{ duration: 0.5, delay: i * 0.07 }}
-              whileHover={{ y: -8 }}
-              className="group rounded-baked bg-white border border-zinc-200 p-7 hover:border-zinc-300 hover:shadow-[0_20px_60px_-25px_rgba(0,0,0,0.18)] transition-all"
-            >
-              <div className="h-12 w-12 rounded-2xl flex items-center justify-center mb-5 transition-transform group-hover:scale-110 group-hover:rotate-3" style={{ backgroundColor: `${c.c}15` }}>
-                <c.Icon className="h-6 w-6" style={{ color: c.c }} strokeWidth={2.2} />
+        {/* SLIDER */}
+        <div
+          data-testid="ad-why-slider"
+          className="relative rounded-baked overflow-hidden border border-zinc-200 bg-white shadow-[0_20px_60px_-25px_rgba(0,0,0,0.18)]"
+        >
+          <div className="grid lg:grid-cols-12 min-h-[440px] md:min-h-[520px]">
+            {/* IMAGE */}
+            <div className="lg:col-span-7 relative overflow-hidden bg-zinc-100 min-h-[260px]">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={`img-${active}`}
+                  initial={{ opacity: 0, scale: 1.06 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 1.02 }}
+                  transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                  className="absolute inset-0"
+                >
+                  <img src={slide.img} alt={slide.t} className="w-full h-full object-cover" />
+                  <div className="absolute inset-0 bg-gradient-to-tr from-bg-primary/40 via-transparent to-transparent" />
+                </motion.div>
+              </AnimatePresence>
+              {/* Pill — slide index */}
+              <div className="absolute top-5 left-5 px-3 py-1.5 rounded-full bg-bg-primary/70 backdrop-blur text-white text-[10px] font-bold uppercase tracking-[0.25em]">
+                {String(active + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}
               </div>
-              <h3 className="font-heading text-xl font-bold tracking-tight mb-2">{c.t}</h3>
-              <p className="text-sm text-zinc-600 leading-relaxed">{c.d}</p>
-            </motion.div>
-          ))}
+              {/* Animated color stripe */}
+              <motion.div
+                key={`stripe-${active}`}
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1 }}
+                transition={{ duration: 4, ease: 'linear' }}
+                style={{ backgroundColor: slide.c, transformOrigin: 'left center' }}
+                className="absolute bottom-0 left-0 right-0 h-[3px]"
+              />
+            </div>
+
+            {/* CONTENT */}
+            <div className="lg:col-span-5 p-8 md:p-12 flex flex-col justify-center">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={`content-${active}`}
+                  initial={{ opacity: 0, y: 24 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -16 }}
+                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                  data-testid={`ad-why-card-${active}`}
+                >
+                  <div className="h-14 w-14 rounded-2xl flex items-center justify-center mb-6" style={{ backgroundColor: `${slide.c}18`, boxShadow: `0 12px 30px -10px ${slide.c}55` }}>
+                    <slide.Icon className="h-7 w-7" style={{ color: slide.c }} strokeWidth={2.2} />
+                  </div>
+                  <h3 data-testid={`ad-why-title-${active}`} className="font-heading text-3xl md:text-4xl font-black leading-[1.05] tracking-tight">{slide.t}</h3>
+                  <p className="mt-5 text-base md:text-lg text-zinc-600 leading-relaxed max-w-md">{slide.d}</p>
+                  <a
+                    href="#contact"
+                    data-testid={`ad-why-cta-${active}`}
+                    className="mt-8 inline-flex items-center gap-2 px-6 py-3 rounded-full font-bold text-xs uppercase tracking-[0.2em] transition-all hover:gap-3"
+                    style={{ backgroundColor: slide.c, color: '#fff', boxShadow: `0 12px 30px -10px ${slide.c}88` }}
+                  >
+                    {slide.cta} <ArrowRight className="h-4 w-4" />
+                  </a>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          </div>
+
+          {/* CONTROLS */}
+          <div className="flex items-center justify-between gap-6 px-6 md:px-8 py-5 border-t border-zinc-200 bg-white">
+            <button
+              type="button"
+              onClick={() => goto(active - 1)}
+              data-testid="ad-why-prev"
+              aria-label="Previous slide"
+              className="h-11 w-11 rounded-full border-2 border-zinc-200 flex items-center justify-center hover:border-bg-primary hover:bg-bg-primary hover:text-white transition-all"
+            >
+              <ArrowRight className="h-4 w-4 rotate-180" />
+            </button>
+
+            <div className="flex items-center gap-2.5 flex-1 justify-center">
+              {slides.map((s, i) => (
+                <button
+                  key={i}
+                  onClick={() => goto(i)}
+                  data-testid={`ad-why-dot-${i}`}
+                  aria-label={`Go to slide ${i + 1}`}
+                  className="group relative h-2 rounded-full transition-all"
+                  style={{ width: active === i ? 36 : 10, backgroundColor: active === i ? s.c : '#e4e4e7' }}
+                >
+                  {active === i && (
+                    <motion.span
+                      key={`bar-${active}`}
+                      initial={{ width: '0%' }}
+                      animate={{ width: paused ? '100%' : '100%' }}
+                      transition={{ duration: paused ? 0.3 : 4, ease: 'linear' }}
+                      className="absolute inset-0 rounded-full"
+                      style={{ backgroundColor: s.c, opacity: 0.55 }}
+                    />
+                  )}
+                </button>
+              ))}
+            </div>
+
+            <button
+              type="button"
+              onClick={() => goto(active + 1)}
+              data-testid="ad-why-next"
+              aria-label="Next slide"
+              className="h-11 w-11 rounded-full border-2 border-zinc-200 flex items-center justify-center hover:border-bg-primary hover:bg-bg-primary hover:text-white transition-all"
+            >
+              <ArrowRight className="h-4 w-4" />
+            </button>
+          </div>
         </div>
       </div>
     </section>
   );
 }
 
-/* ============ AD NETWORK ============ */
+/* ============ AD NETWORK — PERFECTLY CENTERED RADIAL DIAGRAM ============ */
 function AdNetwork() {
   const { locale } = useI18n();
+  // 6 nodes evenly spaced (60° apart) starting at TOP, clockwise.
+  // SVG coords on a 600×600 viewBox so node centers === line endpoints exactly.
+  const CX = 300;
+  const CY = 300;
+  const R = 220; // distance from center to node center
+
+  // 6 platforms evenly spaced 60° apart (clock positions 12, 2, 4, 6, 8, 10).
+  // Per spec naming intent:
+  //   12 (top)             → IMMObakēd
+  //   2  (upper-right)     → EXPRESSbakēd  ("Right")
+  //   4  (lower-right)     → FOODbakēd     ("Bottom-Right")
+  //   6  (bottom)          → SHOPbakēd     ("Bottom-Left" — kept for even spacing)
+  //   8  (lower-left)      → AUTObakēd     ("Left")
+  //   10 (upper-left)      → MARTbakēd     ("Top-Left")
   const platforms = [
-    { name: 'EXPRESSbakēd', Icon: Truck, color: '#F7A500', angle: 0 },
-    { name: 'FOODbakēd', Icon: UtensilsCrossed, color: '#32CD32', angle: 60 },
-    { name: 'SHOPbakēd', Icon: ShoppingBag, color: '#F7A500', angle: 120 },
-    { name: 'AUTObakēd', Icon: Car, color: '#E5484D', angle: 180 },
-    { name: 'MARTbakēd', Icon: ShoppingCart, color: '#32CD32', angle: 240 },
-    { name: 'IMMObakēd', Icon: Home, color: '#7A3CFF', angle: 300 },
+    { name: 'IMMObakēd',    Icon: Home,             color: '#7A3CFF', clock: 12 },
+    { name: 'EXPRESSbakēd', Icon: Truck,            color: '#F7A500', clock: 2  },
+    { name: 'FOODbakēd',    Icon: UtensilsCrossed,  color: '#32CD32', clock: 4  },
+    { name: 'SHOPbakēd',    Icon: ShoppingBag,      color: '#F7A500', clock: 6  },
+    { name: 'AUTObakēd',    Icon: Car,              color: '#E5484D', clock: 8  },
+    { name: 'MARTbakēd',    Icon: ShoppingCart,     color: '#32CD32', clock: 10 },
   ];
+
+  const pos = (clock: number) => {
+    // 12 o'clock = top. Convert clock to standard math angle (0 = +x axis, CCW).
+    // clock=12 → 90° (top); clock=3 → 0° (right); clock=6 → -90° (bottom)
+    const deg = 90 - (clock / 12) * 360;
+    const rad = (deg * Math.PI) / 180;
+    return { x: CX + R * Math.cos(rad), y: CY - R * Math.sin(rad) };
+  };
+
+  const [hover, setHover] = useState<number | null>(null);
 
   return (
     <section className="relative bg-bg-primary text-white py-24 md:py-32 overflow-hidden" data-testid="ad-network">
@@ -244,47 +378,81 @@ function AdNetwork() {
           </p>
         </motion.div>
 
-        {/* Hexagonal ecosystem */}
-        <div className="relative max-w-3xl mx-auto h-[480px] md:h-[560px]" data-testid="ad-network-diagram">
-          {/* SVG connectors */}
-          <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 600 600">
+        {/* Perfectly centered radial diagram — square aspect, CSS Grid centers center node */}
+        <div
+          data-testid="ad-network-diagram"
+          className="relative mx-auto w-full max-w-[600px] aspect-square"
+        >
+          {/* SVG layer covering the full square; coordinates = 0..600 */}
+          <svg
+            className="absolute inset-0 w-full h-full pointer-events-none"
+            viewBox="0 0 600 600"
+            preserveAspectRatio="xMidYMid meet"
+            aria-hidden="true"
+          >
+            <defs>
+              {platforms.map((p) => (
+                <linearGradient key={`g-${p.name}`} id={`g-${p.name}`} x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor={p.color} stopOpacity="0.95" />
+                  <stop offset="100%" stopColor="#F7A500" stopOpacity="0.5" />
+                </linearGradient>
+              ))}
+            </defs>
+
+            {/* Slowly rotating outer ring */}
+            <g style={{ transformOrigin: '300px 300px', animation: 'spinRing 80s linear infinite' }}>
+              <circle cx={CX} cy={CY} r={R + 14} fill="none" stroke="#F7A500" strokeWidth="1" strokeOpacity="0.18" strokeDasharray="2 10" />
+              <circle cx={CX} cy={CY} r={R - 14} fill="none" stroke="#F7A500" strokeWidth="1" strokeOpacity="0.12" strokeDasharray="1 8" />
+            </g>
+
+            {/* Connection lines from node-center to ADbakēd center */}
             {platforms.map((p, i) => {
-              const rad = (p.angle * Math.PI) / 180;
-              const cx = 300 + 220 * Math.cos(rad);
-              const cy = 300 + 220 * Math.sin(rad);
+              const { x, y } = pos(p.clock);
+              const isHover = hover === i;
+              const isOther = hover !== null && hover !== i;
               return (
                 <motion.line
-                  key={i}
-                  x1="300" y1="300" x2={cx} y2={cy}
-                  stroke={p.color} strokeWidth="1" strokeDasharray="4 6" opacity="0.4"
+                  key={`line-${p.name}`}
+                  x1={CX} y1={CY} x2={x} y2={y}
+                  stroke={`url(#g-${p.name})`}
+                  strokeWidth={isHover ? 2.4 : 1.2}
+                  strokeOpacity={isOther ? 0.15 : isHover ? 0.95 : 0.55}
+                  strokeDasharray="4 6"
                   initial={{ pathLength: 0 }}
                   whileInView={{ pathLength: 1 }}
                   viewport={{ once: true }}
                   transition={{ duration: 1.2, delay: 0.4 + i * 0.1 }}
+                  style={{ transition: 'stroke-opacity 250ms, stroke-width 250ms' }}
                 />
               );
             })}
           </svg>
 
-          {/* Central AD hub */}
+          {/* Center: ADbakēd hub */}
           <motion.div
             initial={{ opacity: 0, scale: 0.6 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
+            data-testid="ad-network-center"
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10"
+            style={{ width: 'min(28%, 168px)', aspectRatio: '1 / 1' }}
           >
-            <div className="relative h-32 w-32 md:h-40 md:w-40 rounded-full bg-gradient-to-br from-brand-gold to-yellow-600 flex items-center justify-center shadow-[0_0_60px_rgba(247,165,0,0.5)]">
-              <span className="font-heading text-2xl md:text-3xl font-black text-bg-primary tracking-tight">AD<br />bakēd</span>
+            <div className="relative w-full h-full rounded-full bg-gradient-to-br from-brand-gold to-yellow-600 flex items-center justify-center shadow-[0_0_60px_rgba(247,165,0,0.55)]">
+              <span className="font-heading text-2xl md:text-3xl font-black text-bg-primary tracking-tight text-center leading-none">
+                AD<br />bakēd
+              </span>
+              {/* Soft pulse */}
               <span className="absolute inset-0 rounded-full ring-2 ring-brand-gold/40 animate-ping" />
+              {/* Steady glow */}
+              <span className="absolute -inset-3 rounded-full bg-brand-gold/15 blur-xl -z-10" aria-hidden />
             </div>
           </motion.div>
 
-          {/* Platforms */}
+          {/* Platform nodes — absolutely positioned by SVG coordinates (% of container) */}
           {platforms.map((p, i) => {
-            const rad = (p.angle * Math.PI) / 180;
-            const top = `calc(50% + ${36.6 * Math.sin(rad)}% - 38px)`;
-            const left = `calc(50% + ${36.6 * Math.cos(rad)}% - 50px)`;
+            const { x, y } = pos(p.clock);
+            const isHover = hover === i;
             return (
               <motion.a
                 key={p.name}
@@ -294,22 +462,43 @@ function AdNetwork() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.6 + i * 0.1 }}
-                whileHover={{ scale: 1.1 }}
-                style={{ top, left }}
+                whileHover={{ scale: 1.12 }}
+                onMouseEnter={() => setHover(i)}
+                onMouseLeave={() => setHover((h) => (h === i ? null : h))}
+                onFocus={() => setHover(i)}
+                onBlur={() => setHover((h) => (h === i ? null : h))}
                 className="absolute group"
+                style={{
+                  top: `${(y / 600) * 100}%`,
+                  left: `${(x / 600) * 100}%`,
+                  transform: 'translate(-50%, -50%)',
+                  width: 'min(18%, 96px)',
+                }}
               >
-                <div className="relative flex flex-col items-center gap-2">
-                  <div className="h-16 w-16 md:h-20 md:w-20 rounded-2xl bg-white/[0.04] backdrop-blur-xl border border-white/15 flex items-center justify-center transition-all group-hover:border-white/40" style={{ boxShadow: `0 0 0 transparent` }}>
+                <div className="flex flex-col items-center gap-2">
+                  <div
+                    className="relative aspect-square w-full rounded-2xl bg-white/[0.05] backdrop-blur-xl border flex items-center justify-center transition-all duration-300"
+                    style={{
+                      borderColor: isHover ? p.color : 'rgba(255,255,255,0.18)',
+                      boxShadow: isHover ? `0 0 40px ${p.color}88` : '0 0 0 transparent',
+                    }}
+                  >
                     <p.Icon className="h-7 w-7 md:h-8 md:w-8" style={{ color: p.color }} strokeWidth={2.2} />
-                    <span className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity" style={{ boxShadow: `0 0 40px ${p.color}66` }} />
                   </div>
-                  <span className="text-[10px] md:text-xs font-bold uppercase tracking-wider text-center text-white/85 whitespace-nowrap">{p.name}</span>
+                  <span
+                    className="text-[10px] md:text-xs font-bold uppercase tracking-wider text-center whitespace-nowrap transition-colors"
+                    style={{ color: isHover ? p.color : 'rgba(255,255,255,0.85)' }}
+                  >
+                    {p.name}
+                  </span>
                 </div>
               </motion.a>
             );
           })}
         </div>
       </div>
+
+      <style>{`@keyframes spinRing { from { transform: rotate(0deg) } to { transform: rotate(360deg) } }`}</style>
     </section>
   );
 }

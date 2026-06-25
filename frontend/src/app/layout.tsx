@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Jost, Manrope } from 'next/font/google';
 import { I18nProvider } from '@/i18n/I18nProvider';
 import { Toaster } from 'sonner';
+import { CookieBanner } from '@/components/site/CookieBanner';
 import './globals.css';
 
 const heading = Jost({
@@ -64,6 +65,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="bg-bg-primary text-white font-body antialiased">
         <I18nProvider>
           {children}
+          <CookieBanner />
           <Toaster theme="dark" position="top-right" />
         </I18nProvider>
       </body>

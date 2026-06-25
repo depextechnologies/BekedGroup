@@ -1,0 +1,38 @@
+{
+  "summary": "RETEST of iteration_21 CRITICAL geometric misalignment in /advertising AdNetwork diagram. Fix (wrapper-div pattern around motion.div center + motion.a platforms, separating positioning transform from framer-motion's animated transform) is fully effective. All acceptance criteria PASS at both desktop 1440x900 and mobile 390x844.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Fix is clean and correct: positioning wrapper div owns top/left + translate(-50%,-50%), inner motion component only animates scale/opacity. This is exactly the recommended separation pattern. No regressions observed.",
+    "Minor (cosmetic, not blocking): slider dot's progress bar inner motion.span uses transition duration 4s linear regardless of pause state; the bar visually completes even during hover-pause. Already noted in iteration_21 — still cosmetic only."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A", "frontend": "100% on all acceptance criteria for this retest"},
+  "verified_passing": [
+    "ACCEPTANCE #1 desktop 1440x900: AD center bbox vs diagram bbox -> |dx|=0.00, |dy|=0.00 (spec ≤4)",
+    "ACCEPTANCE #1 mobile 390x844: |dx|=0.00, |dy|=0.00 (spec ≤4)",
+    "ACCEPTANCE #2 desktop: all 6 platform bbox centers align with SVG line x2/y2 endpoints (max gap 0.01px on all 6 nodes; spec ≤4)",
+    "ACCEPTANCE #2 mobile: all 6 platform bbox centers align with SVG line endpoints (max gap 0.01px)",
+    "Visual sanity: gold AD ball is at geometric center; 6 platforms form evenly spaced 6-point ring; dashed lines visually terminate inside each platform icon card (screenshot confirmed)",
+    "Slider regression: ad-why-slider present; only one ad-why-card-N visible at a time (initial card-0)",
+    "Slider ad-why-next advances slide (0 -> 1)",
+    "Slider ad-why-prev decrements slide (1 -> 0)",
+    "Slider ad-why-dot-4 click jumps to card-4",
+    "Ecosystem hover regression: hover on platform-0 yields stroke-width 2.4 on its line vs 1.2 on others; stroke-opacity 0.95 on hovered vs 0.15 on others (dimmed) — fully functional",
+    "spinRing keyframes still applied to outer SVG <g>",
+    "Center pulse .animate-ping still present and rendering"
+  ],
+  "verified_failing": [],
+  "test_credentials": "N/A",
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "iteration_21 CRITICAL geometric bug is fully fixed in iteration_22. Wrapper-div pattern works perfectly. Both desktop (1440x900) and mobile (390x844) measure 0.00px offset for AD center vs diagram center and ≤0.01px offset for every platform bbox vs SVG line endpoint. Slider section was untouched and remains green. Autoplay timing (~4s) and hover-pause verified passing previously; this iteration only re-checked the geometric fix + a quick slider smoke (next/prev/dot/single-active-card) + ecosystem hover + spinRing + pulse — all PASS. No remaining work on AdNetwork or slider.",
+  "rca of the issue": "Original bug (iteration_21): framer-motion's motion.div/motion.a owns the CSS `transform` property to animate scale/opacity, clobbering any CSS-based translate (Tailwind utilities or inline style.transform). Fix applied in iteration_22: wrapped each animated motion component inside a non-animated outer <div> that owns position:absolute + top/left + transform:translate(-50%,-50%). Inner motion now animates only scale/opacity. Verification: getBoundingClientRect of [data-testid=ad-network-center] now matches diagram center within 0.00px on both axes at 1440x900 and 390x844. All 6 platform nodes align with their SVG line endpoints within 0.01px."
+}

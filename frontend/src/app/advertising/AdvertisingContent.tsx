@@ -428,17 +428,23 @@ function AdNetwork() {
             })}
           </svg>
 
-          {/* Center: ADbakēd hub */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.6 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
+          {/* Center: ADbakēd hub — positioning div owns top/left/translate so framer-motion can't clobber it */}
+          <div
             data-testid="ad-network-center"
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10"
-            style={{ width: 'min(28%, 168px)', aspectRatio: '1 / 1' }}
+            className="absolute top-1/2 left-1/2 z-10"
+            style={{
+              transform: 'translate(-50%, -50%)',
+              width: 'min(28%, 168px)',
+              aspectRatio: '1 / 1',
+            }}
           >
-            <div className="relative w-full h-full rounded-full bg-gradient-to-br from-brand-gold to-yellow-600 flex items-center justify-center shadow-[0_0_60px_rgba(247,165,0,0.55)]">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.6 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7 }}
+              className="relative w-full h-full rounded-full bg-gradient-to-br from-brand-gold to-yellow-600 flex items-center justify-center shadow-[0_0_60px_rgba(247,165,0,0.55)]"
+            >
               <span className="font-heading text-2xl md:text-3xl font-black text-bg-primary tracking-tight text-center leading-none">
                 AD<br />bakēd
               </span>
@@ -446,28 +452,17 @@ function AdNetwork() {
               <span className="absolute inset-0 rounded-full ring-2 ring-brand-gold/40 animate-ping" />
               {/* Steady glow */}
               <span className="absolute -inset-3 rounded-full bg-brand-gold/15 blur-xl -z-10" aria-hidden />
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
 
-          {/* Platform nodes — absolutely positioned by SVG coordinates (% of container) */}
+          {/* Platform nodes — positioning div owns top/left/translate; inner motion handles scale/opacity only */}
           {platforms.map((p, i) => {
             const { x, y } = pos(p.clock);
             const isHover = hover === i;
             return (
-              <motion.a
+              <div
                 key={p.name}
-                href="#contact"
-                data-testid={`ad-network-platform-${i}`}
-                initial={{ opacity: 0, scale: 0.7 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.6 + i * 0.1 }}
-                whileHover={{ scale: 1.12 }}
-                onMouseEnter={() => setHover(i)}
-                onMouseLeave={() => setHover((h) => (h === i ? null : h))}
-                onFocus={() => setHover(i)}
-                onBlur={() => setHover((h) => (h === i ? null : h))}
-                className="absolute group"
+                className="absolute"
                 style={{
                   top: `${(y / 600) * 100}%`,
                   left: `${(x / 600) * 100}%`,
@@ -475,24 +470,39 @@ function AdNetwork() {
                   width: 'min(18%, 96px)',
                 }}
               >
-                <div className="flex flex-col items-center gap-2">
-                  <div
-                    className="relative aspect-square w-full rounded-2xl bg-white/[0.05] backdrop-blur-xl border flex items-center justify-center transition-all duration-300"
-                    style={{
-                      borderColor: isHover ? p.color : 'rgba(255,255,255,0.18)',
-                      boxShadow: isHover ? `0 0 40px ${p.color}88` : '0 0 0 transparent',
-                    }}
-                  >
-                    <p.Icon className="h-7 w-7 md:h-8 md:w-8" style={{ color: p.color }} strokeWidth={2.2} />
+                <motion.a
+                  href="#contact"
+                  data-testid={`ad-network-platform-${i}`}
+                  initial={{ opacity: 0, scale: 0.7 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: 0.6 + i * 0.1 }}
+                  whileHover={{ scale: 1.12 }}
+                  onMouseEnter={() => setHover(i)}
+                  onMouseLeave={() => setHover((h) => (h === i ? null : h))}
+                  onFocus={() => setHover(i)}
+                  onBlur={() => setHover((h) => (h === i ? null : h))}
+                  className="group block"
+                >
+                  <div className="flex flex-col items-center gap-2">
+                    <div
+                      className="relative aspect-square w-full rounded-2xl bg-white/[0.05] backdrop-blur-xl border flex items-center justify-center transition-all duration-300"
+                      style={{
+                        borderColor: isHover ? p.color : 'rgba(255,255,255,0.18)',
+                        boxShadow: isHover ? `0 0 40px ${p.color}88` : '0 0 0 transparent',
+                      }}
+                    >
+                      <p.Icon className="h-7 w-7 md:h-8 md:w-8" style={{ color: p.color }} strokeWidth={2.2} />
+                    </div>
+                    <span
+                      className="text-[10px] md:text-xs font-bold uppercase tracking-wider text-center whitespace-nowrap transition-colors"
+                      style={{ color: isHover ? p.color : 'rgba(255,255,255,0.85)' }}
+                    >
+                      {p.name}
+                    </span>
                   </div>
-                  <span
-                    className="text-[10px] md:text-xs font-bold uppercase tracking-wider text-center whitespace-nowrap transition-colors"
-                    style={{ color: isHover ? p.color : 'rgba(255,255,255,0.85)' }}
-                  >
-                    {p.name}
-                  </span>
-                </div>
-              </motion.a>
+                </motion.a>
+              </div>
             );
           })}
         </div>

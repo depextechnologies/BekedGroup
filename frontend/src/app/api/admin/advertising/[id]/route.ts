@@ -18,6 +18,11 @@ export async function DELETE(_req: Request, { params }: { params: Promise<{ id: 
   const session = await getAdminSession();
   if (!session) return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
   const { id } = await params;
-  await prisma.advertisingLead.delete({ where: { id } });
-  return NextResponse.json({ ok: true });
+  try {
+    await prisma.advertisingLead.delete({ where: { id } });
+    return NextResponse.json({ ok: true });
+  } catch (e: any) {
+    if (e?.code === 'P2025') return NextResponse.json({ ok: false, error: 'not found' }, { status: 404 });
+    return NextResponse.json({ ok: false, error: e.message || 'failed' }, { status: 500 });
+  }
 }

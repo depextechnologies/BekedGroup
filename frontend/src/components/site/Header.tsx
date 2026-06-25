@@ -29,7 +29,6 @@ export function Header() {
     { href: '/services', label: t('nav.services'), active: pathname === '/services' },
     { href: homePrefix + '#careers', label: t('nav.careers'), active: pathname === '/careers' },
     { href: '/advertising', label: t('nav.advertising'), active: pathname?.startsWith('/advertising') ?? false },
-    { href: '/support', label: t('nav.support'), active: pathname?.startsWith('/support') ?? false },
     { href: homePrefix + '#contact', label: t('nav.contact'), active: false },
   ];
 

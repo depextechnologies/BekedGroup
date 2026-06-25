@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
@@ -31,9 +31,9 @@ model SiteSettings {
   instagramUrl    String   @default("")
   tiktokUrl       String   @default("")
   youtubeUrl      String   @default("")
-  footerTextFr    String   @default("Simplifier la vie des gens et les connecter ensemble.")
-  footerTextEn    String   @default("Simplifying people's lives and connecting them together.")
-  copyrightText   String   @default("© 2025 bakēd Group. Tous droits réservés.")
+  footerTextFr    String   @default("Simplifier la vie des gens et les connecter ensemble.") @db.Text
+  footerTextEn    String   @default("Simplifying people's lives and connecting them together.") @db.Text
+  copyrightText   String   @default("© 2025 bakēd Group. Tous droits réservés.") @db.Text
   logoUrl         String   @default("/logos/baked.jpeg")
   faviconUrl      String   @default("")
   appStoreUrl     String   @default("")
@@ -44,23 +44,23 @@ model SiteSettings {
 // ---------- Homepage content (singleton row id=1) ----------
 model HomepageContent {
   id              Int      @id @default(1)
-  heroTitleFr     String   @default("SIMPLIFIER LA VIE DES GENS ET LES CONNECTER ENSEMBLE")
-  heroTitleEn     String   @default("SIMPLIFYING PEOPLE'S LIVES AND CONNECTING THEM TOGETHER")
+  heroTitleFr     String   @default("SIMPLIFIER LA VIE DES GENS ET LES CONNECTER ENSEMBLE") @db.Text
+  heroTitleEn     String   @default("SIMPLIFYING PEOPLE'S LIVES AND CONNECTING THEM TOGETHER") @db.Text
   heroHighlightFr String   @default("CONNECTER")
   heroHighlightEn String   @default("CONNECTING")
-  heroSubFr       String   @default("Une seule application. Plusieurs services. Une expérience connectée.")
-  heroSubEn       String   @default("One application. Multiple services. One connected experience.")
+  heroSubFr       String   @default("Une seule application. Plusieurs services. Une expérience connectée.") @db.Text
+  heroSubEn       String   @default("One application. Multiple services. One connected experience.") @db.Text
   heroCta1Fr      String   @default("Découvrir les Services")
   heroCta1En      String   @default("Discover Services")
   heroCta2Fr      String   @default("Nous Rejoindre")
   heroCta2En      String   @default("Join Us")
-  heroBgImage     String   @default("https://images.pexels.com/photos/1787044/pexels-photo-1787044.jpeg")
-  heroForegroundImage String @default("https://images.pexels.com/photos/4963439/pexels-photo-4963439.jpeg")
+  heroBgImage     String   @default("https://images.pexels.com/photos/1787044/pexels-photo-1787044.jpeg") @db.Text
+  heroForegroundImage String @default("https://images.pexels.com/photos/4963439/pexels-photo-4963439.jpeg") @db.Text
   aboutTitleFr    String   @default("À PROPOS DE bakēd")
   aboutTitleEn    String   @default("ABOUT bakēd")
-  aboutBodyFr     String   @default("bakēd Group développe un écosystème unifié d'applications digitales pensé pour simplifier le quotidien grâce à la technologie. Notre mission est de connecter les personnes, les entreprises, les services, la mobilité, le commerce, la restauration et l'immobilier dans une expérience fluide et unique.")
-  aboutBodyEn     String   @default("bakēd Group builds a unified ecosystem of digital applications designed to simplify everyday life through technology. Our mission is to connect people, businesses, services, mobility, commerce, food, and real estate into one seamless experience.")
-  careersImage    String   @default("https://images.pexels.com/photos/7109013/pexels-photo-7109013.jpeg")
+  aboutBodyFr     String   @default("bakēd Group développe un écosystème unifié d'applications digitales pensé pour simplifier le quotidien grâce à la technologie. Notre mission est de connecter les personnes, les entreprises, les services, la mobilité, le commerce, la restauration et l'immobilier dans une expérience fluide et unique.") @db.Text
+  aboutBodyEn     String   @default("bakēd Group builds a unified ecosystem of digital applications designed to simplify everyday life through technology. Our mission is to connect people, businesses, services, mobility, commerce, food, and real estate into one seamless experience.") @db.Text
+  careersImage    String   @default("https://images.pexels.com/photos/7109013/pexels-photo-7109013.jpeg") @db.Text
   updatedAt       DateTime @updatedAt
 }
 
@@ -74,10 +74,10 @@ model Application {
   colorKey      String   // "gold" | "green" | "purple" | "blue"
   titleFr       String   @default("")
   titleEn       String   @default("")
-  descFr        String
-  descEn        String
-  illustration  String   // image url
-  logoImage     String   @default("") // optional brand wordmark image
+  descFr        String   @db.Text
+  descEn        String   @db.Text
+  illustration  String   @db.Text // image url
+  logoImage     String   @default("") @db.Text // optional brand wordmark image
   icon          String   @default("Package") // lucide icon name
   enabled       Boolean  @default(true)
   order         Int      @default(0)
@@ -92,7 +92,7 @@ model ContactMessage {
   email     String
   phone     String?
   company   String?
-  message   String
+  message   String   @db.Text
   read      Boolean  @default(false)
   createdAt DateTime @default(now())
 }
@@ -109,8 +109,8 @@ model JobOpening {
   locationEn   String   @default("Remote")
   typeFr       String   @default("Temps plein")
   typeEn       String   @default("Full-time")
-  descFr       String
-  descEn       String
+  descFr       String   @db.Text
+  descEn       String   @db.Text
   published    Boolean  @default(true)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
@@ -124,8 +124,8 @@ model JobApplication {
   name        String
   email       String
   phone       String?
-  resumeUrl   String?
-  message     String
+  resumeUrl   String?  @db.Text
+  message     String   @db.Text
   read        Boolean  @default(false)
   createdAt   DateTime @default(now())
 }
@@ -136,16 +136,16 @@ model BlogPost {
   slug          String   @unique
   titleFr       String
   titleEn       String
-  excerptFr     String
-  excerptEn     String
-  contentFr     String
-  contentEn     String
-  featuredImage String   @default("")
+  excerptFr     String   @db.Text
+  excerptEn     String   @db.Text
+  contentFr     String   @db.LongText
+  contentEn     String   @db.LongText
+  featuredImage String   @default("") @db.Text
   category      String   @default("News")
   metaTitleFr   String   @default("")
   metaTitleEn   String   @default("")
-  metaDescFr    String   @default("")
-  metaDescEn    String   @default("")
+  metaDescFr    String   @default("") @db.Text
+  metaDescEn    String   @default("") @db.Text
   published     Boolean  @default(false)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
@@ -157,9 +157,9 @@ model NewsArticle {
   slug      String   @unique
   titleFr   String
   titleEn   String
-  bodyFr    String
-  bodyEn    String
-  image     String   @default("")
+  bodyFr    String   @db.LongText
+  bodyEn    String   @db.LongText
+  image     String   @default("") @db.Text
   published Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -174,7 +174,7 @@ model AdvertisingLead {
   phone       String   @default("")
   company     String   @default("")
   country     String   @default("")
-  message     String
+  message     String   @db.Text
   status      String   @default("new") // new | contacted | qualified | closed
   read        Boolean  @default(false)
   createdAt   DateTime @default(now())
@@ -189,8 +189,8 @@ model SupportTicket {
   orderNumber   String   @default("")
   service       String   @default("")
   subject       String
-  description   String
-  attachmentUrl String   @default("")
+  description   String   @db.Text
+  attachmentUrl String   @default("") @db.Text
   status        String   @default("open") // open | in_progress | resolved | closed
   read          Boolean  @default(false)
   createdAt     DateTime @default(now())
@@ -206,7 +206,7 @@ model PartnerApplication {
   email        String
   website      String   @default("")
   partnerType  String
-  description  String
+  description  String   @db.Text
   status       String   @default("new") // new | reviewing | approved | rejected
   read         Boolean  @default(false)
   createdAt    DateTime @default(now())
@@ -222,6 +222,3 @@ model PageContent {
   data      Json     @default("{}")
   updatedAt DateTime @updatedAt
 }
-
-
-

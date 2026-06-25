@@ -48,11 +48,11 @@ async function main() {
     create: { id: 1 },
   });
   await prisma.$executeRawUnsafe(
-    `UPDATE "HomepageContent" SET
-      "aboutBodyFr" = REPLACE(REPLACE("aboutBodyFr", 'Baked Growth', 'bakēd Group'), 'Baked Group', 'bakēd Group'),
-      "aboutBodyEn" = REPLACE(REPLACE("aboutBodyEn", 'Baked Growth', 'bakēd Group'), 'Baked Group', 'bakēd Group'),
-      "aboutTitleFr" = REPLACE("aboutTitleFr", 'BAKED', 'bakēd'),
-      "aboutTitleEn" = REPLACE("aboutTitleEn", 'BAKED', 'bakēd')
+    `UPDATE \`HomepageContent\` SET
+      \`aboutBodyFr\` = REPLACE(REPLACE(\`aboutBodyFr\`, 'Baked Growth', 'bakēd Group'), 'Baked Group', 'bakēd Group'),
+      \`aboutBodyEn\` = REPLACE(REPLACE(\`aboutBodyEn\`, 'Baked Growth', 'bakēd Group'), 'Baked Group', 'bakēd Group'),
+      \`aboutTitleFr\` = REPLACE(\`aboutTitleFr\`, 'BAKED', 'bakēd'),
+      \`aboutTitleEn\` = REPLACE(\`aboutTitleEn\`, 'BAKED', 'bakēd')
      WHERE id = 1`
   );
   console.log('✓ Homepage content');
@@ -234,7 +234,7 @@ async function main() {
 
   // Ensure launch-super-app sits in the featured slot (most-recent updatedAt)
   await prisma.$executeRawUnsafe(
-    `UPDATE "BlogPost" SET "updatedAt" = NOW() WHERE slug = 'launch-super-app'`
+    `UPDATE \`BlogPost\` SET \`updatedAt\` = NOW() WHERE slug = 'launch-super-app'`
   );
 
   // 7. Sample News Articles (idempotent)

@@ -21,6 +21,7 @@ export default async function JobsPage() {
           ...a,
           createdAt: a.createdAt.toISOString(),
           jobTitle: a.job.titleFr,
+          resumeUrl: a.resumeUrl ?? null,
         }))}
       />
     </AdminShell>

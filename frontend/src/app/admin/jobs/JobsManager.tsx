@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Plus, Save, Trash2, Eye, EyeOff, Briefcase, Users } from 'lucide-react';
+import { Plus, Save, Trash2, Eye, EyeOff, Briefcase, Users, Download } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 
@@ -28,6 +28,7 @@ interface Application {
   name: string;
   email: string;
   phone: string | null;
+  resumeUrl: string | null;
   message: string;
   read: boolean;
   createdAt: string;
@@ -140,10 +141,24 @@ export function JobsManager({ initialJobs, applications }: { initialJobs: Job[];
             <div key={a.id} data-testid={`application-row-${a.id}`} className="rounded-baked border border-white/10 bg-white/[0.03] p-5">
               <div className="flex items-baseline justify-between gap-3 flex-wrap">
                 <div>
-                  <div className="font-bold">{a.name} <span className="text-white/40 font-normal">· {a.email}</span></div>
+                  <div className="font-bold">{a.name} <span className="text-white/40 font-normal">· {a.email}</span>{a.phone && <span className="text-white/40 font-normal"> · {a.phone}</span>}</div>
                   <div className="text-xs text-brand-gold uppercase tracking-wider mt-1">Applied for: {a.jobTitle}</div>
                 </div>
-                <div className="text-xs text-white/40">{new Date(a.createdAt).toLocaleString()}</div>
+                <div className="flex items-center gap-3">
+                  {a.resumeUrl && (
+                    <a
+                      href={a.resumeUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      data-testid={`application-resume-${a.id}`}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-brand-gold/15 border border-brand-gold/40 text-brand-gold text-[11px] uppercase tracking-[0.2em] font-bold hover:bg-brand-gold/25 transition-colors"
+                    >
+                      <Download className="h-3 w-3" />
+                      Resume
+                    </a>
+                  )}
+                  <div className="text-xs text-white/40">{new Date(a.createdAt).toLocaleString()}</div>
+                </div>
               </div>
               <div className="mt-3 text-sm text-white/70 whitespace-pre-wrap">{a.message}</div>
             </div>

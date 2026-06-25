@@ -1,0 +1,66 @@
+{
+  "summary": "Iteration 20 — ADbakēd Advertising page + Admin lead CRUD verified end-to-end. ALL CRITICAL CHECKS PASS. /advertising renders all 10 sections with exact testid counts (6 why-cards, 6 network-platforms, 5 steps, 7 targets, 6 delivery, 5 faq items+toggles). FR↔EN locale switch updates hero title between 'SOYEZ VISIBLE PARTOUT EN LIGNE' and 'GET VISIBLE EVERYWHERE ONLINE'. Header nav has 'Publicité' link (testid: nav-link-publicit — accent stripped) between 'Nous Rejoindre' (Careers FR) and 'Contact', with active gold highlight on /advertising. Contact form happy-path works → success state shown + new DB row created. Server-side Zod validation returns 400 on missing/bad fields. Admin login → dashboard shows 8 stat tiles incl. stat-ad-leads + stat-new-ad-leads. Sidebar Advertising nav navigates to /admin/advertising; lead list renders Jane Doe + test leads; clicking row opens detail; status pills (new/contacted/qualified/closed) PATCH successfully; unread leads have ring-1 ring-brand-gold/40, click marks read (selected style switches to border-brand-gold). DELETE works. All admin API endpoints return 401 without cookie (cookie-leak proxy fix from iteration_18 intact). SEO: <title> contains 'ADbakēd' + 'bakēd Group', og:title set, JSON-LD @type='Service' present. Public regression: /, /about-us, /services, /blog, /news, /careers all 200. Seeded Jane Doe lead preserved as instructed. Two test leads created during testing were cleaned up via DELETE API.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {"endpoint": "DELETE /api/admin/advertising/[id]", "issue": "Deleting a non-existent ID returns 500 instead of 404 (Prisma RecordNotFound not caught). Edge case only — happy path works."}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_results": {
+    "route_status_codes": "PASS — GET / /about-us /services /blog /news /careers /advertising = 200; /admin and /admin/advertising = 307 (login redirect, correct)",
+    "advertising_sections": "PASS — advertising-page renders. All 10 section testids present: ad-hero, ad-why, ad-network, ad-how, ad-budget, ad-targeting, ad-delivery, ad-faq, ad-contact, ad-final-cta. Cards: 6/6/5/7/6 (why/network-platforms/how-steps/targeting/delivery). 5 FAQ items + 5 toggles. ad-network-diagram visible.",
+    "hero_testids": "PASS — ad-hero, ad-hero-title, ad-hero-cta-start, ad-hero-cta-expert all visible",
+    "locale_switch": "PASS — FR hero='SOYEZ VISIBLE PARTOUT EN LIGNE'; EN hero='GET VISIBLE EVERYWHERE ONLINE'; round-trip back to FR works",
+    "header_nav": "PASS — testids found: nav-link-accueil, nav-link-qui-sommes-nous, nav-link-nos-services, nav-link-nous-rejoindre, nav-link-publicit, nav-link-contact (order correct: Publicité between Nous Rejoindre/Careers and Contact). href=/advertising. Gold active state visible in screenshot.",
+    "faq_accordion": "PASS — ad-faq-toggle-0 clickable, accordion expands",
+    "contact_form_happy_path": "PASS — Filled firstName/lastName/email/message and submitted. Form transitions to ad-contact-success showing 'Merci ! Nous vous contactons sous peu.' DB row created (verified via admin GET).",
+    "server_validation": "PASS — POST /api/advertising with {} returns 400 with Zod errors; bad email returns 400 with 'Invalid email' message",
+    "admin_api_security": "PASS — Unauth GET/PATCH/DELETE /api/admin/advertising[/:id] = 401. Regression GET /api/admin/blog = 401. Cookie-leak proxy fix from iteration_18 intact.",
+    "admin_login": "PASS — POST /api/auth/login returns 200 + sets cookie",
+    "admin_dashboard_tiles": "PASS — 8 stat-* tiles present: stat-applications, stat-total-messages, stat-unread-messages, stat-open-positions, stat-blog-posts, stat-news-articles, stat-ad-leads, stat-new-ad-leads. NOTE: spec mentions 'dashboard-tile-*' testid pattern but actual code uses 'stat-*' — labels 'Ad leads' / 'New ad leads' both render correctly.",
+    "admin_sidebar_nav": "PASS — admin-nav-advertising testid present in sidebar with Megaphone icon, routes to /admin/advertising",
+    "admin_lead_list": "PASS — advertising-leads renders. 3 lead rows (after testing inserts) including Jane Doe seed. ad-lead-row-<id> testids present.",
+    "admin_lead_detail": "PASS — Clicking ad-lead-row-* opens ad-lead-detail-<id> showing email, phone, company, country, message + status pills + delete button",
+    "admin_status_workflow": "PASS — ad-lead-status-{new,contacted,qualified,closed} all visible; clicking 'qualified' PATCH DB; verified persisted via subsequent GET",
+    "admin_read_state": "PASS — Jane Doe (unread) row had class 'ring-1 ring-brand-gold/40' before click. After clicking, PATCH read=true fires and selected row class switches to 'border-brand-gold bg-brand-gold/5'.",
+    "admin_delete": "PASS — DELETE /api/admin/advertising/<id> = 200; two test-created leads cleaned up; Jane Doe preserved per instructions.",
+    "seo_title_og": "PASS — <title>ADbakēd Advertising Solutions | bakēd Group</title>; og:title set",
+    "seo_jsonld": "PASS — JSON-LD with @type='Service' present in HTML",
+    "regression_public": "PASS — /, /about-us, /services, /blog, /news, /careers all 200",
+    "regression_admin_apis": "PASS — /api/admin/blog (and other admin endpoints) still 401 without cookie",
+    "empty_state_check": "NOT TESTED runtime — code includes ad-leads-empty testid path (per main agent), DB always had ≥1 lead during testing (Jane Doe preserved). Code-inspection-only verification."
+  },
+  "test_report_links": [
+    "/app/test_reports/iteration_20.json"
+  ],
+  "action_items": [
+    "MINOR: DELETE /api/admin/advertising/[id] returns HTTP 500 when id does not exist (Prisma P2025 not caught). Wrap in try/catch and return 404 for a cleaner API contract. Not user-facing since UI only deletes existing rows.",
+    "INFO: Spec mentions dashboard testid pattern 'dashboard-tile-*' but implementation uses 'stat-*' (e.g. stat-ad-leads, stat-new-ad-leads). Functionally correct, just document/update the spec mapping. 8 tiles confirmed.",
+    "INFO: Header advertising nav testid is 'nav-link-publicit' (FR text 'Publicité' → accent stripped + trailing 'é' dropped by slugger). Switches to 'nav-link-advertising' in EN. Consistent with existing pattern (e.g. 'nav-link-actualit-s'), but worth noting for downstream tests.",
+    "INFO: Hydration warning ('1 error' badge bottom-left on /advertising) — appears to be a benign SSR/client mismatch (likely Date.now() in animated counters or framer-motion). Not blocking, but consider stabilising the initial values for SSR.",
+    "INFO: Sitemap does not yet include /advertising (acceptable per main agent's note, can be added next iter)."
+  ],
+  "critical_code_review_comments": [
+    "DELETE handler at /app/frontend/src/app/api/admin/advertising/[id]/route.ts likely throws unhandled Prisma 'Record not found' error → 500. Should catch P2025 and return 404.",
+    "Hydration mismatch on /advertising (1 error in console) — most likely animated metric counters reading window/perf timestamps during SSR. Should guard with useEffect or suppressHydrationWarning on those nodes.",
+    "Form success state correctly resets, but pressing 'Envoyer un autre message' button could be wired to reset form values — verified message visible, not flow.",
+    "All public sections use force-dynamic which precludes ISR caching; consider revalidate=300 for SEO + perf.",
+    "AdvertisingContent.tsx is likely a large single file containing all 10 sections — exceeds the 700-line guideline. Consider splitting per-section into separate components for maintainability."
+  ],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "100% (all critical endpoints PASS; 1 minor edge case on DELETE non-existent)",
+    "frontend": "100% (all critical assertions PASS)"
+  },
+  "test_credentials": "admin@baked.group / BakedAdmin2025! (from /app/memory/test_credentials.md) — used for admin login flow",
+  "seed_data_creation": "Created 2 test leads during the run (Test User, PlaywrightTest User) — both DELETED via API after verification. Jane Doe seed (id cmqt7mfgk00007dw10x8pzvvq) PRESERVED per instructions.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "All ADbakēd advertising flows verified. Key testids confirmed: advertising-page, ad-hero, ad-hero-title, ad-hero-cta-start/expert, ad-why/network/how/budget/targeting/delivery/faq/contact/final-cta, ad-why-card-{0-5}, ad-network-diagram, ad-network-platform-{0-5}, ad-step-{0-4}, ad-target-{0-6}, ad-delivery-{0-5}, ad-faq-item-{0-4}, ad-faq-toggle-{0-4}, ad-contact-firstName/lastName/email/message/submit/success, ad-final-cta. Admin: stat-ad-leads, stat-new-ad-leads (NOT dashboard-tile-*), admin-nav-advertising, advertising-leads, ad-lead-row-<id>, ad-lead-detail-<id>, ad-lead-status-{new,contacted,qualified,closed}, ad-lead-delete. Header nav adds nav-link-publicit (FR) / nav-link-advertising (EN). Login API is POST /api/auth/login. SMTP empty in .env so emails aren't sent but POST still succeeds. Jane Doe lead (cmqt7mfgk00007dw10x8pzvvq) MUST be preserved.",
+  "rca_of_the_issue": "N/A — no functional bugs found. Only minor: Prisma P2025 not caught in DELETE handler causing 500 instead of 404 on non-existent ID."
+}

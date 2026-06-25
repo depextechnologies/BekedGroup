@@ -1,6 +1,6 @@
 'use client';
 
-import { AppWindow, Inbox, MailQuestion, Briefcase, FileText, Newspaper } from 'lucide-react';
+import { AppWindow, Inbox, MailQuestion, Briefcase, FileText, Newspaper, Megaphone } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 interface Stats {
@@ -10,6 +10,8 @@ interface Stats {
   jobsCount: number;
   blogCount: number;
   newsCount: number;
+  adLeadsCount: number;
+  adLeadsNewCount: number;
 }
 
 interface Message {
@@ -29,6 +31,8 @@ export function Dashboard({ stats, recentMessages }: { stats: Stats; recentMessa
     { label: 'Open positions', value: stats.jobsCount, Icon: Briefcase, color: '#32CD32' },
     { label: 'Blog posts', value: stats.blogCount, Icon: FileText, color: '#7A3CFF' },
     { label: 'News articles', value: stats.newsCount, Icon: Newspaper, color: '#F7A500' },
+    { label: 'Ad leads', value: stats.adLeadsCount, Icon: Megaphone, color: '#F7A500' },
+    { label: 'New ad leads', value: stats.adLeadsNewCount, Icon: Megaphone, color: '#E5484D' },
   ];
 
   return (

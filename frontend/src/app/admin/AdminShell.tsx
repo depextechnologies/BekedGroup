@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { LayoutDashboard, AppWindow, Inbox, Settings, LogOut, Briefcase, FileText, Newspaper, Menu, X } from 'lucide-react';
+import { LayoutDashboard, AppWindow, Inbox, Settings, LogOut, Briefcase, FileText, Newspaper, Megaphone, Menu, X } from 'lucide-react';
 import { Logo } from '@/components/site/Logo';
 import { cn } from '@/lib/utils';
 
@@ -12,6 +12,7 @@ const navItems = [
   { href: '/admin/applications', label: 'Applications', Icon: AppWindow },
   { href: '/admin/messages', label: 'Messages', Icon: Inbox },
   { href: '/admin/jobs', label: 'Careers', Icon: Briefcase },
+  { href: '/admin/advertising', label: 'Advertising', Icon: Megaphone },
   { href: '/admin/blog', label: 'Blog', Icon: FileText },
   { href: '/admin/news', label: 'News', Icon: Newspaper },
   { href: '/admin/settings', label: 'Settings', Icon: Settings },

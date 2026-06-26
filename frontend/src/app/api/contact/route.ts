@@ -11,9 +11,13 @@ const ContactSchema = z.object({
   message: z.string().min(5).max(4000),
 });
 
-async function trySendEmail(msg: {
-  name: string; email: string; phone?: string; company?: string; message: string;
-}) {
+type ContactData = z.infer<typeof ContactSchema>;
+
+async function trySendEmail(msg: ContactData
+  //{
+  //name: string; email: string; phone?: string; company?: string; message: string;
+  //}
+ ) {
   const host = process.env.SMTP_HOST;
   const user = process.env.SMTP_USER;
   const pass = process.env.SMTP_PASSWORD;
@@ -43,7 +47,8 @@ async function trySendEmail(msg: {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const data = ContactSchema.parse(body);
+    //const data = ContactSchema.parse(body);
+    const data: ContactData = ContactSchema.parse(body);
     const saved = await prisma.contactMessage.create({
       data: {
         name: data.name,
@@ -53,7 +58,14 @@ export async function POST(req: Request) {
         message: data.message,
       },
     });
-    void trySendEmail(data);
+    //void trySendEmail(data);
+    void trySendEmail({
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+      company: data.company,
+      message: data.message,
+    });
     return NextResponse.json({ ok: true, id: saved.id });
   } catch (e: any) {
     return NextResponse.json({ ok: false, error: e.message || 'invalid' }, { status: 400 });
